@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    function submit() {
+      var input = document.getElementById('input');
+      socket.emit('chat', input.value);
+    }
+
+  </script>
+  <body>
+    <ul id="messages"></ul>
+    <input id="input" autocomplete="off" /><button onclick="submit()">Send</button>
+  </body>
+</html>
