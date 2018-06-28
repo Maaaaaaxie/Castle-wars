@@ -9,13 +9,15 @@
 <body>
 <div id="cards">
     <div id="cards_inner">
-        <!--<div class="card">-->
-            <!--<header>-->
-                <!--<img class="_icon" src="{base64url}">-->
-                <!--<span class="_resourceCount">3</span>-->
-            <!--</header>-->
-            <!--<section>Verteidigung</section>-->
-            <!--<footer><span>Turm</span><span>&nbsp;</span><span>+5</span></footer>-->
+        <!--<div class="card_wrap">-->
+            <!--<div class="card">-->
+                <!--<header>-->
+                    <!--<img class="_icon" src="{base64url}">-->
+                    <!--<span class="_resourceCount">3</span>-->
+                <!--</header>-->
+                <!--<section>Verteidigung</section>-->
+                <!--<footer><span>Turm</span><span>&nbsp;</span><span>+5</span></footer>-->
+            <!--</div>-->
         <!--</div>-->
     </div>
 </div>
@@ -32,7 +34,43 @@
 				resourceCount: 4,
 				category: "Verteidigung",
                 target: "Turm",
-                value: "+5"
+                value: "+5",
+                class: "defend"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "defend"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "defend"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "attack"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "attack"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "attack"
 			}
         ];
 
@@ -80,7 +118,7 @@
 
     	aCards.forEach(oCard => {
     		const oNewCard = document.createElement("div");
-			oNewCard.setAttribute("class", "card");
+			oNewCard.setAttribute("class", `card ${oCard.class}`);
 			oNewCard.appendChild(createHeader(oCard));
 
 			const oCategory = document.createElement("section");
@@ -89,7 +127,10 @@
 
 			oNewCard.appendChild(createFooter(oCard));
 
-    		oCardsWrap.appendChild(oNewCard);
+			const oCardWrap = document.createElement("div");
+			oCardWrap.setAttribute("class", "card_wrap");
+			oCardWrap.appendChild(oNewCard);
+    		oCardsWrap.appendChild(oCardWrap);
         });
     })();
 </script>
