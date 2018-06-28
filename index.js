@@ -39,6 +39,6 @@ io.on('connection', function(socket){
 
     socket.on('chatIn', function(message){
         console.log(message.username + ': ' + message.text);
-        socket.emit("chatOut", message)
+        io.emit("chatOut", message)
     });
 });
