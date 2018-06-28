@@ -21,8 +21,16 @@ function submit(e) {
 function addItemToList(oMessage) {
     const oUl = document.getElementById("list");
     const oLi = document.createElement("li");
-    const sText = oMessage.username + ": " + oMessage.text + " (" + new Date(oMessage.date).toLocaleString() + ")";
-    oLi.appendChild(document.createTextNode(sText));
+    const oTextDiv = document.createElement("div");
+    oTextDiv.className = "text";
+    const oDateDiv = document.createElement("div");
+    oDateDiv.className = "date";
+    const sText = oMessage.username + ": " + oMessage.text;
+    const sDate = new Date(oMessage.date).toLocaleTimeString();
+    oTextDiv.appendChild(document.createTextNode(sText));
+    oDateDiv.appendChild(document.createTextNode(sDate));
+    oLi.appendChild(oTextDiv);
+    oLi.appendChild(oDateDiv);
     oUl.appendChild(oLi);
 }
 

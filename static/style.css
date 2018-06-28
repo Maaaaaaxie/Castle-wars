@@ -23,7 +23,9 @@ li {
 }
 
 #chat {
+    display: inline-block;
     margin: 0.5rem;
+    width: 100%;
 }
 
 h1 {
@@ -56,7 +58,7 @@ hr {
     color: #7f9da8;
 }
 
-#wrapper {
+.wrapper {
     margin-top: 1rem;
     text-align: center;
 }
@@ -75,6 +77,7 @@ hr {
     outline: none;
     height: 2rem;
     padding: 6px;
+    line-break: loose;
 }
 
 #login input::-webkit-input-placeholder {
@@ -88,4 +91,13 @@ hr {
     height: 2rem;
     font-size: 12pt;
     cursor: pointer;
+}
+
+.text {
+    line-break: loose;
+}
+
+.date {
+    font-size: 8pt;
+    color: gray;
 }

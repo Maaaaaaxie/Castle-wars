@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WebSocket chat</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
@@ -10,7 +12,7 @@
 <body>
 <div id="content">
     <h1>WebSocket chat</h1>
-    <hr />
+    <hr/>
     <div id="chat">
         <ul id="list"></ul>
         <input id="input" autocomplete="off" onkeypress="submit(event)" placeholder="Message..."/>
