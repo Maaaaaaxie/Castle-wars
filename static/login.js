@@ -12,3 +12,5 @@ function onInputClick(e) {
         this.login();
     }
 }
+
+window.onload = () => document.getElementsByTagName("input")[0].focus();

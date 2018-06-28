@@ -8,36 +8,36 @@ const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
 
 const fnServeFiles = (req, res) => {
-	switch (req.url) {
-		case "/mocks/player.html":
-		case "/mocks/base.css":
-			res.sendFile(path.join(__dirname, req.url.slice(1)));
-			break;
-		default:
-			res.sendFile(INDEX);
-			break;
-	}
+    switch (req.url) {
+        case "/mocks/player.html":
+        case "/mocks/base.css":
+            res.sendFile(path.join(__dirname, req.url.slice(1)));
+            break;
+        default:
+            res.sendFile(INDEX);
+            break;
+    }
 };
 
 // Start server
 const
-server = express()
-	// .use((req, res) => res.sendFile(INDEX))
-    .use(express.static("static"))
-	.use(fnServeFiles)
-	.listen(PORT, () => console.log("Listening on localhost:" + PORT));
+    server = express()
+    // .use((req, res) => res.sendFile(INDEX))
+        .use(express.static("static"))
+        .use(fnServeFiles)
+        .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
 // Initiatlize SocketIO
 const io = socketIO(server);
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('a user connected');
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('user disconnected');
     });
 
-    socket.on('chatIn', function(oMessage){
+    socket.on('chatIn', function (oMessage) {
         console.log(oMessage.username + ': ' + oMessage.text);
         io.emit("chatOut", oMessage)
     });

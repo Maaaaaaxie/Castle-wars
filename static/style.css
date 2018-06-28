@@ -66,7 +66,7 @@ hr {
 #login {
     display: inline-block;
     width: 90%;
-    max-width: 20rem;
+    max-width: 25rem;
 }
 
 #login input {
@@ -75,8 +75,8 @@ hr {
     font-size: 14pt;
     width: 100%;
     outline: none;
-    height: 2rem;
-    padding: 6px;
+    height: 4rem;
+    padding: 12px;
     line-break: loose;
 }
 
@@ -88,7 +88,7 @@ hr {
     display: block;
     width: 100%;
     border: none;
-    height: 2rem;
+    height: 3rem;
     font-size: 12pt;
     cursor: pointer;
 }
