@@ -23,6 +23,7 @@ const fnServeFiles = (req, res) => {
 const
 server = express()
 	// .use((req, res) => res.sendFile(INDEX))
+    .use(express.static("static"))
 	.use(fnServeFiles)
 	.listen(PORT, () => console.log("Listening on localhost:" + PORT));
 

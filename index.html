@@ -4,29 +4,10 @@
     <title>Socket.IO chat</title>
   </head>
   <script src="/socket.io/socket.io.js"></script>
-
-  <script>
-      const socket = io();
-
-      function submit() {
-          const input = document.getElementById('input');
-          socket.emit('chatIn', input.value);
-      }
-
-      function addItemToList(text) {
-          const ul = document.getElementById("list");
-          const li = document.createElement("li");
-          li.appendChild(document.createTextNode(text));
-          ul.appendChild(li);
-      }
-
-      socket.on('chatOut', function(msg){
-          addItemToList(msg);
-      });
-  </script>
+  <script src="/main.js"></script>
 
   <body>
     <ul id="list"></ul>
-    <input id="input" autocomplete="off" /><button onclick="submit()">Send</button>
+    <input id="input" autocomplete="off" onkeypress="submit(event)" />
   </body>
 </html>
