@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Socket.IO chat</title>
+    <meta charset="UTF-8">
+    <title>Log in</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/main.js"></script>
+<script src="/login.js"></script>
 <link rel="stylesheet" type="text/css" href="/style.css">
 
 <body>
-<div id="content">
-    <h1>WebSocket Test Chat</h1>
-    <hr />
-    <div id="chat">
-        <ul id="list"></ul>
-        <input id="input" autocomplete="off" onkeypress="submit(event)" placeholder="Message..."/>
+<div id="wrapper">
+    <div id="login">
+        <input placeholder="Benutzername..." maxlength="16" onkeypress="onInputClick(event)">
+        <br/>
+        <button onclick="login()">Anmelden</button>
     </div>
 </div>
 </body>
