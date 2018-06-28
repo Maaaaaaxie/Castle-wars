@@ -11,10 +11,21 @@
     color: #efefef;
 }
 
+h1 {
+    font-size: 1.8rem;
+    line-height: 2.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+/* Card section */
 #cards {
-    border: 1px solid white;
     width: 100%;
     max-width: 100%;
+    border-bottom: 1px solid #b7b7b7;
 }
 
 #cards_inner {
@@ -34,6 +45,7 @@
 }
 
 .card {
+    user-select: none;
     border-radius: 0.25rem;
     padding: 0.75rem;
     height: 12rem;
@@ -77,4 +89,41 @@
 
 .card section, .card footer {
     text-align: center;
+}
+/* End of card section */
+
+/*#stats {*/
+    /*padding: 1rem;*/
+/*}*/
+
+/*#statistics {*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+
+/*}*/
+
+/*#statistics section {*/
+    /*font-size: 1.2rem;*/
+    /*line-height: 2.2rem;*/
+    /*width: 50%;*/
+    /*letter-spacing: 0.05rem;*/
+/*}*/
+
+/*#statistics section p {*/
+    /*font-size: inherit;*/
+    /*line-height: inherit;*/
+/*}*/
+
+/*.own {*/
+    /*text-align: right;*/
+/*}*/
+
+/*.stats span {*/
+    /*font-size: inherit;*/
+    /*line-height: inherit;*/
+    /*font-weight: bold;*/
+/*}*/
+
+#resources {
+    padding: 1rem;
 }
