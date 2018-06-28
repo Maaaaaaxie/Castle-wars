@@ -29,14 +29,15 @@ server = express()
 // Initiatlize SocketIO
 const io = socketIO(server);
 
-io.on('connection', function (socket) {
-	console.log('a user connected');
+io.on('connection', function(socket){
+    console.log('a user connected');
 
-	socket.on('disconnect', function () {
-		console.log('user disconnected');
-	});
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    });
 
-	socket.on('chat', function (msg) {
-		console.log('message: ' + msg);
-	});
+    socket.on('chatIn', function(msg){
+        console.log('message: ' + msg);
+        socket.emit("chatOut", msg)
+    });
 });
