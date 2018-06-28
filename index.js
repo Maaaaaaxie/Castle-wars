@@ -9,8 +9,8 @@ const INDEX = path.join(__dirname, 'index.html');
 
 const fnServeFiles = (req, res) => {
 	switch (req.url) {
-		case "/mock.html":
-		case "/base.css":
+		case "/mocks/player.html":
+		case "/mocks/base.css":
 			res.sendFile(path.join(__dirname, req.url.slice(1)));
 			break;
 		default:
