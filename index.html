@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Socket.IO chat</title>
-  </head>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/main.js"></script>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>
+<link rel="stylesheet" type="text/css" href="/style.css">
 
-  <body>
-    <ul id="list"></ul>
-    <input id="input" autocomplete="off" onkeypress="submit(event)" />
-  </body>
+<body>
+<div id="content">
+    <h1>WebSocket Test Chat</h1>
+    <hr />
+    <div id="chat">
+        <ul id="list"></ul>
+        <input id="input" autocomplete="off" onkeypress="submit(event)" placeholder="Message..."/>
+    </div>
+</div>
+</body>
 </html>

@@ -37,8 +37,8 @@ io.on('connection', function(socket){
         console.log('user disconnected');
     });
 
-    socket.on('chatIn', function(msg){
-        console.log('message: ' + msg);
-        socket.emit("chatOut", msg)
+    socket.on('chatIn', function(message){
+        console.log(message.username + ': ' + message.text);
+        socket.emit("chatOut", message)
     });
 });
