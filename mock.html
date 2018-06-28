@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design</title>
+    <link rel="stylesheet" type="text/css" href="/base.css">
+</head>
+<body>
+<div id="cards">
+    <div id="cards_inner">
+        <!--<div class="card">-->
+            <!--Karte 1-->
+        <!--</div>-->
+    </div>
+</div>
+</body>
+</html>
+<script>
+    (function() {
+    	const oCardsWrap = document.getElementById("cards_inner");
+
+    	const aCards = [
+			{
+				title: "Bauen",
+				value: 5,
+				category: "build"
+			}
+        ];
+
+    	aCards.forEach(oCard => {
+    		const oNewCard = document.createElement("div");
+			oNewCard.setAttribute("class", "card");
+    		oNewCard.appendChild(document.createTextNode(oCard.title));
+    		oCardsWrap.appendChild(oNewCard);
+        });
+    })();
+</script>
