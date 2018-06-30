@@ -1,3 +1,4 @@
+<!--TODO: Timer for move-->
 <!--TODO: Card flip-->
 <!--TODO: Ressourcen-->
 <!--TODO: enable/disable cards based on available resources-->
@@ -41,12 +42,16 @@
 <!--</div>-->
 <article id="resources">
     <h1>Ressourcen</h1>
-    <section>
-        Steine: <span id="stones">7</span>
-    </section>
-    <section>
-        Schwerter: <span id="swords">12</span>
-    </section>
+    <div id="resources_inner">
+        <section>
+            <img class="icon_1" id="icon_1" src="">
+            Steine: <span id="stones">7</span>
+        </section>
+        <section>
+            <img class="icon_1" id="icon_2" src="">
+            Schwerter: <span id="swords">12</span>
+        </section>
+    </div>
 </article>
 </body>
 </html>
@@ -143,8 +148,12 @@
 			return oFooter;
         };
 
-    	aCards.forEach(oCard => {
-    		const oNewCard = document.createElement("div");
+		/**
+         * Renders a card with the given information in oCard
+		 * @param oCard
+		 */
+		const fnRenderCard = oCard => {
+			const oNewCard = document.createElement("div");
 			oNewCard.setAttribute("class", `card ${oCard.class}`);
 			oNewCard.appendChild(createHeader(oCard));
 
@@ -157,7 +166,14 @@
 			const oCardWrap = document.createElement("div");
 			oCardWrap.setAttribute("class", "card_wrap");
 			oCardWrap.appendChild(oNewCard);
-    		oCardsWrap.appendChild(oCardWrap);
-        });
+			oCardsWrap.appendChild(oCardWrap);
+        };
+
+    	aCards.forEach(fnRenderCard);
+
+
+    	// TEMPORARY
+		document.getElementById("icon_1").setAttribute("src", sImg);
+		document.getElementById("icon_2").setAttribute("src", sImg);
     })();
 </script>

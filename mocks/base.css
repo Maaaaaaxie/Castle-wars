@@ -127,3 +127,22 @@ h2 {
 #resources {
     padding: 1rem;
 }
+
+.icon_1 {
+    height: 1rem;
+}
+
+#resources_inner {
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+#resources_inner section {
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+#resources_inner section:first-child {
+    margin-left: 0;
+}
