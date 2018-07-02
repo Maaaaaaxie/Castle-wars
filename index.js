@@ -1,7 +1,6 @@
 // Import packages
-const express = require("express");
-const socketIO = require("socket.io");
-const path = require("path");
+const express = require('express');
+const path = require('path');
 
 // Configuration
 const PORT = process.env.PORT || 3000;
@@ -9,8 +8,8 @@ const INDEX = path.join(__dirname, 'index.html');
 
 const fnServeFiles = (req, res) => {
     switch (req.url) {
-        case "/mocks/player.html":
-        case "/mocks/base.css":
+        case '/mocks/player.html':
+        case '/mocks/base.css':
             res.sendFile(path.join(__dirname, req.url.slice(1)));
             break;
         default:
@@ -21,15 +20,14 @@ const fnServeFiles = (req, res) => {
 
 // Start server
 const
-    server = express()
-    // .use((req, res) => res.sendFile(INDEX))
-        .use(express.static("static"))
+    app = express()
+        .use(express.static('static'))
         .use(fnServeFiles)
-        .listen(PORT, () => console.log("Listening on localhost:" + PORT));
+        .listen(PORT, () => console.log('Listening on localhost:' + PORT));
+
+const io = require('socket.io')(app);
 
 // Initiatlize SocketIO
-const io = socketIO(server);
-
 io.on('connection', function (socket) {
     console.log('a user connected');
 
@@ -39,6 +37,9 @@ io.on('connection', function (socket) {
 
     socket.on('chatIn', function (oMessage) {
         console.log(oMessage.username + ': ' + oMessage.text);
-        io.emit("chatOut", oMessage)
+        io.emit('chatOut', oMessage)
     });
 });
+
+
+
