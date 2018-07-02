@@ -1,0 +1,109 @@
+* {
+    font-family: "Calibri Light";
+}
+
+html, body {
+    height: 100%;
+    margin: 0 0 0 10%;
+    background: aliceblue;
+}
+
+#list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    padding-bottom: 10px;
+}
+
+#content {
+    height: 100%;
+}
+
+#chat {
+    display: inline-block;
+    padding: 0.5rem;
+}
+
+h1 {
+    font-size: 20pt;
+    display: inline-block;
+    margin: 0.5rem 0 0 0.5rem;
+    font-weight: normal;
+    padding-left: 1rem;
+    border-left: 6px solid lightblue;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: lightblue;
+}
+
+#input {
+    border: none;
+    outline: none;
+    background: aliceblue;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    width: 70%;
+    height: 2rem;
+    font-size: 14pt;
+    position: absolute;
+    bottom: 0;
+}
+
+#input::-webkit-input-placeholder {
+    font-style: italic;
+    color: #7f9da8;
+}
+
+.wrapper {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+#login {
+    display: inline-block;
+    width: 90%;
+    max-width: 25rem;
+}
+
+#login input {
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    font-size: 14pt;
+    width: 100%;
+    outline: none;
+    height: 4rem;
+    padding: 2rem;
+    line-break: loose;
+}
+
+#login input::-webkit-input-placeholder {
+    font-size: 12pt;
+}
+
+#login button {
+    display: block;
+    width: 100%;
+    border: none;
+    height: 3rem;
+    font-size: 12pt;
+    cursor: pointer;
+}
+
+.text {
+    line-break: loose;
+}
+
+.date {
+    font-size: 8pt;
+    color: gray;
+}
+
+#list_wrapper {
+    overflow: auto;
+}

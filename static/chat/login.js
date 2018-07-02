@@ -3,7 +3,7 @@ function login() {
     const sValue = oInput.value.trim();
     if (sValue) {
         sessionStorage.username = sValue;
-        window.location.href = window.location.href + "chat.html";
+        window.location.href = window.location.href.replace("login", "chat");
     }
 }
 

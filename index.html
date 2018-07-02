@@ -6,16 +6,16 @@
     <title>Log in</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/login.js"></script>
 <link rel="stylesheet" type="text/css" href="/style.css">
 
+<script>
+    function openChat() {
+        window.location.href = window.location.href + "chat/login.html";
+    }
+</script>
+
 <body>
-<div class="wrapper">
-    <div id="login">
-        <input placeholder="Benutzername..." maxlength="16" onkeypress="onInputClick(event)">
-        <br/>
-        <button onclick="login()">Anmelden</button>
-    </div>
-</div>
+    <h1>Welcome</h1>
+    <button class="hvr-grow" onclick="openChat()">Chat</button>
 </body>
 </html>
