@@ -30,6 +30,103 @@ canvas {
     user-select: none;
 }
 
+/* --- stats ---------------------------------------------------------------------------------------------------------*/
+
+#stats-left {
+    position: absolute;
+    left: 1rem;
+    top: 3rem;
+}
+
+#stats-right {
+    position: absolute;
+    right: 1rem;
+    top: 3rem;
+}
+
+.stats-container {
+    font-family: Arial;
+    font-weight: bold;
+}
+
+.stat {
+    margin-top: 1rem;
+    user-select: none;
+}
+
+.outer {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
+.inner {
+    padding: 0.5rem;
+}
+
+.property {
+    display: flex;
+}
+
+.property .description {
+    display: inline-block;
+    width: 50%;
+}
+
+.property .icon {
+    text-align: center;
+}
+
+.property .icon img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.property .text {
+    font-size: 8pt;
+    text-align: center;
+}
+
+.property .value {
+    padding-right: 0.2rem;
+    text-align: right;
+    margin: 0 auto;
+    width: 50%;
+    height: 100%;
+    line-height: 150%;
+    font-size: 14pt;
+}
+
+.spacer {
+    margin: 0.4rem 0 0.4rem 0;
+    width: 100%;
+    border-bottom: 4px dotted rgba(0,0,0,0.7);
+}
+
+.red {
+    border: 0.5rem solid #6e3232;
+    background: indianred;
+}
+
+.green {
+    border: 0.5rem solid #186218;
+    background: limegreen;
+}
+
+.blue {
+    border: 0.5rem solid dodgerblue;
+    background: #a5d9ff;
+}
+
+.black {
+    border: 0.5rem solid #343434;
+    background: #969696;
+}
+
+.marginTop {
+    margin-top: 2rem;
+}
+
 /* --- control -------------------------------------------------------------------------- */
 #wrapper {
     margin: 0 auto;
