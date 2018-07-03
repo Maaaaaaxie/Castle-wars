@@ -20,12 +20,14 @@ canvas {
     position: absolute;
     top: 0;
     right: 0;
+    user-select: none;
 }
 
 #toolbar img {
     margin: 0.5rem;
     height: 2rem;
     width: 2rem;
+    user-select: none;
 }
 
 /* --- control -------------------------------------------------------------------------- */

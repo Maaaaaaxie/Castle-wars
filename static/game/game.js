@@ -351,10 +351,14 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
     this._aActiveClouds.push(oCloud);
 }
 
+function onCanvasClick(event) {
+    spawnBird(event.x, event.y);
+}
+
 /**
  * Spawns bird which moves automatically
  */
-function spawnBird() {
+function spawnBird(x, y) {
     if (!this._aActiveBirds) {
         this._aActiveBirds = [];
     }
@@ -365,8 +369,8 @@ function spawnBird() {
 
     const oBird = {
         id: "__bird_" + this._iBirdCount++,
-        x: -20,
-        y: Math.round(Math.random()*200+50),
+        x: x || -20,
+        y: y || Math.round(Math.random()*200+50),
     };
 
     let i = oBird.x;
