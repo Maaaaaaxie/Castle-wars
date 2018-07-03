@@ -1,9 +1,13 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
 function getCtx() {
     const c = document.getElementById("canvas");
     return c.getContext("2d");
 }
 
-function createSky() {
+function _createSky() {
     const ctx = getCtx();
 
     // sky
@@ -11,7 +15,7 @@ function createSky() {
     ctx.fillRect(0,0,800,500);
 }
 
-function createGrass() {
+function _createGrass() {
     const ctx = getCtx();
 
     // grass
@@ -22,7 +26,7 @@ function createGrass() {
     ctx.fillRect(0,500,800,2);
 }
 
-function createCastle(x, height) {
+function _createCastle(x, height) {
     const ctx = getCtx();
 
     // base
@@ -48,7 +52,7 @@ function createCastle(x, height) {
     ctx.fillRect(x+58,470-height,8,15);
 }
 
-function createCloud(x, y, size) {
+function _createCloud(x, y, size, color = "#FFF") {
     const ctx = getCtx();
 
     ctx.beginPath();
@@ -59,59 +63,92 @@ function createCloud(x, y, size) {
     ctx.bezierCurveTo(x+(20*size),y-(10*size),x+(20*size),y,x+(10*size),y);
     ctx.bezierCurveTo(x,y,x,y,x,y);
 
-    ctx.fillStyle = "#FFF";
+    ctx.fillStyle = color;
     ctx.fill();
 }
 
-function animateCloud(id) {
-    let i = 0;
+function _getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function _createActiveClouds() {
+    window._activeClouds.forEach(oCloud => {
+        _createCloud(oCloud.x, oCloud.y, oCloud.size, oCloud.color);
+    });
+}
+
+function _initializeClouds() {
+    this._iCloudTimeout = 10000;
+    this._sCloudColor = "#FFF";
+
+    spawnCloud(3);
+    spawnCloud(4);
+
+    window.__cloudSpawningInterval = setInterval(() => {
+        spawnCloud(Math.round(Math.random()+3), -200);
+    }, this._iCloudTimeout);
+}
+
+function _drawCanvas() {
+    _createSky();
+    _createCastle(90, sessionStorage.iCurrentHealth);
+    _createCastle(710, sessionStorage.iCurrentHealth);
+    _createGrass();
+    _createActiveClouds();
+}
+
+function _onLoad() {
+    sessionStorage.iCurrentHealth = 30;
+    start();
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+window.onload = () => _onLoad();
+
+function start() {
+    window.__gameInterval = setInterval(() => _drawCanvas());
+    _initializeClouds();
+}
+
+function quit() {
+    clearInterval(window.__gameInterval);
+    clearInterval(window.__cloudSpawningInterval);
+}
+
+function spawnCloud(size = 4, x = Math.round(Math.random()*900-200)) {
+    if (!window._activeClouds) {
+        window._activeClouds = [];
+    }
+
+    const oCloud = {
+        id: "__cloud_" + window._activeClouds.length,
+        x: x,
+        y: Math.round(Math.random()*200+50),
+        size: size,
+        color: this._sCloudColor || _getRandomColor()
+    };
+
+    let i = oCloud.x;
+    let speed = Math.round(Math.random()*50)+50;
+
     const iCloudInterval = setInterval(() => {
         if (i < 850) {
-            window._activeClouds.filter(cloud => cloud.id === id)[0].x = i;
+            oCloud.x = i;
             i++;
         } else {
             clearInterval(iCloudInterval);
         }
-    }, 100);
-}
+    }, speed);
 
-function createActiveClouds() {
-    window._activeClouds.forEach(cloud => {
-        createCloud(cloud.x, cloud.y, cloud.size);
-    });
-}
-
-function drawCanvas() {
-    createSky();
-    createCastle(90, sessionStorage.iCurrentHealth);
-    createCastle(710, sessionStorage.iCurrentHealth);
-    createGrass();
-    createActiveClouds();
-}
-
-function onLoad() {
-    sessionStorage.iCurrentHealth = 30;
-    startGame();
-}
-
-window.onload = () => onLoad();
-
-function startGame() {
-    window.__game = setInterval(() => drawCanvas());
-
-    window._activeClouds = [
-        {
-            id: "__cloud_1",
-            x: 0,
-            y: 100
-        }
-    ];
-
-    animateCloud("__cloud_1");
-}
-
-function quitGame() {
-    clearInterval(window.__game);
+    window._activeClouds.push(oCloud);
 }
 
 function setCastleHealth(iHealth) {
@@ -123,7 +160,7 @@ function setCastleHealth(iHealth) {
     const iInterval = setInterval(() => {
         if (i < Math.abs(iDiff)) {
             iDiff > 0 ? sessionStorage.iCurrentHealth++ : sessionStorage.iCurrentHealth--;
-            // drawCanvas();
+            // _drawCanvas();
             i++;
         } else {
             clearInterval(iInterval);
