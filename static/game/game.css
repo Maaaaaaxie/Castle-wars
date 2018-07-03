@@ -4,11 +4,8 @@ html, body {
     overflow: hidden;
 }
 
-#field {
-    margin: 0 auto;
-    height: 100%;
-    /*max-width: 800px;*/
-    /*max-height: 600px;*/
+#game {
+    position: relative;
 }
 
 canvas {
@@ -19,6 +16,19 @@ canvas {
     background: white;
 }
 
+#toolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#toolbar img {
+    margin: 0.5rem;
+    height: 2rem;
+    width: 2rem;
+}
+
+/* --- control -------------------------------------------------------------------------- */
 #wrapper {
     margin: 0 auto;
     width: 80%;

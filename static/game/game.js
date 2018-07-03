@@ -294,7 +294,7 @@ window.onresize = () => initializeCanvas();
 // ---------------------------------------------------------------------------------------------------------------------
 
 /**
- * Launch the game
+ * Launches the game
  */
 function start() {
     _initializePlayers();
@@ -304,7 +304,7 @@ function start() {
 }
 
 /**
- * Quit the game
+ * Stops the game
  */
 function quit() {
     clearInterval(this.__gameInterval);
