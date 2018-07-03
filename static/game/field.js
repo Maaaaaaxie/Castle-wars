@@ -5,7 +5,7 @@ const that = this;
 // ---------------------------------------------------------------------------------------------------------------------
 
 class Player {
-    constructor(id, x, color) {
+    constructor(id, x, sColor) {
         this.id = id;
 
         const oInit = that._oInitialValues;
@@ -22,9 +22,13 @@ class Player {
 
         this.castle = {
             x: x,
-            color: color,
+            color: sColor,
             height: this.health
         }
+    }
+
+    setColor(sColor) {
+        this.castle.color = sColor;
     }
 
     setHealth(iHealth) {
@@ -70,30 +74,41 @@ function _drawGrass() {
     this._iFloor = iFloor;
 }
 
-function _drawCastle(x, y, height) {
+function _drawCastle(x, y, oDef) {
     const ctx = _getCtx();
+    const iHeight = oDef.height;
+    const sColor = oDef.color || "#b29759";
+
+    const fnDarkenColor = function(sColor, iAmt) {
+        const num = parseInt(sColor.replace("#",""),16);
+        const r = (num >> 16) + iAmt;
+        const b = ((num >> 8) & 0x00FF) + iAmt;
+        const g = (num & 0x0000FF) + iAmt;
+        const sNewColor = g | (b << 8) | (r << 16);
+        return sNewColor.toString(16);
+    };
 
     // base
-    ctx.fillStyle = "#d7945b";
-    ctx.fillRect(x-50,505-height,100,height+45);
-    ctx.fillRect(x-40,495-height,16,10);
-    ctx.fillRect(x-9,495-height,16,10);
-    ctx.fillRect(x+22,495-height,16,10);
+    ctx.fillStyle = sColor;
+    ctx.fillRect(x-50,505-iHeight,100,iHeight+45);
+    ctx.fillRect(x-40,495-iHeight,16,10);
+    ctx.fillRect(x-9,495-iHeight,16,10);
+    ctx.fillRect(x+22,495-iHeight,16,10);
 
     // --- towers -----------
-    ctx.fillStyle = "#9f6d43";
+    ctx.fillStyle = "#" + fnDarkenColor(sColor, -35);
 
     // tower left
-    ctx.fillRect(x-62,480-height,24,height+70);
-    ctx.fillRect(x-66,470-height,8,15);
-    ctx.fillRect(x-54,470-height,8,15);
-    ctx.fillRect(x-42,470-height,8,15);
+    ctx.fillRect(x-62,480-iHeight,24,iHeight+70);
+    ctx.fillRect(x-66,470-iHeight,8,15);
+    ctx.fillRect(x-54,470-iHeight,8,15);
+    ctx.fillRect(x-42,470-iHeight,8,15);
 
     // tower right
-    ctx.fillRect(x+38,480-height,24,height+70);
-    ctx.fillRect(x+34,470-height,8,15);
-    ctx.fillRect(x+46,470-height,8,15);
-    ctx.fillRect(x+58,470-height,8,15);
+    ctx.fillRect(x+38,480-iHeight,24,iHeight+70);
+    ctx.fillRect(x+34,470-iHeight,8,15);
+    ctx.fillRect(x+46,470-iHeight,8,15);
+    ctx.fillRect(x+58,470-iHeight,8,15);
 }
 
 function _drawCloud(x, y, size, color) {
@@ -166,10 +181,16 @@ function _initializeClouds() {
 }
 
 function _initializeBirds() {
-    this._iBirdTimeout = 30000;
-    this._sBirdSpeed = 10;
-
     spawnBird();
+
+    this.__birdSpawningInterval1 = setInterval(() => {
+        spawnBird();
+    }, 21000);
+
+    this.__birdSpawningInterval2 = setInterval(() => {
+        spawnBird();
+        setTimeout(() => spawnBird(), Math.random()*1000+400);
+    }, 50000);
 }
 
 function _initializePlayers() {
@@ -185,8 +206,8 @@ function _initializePlayers() {
         mages: 2
     };
 
-    window._oPlayer1 = new Player("1", 90);
-    window._oPlayer2 = new Player("2", 710);
+    window._oPlayer1 = new Player("1", 90, "#d3b961");
+    window._oPlayer2 = new Player("2", 710, "#912b32");
 }
 
 function _getCastle(id) {
@@ -211,8 +232,8 @@ function _setCastleHeight(id, iHeight) {
 
 function _drawCanvas() {
     _drawSky();
-    _drawCastle(90, this._iFloor, window._oPlayer1.castle.height);
-    _drawCastle(710, this._iFloor, window._oPlayer2.castle.height);
+    _drawCastle(90, this._iFloor, window._oPlayer1.castle);
+    _drawCastle(710, this._iFloor, window._oPlayer2.castle);
     _drawGrass();
     _drawActiveClouds();
     _drawActiveBirds();
@@ -255,6 +276,8 @@ function start() {
 function quit() {
     clearInterval(this.__gameInterval);
     clearInterval(this.__cloudSpawningInterval);
+    clearInterval(this.__birdSpawningInterval1);
+    clearInterval(this.__birdSpawningInterval2);
 }
 
 /**
@@ -267,8 +290,12 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
         this._aActiveClouds = [];
     }
 
+    if (!this._iCloudCount) {
+        this._iCloudCount = 0;
+    }
+
     const oCloud = {
-        id: "__cloud_" + this._aActiveClouds.length,
+        id: "__cloud_" + this._iCloudCount++,
         x: x,
         y: Math.round(Math.random()*200+50),
         size: iSize,
@@ -283,6 +310,7 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
             oCloud.x = i;
             i++;
         } else {
+            this._aActiveClouds.splice(0, 1);
             clearInterval(iInterval);
         }
     }, iSpeed);
@@ -298,8 +326,12 @@ function spawnBird() {
         this._aActiveBirds = [];
     }
 
+    if (!this._iBirdCount) {
+        this._iBirdCount = 0;
+    }
+
     const oBird = {
-        id: "__bird_" + this._aActiveBirds.length,
+        id: "__bird_" + this._iBirdCount,
         x: -20,
         y: Math.round(Math.random()*200+50),
     };
@@ -312,13 +344,13 @@ function spawnBird() {
             i++;
 
             // random behavior of bird
-            if (Math.random() > 0.99) {
+            if (Math.random() > 0.95) {
                 oBird.y++;
-            } else if(Math.random() < 0.01) {
+            } else if(Math.random() < 0.05) {
                 oBird.y--;
             }
-
         } else {
+            this._aActiveBirds.splice(0, 1);
             clearInterval(iInterval);
         }
     }, 10);
