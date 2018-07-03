@@ -50,8 +50,6 @@ function _getCtx() {
 
 function _drawSky() {
     const ctx = _getCtx();
-
-    // sky
     ctx.fillStyle = "#85d6d7";
     ctx.fillRect(0,0,this._width,this._height);
 }
@@ -98,7 +96,7 @@ function _drawCastle(x, y, height) {
     ctx.fillRect(x+58,470-height,8,15);
 }
 
-function _createCloud(x, y, size, color) {
+function _drawCloud(x, y, size, color) {
     const ctx = _getCtx();
 
     ctx.beginPath();
@@ -113,6 +111,25 @@ function _createCloud(x, y, size, color) {
     ctx.fill();
 }
 
+function _drawBird(x, y) {
+    const ctx = _getCtx();
+    ctx.fillStyle = "#464954";
+
+    // body
+    ctx.fillRect(x,y,10,6);
+    ctx.fillRect(x-4,y,4,4);
+    ctx.fillRect(x-8,y,4,2);
+
+    // head
+    ctx.fillRect(x+6,y-4,6,4);
+    ctx.fillStyle = "#FFF";
+    ctx.fillRect(x+9,y-2,2,2);
+    ctx.fillStyle = "#000";
+    ctx.fillRect(x+10,y-1,1,1);
+    ctx.fillStyle = "#cb8d1e";
+    ctx.fillRect(x+10,y,4, 3);
+}
+
 function _getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -124,7 +141,13 @@ function _getRandomColor() {
 
 function _drawActiveClouds() {
     this._aActiveClouds.forEach(oCloud => {
-        _createCloud(oCloud.x, oCloud.y, oCloud.size, oCloud.color);
+        _drawCloud(oCloud.x, oCloud.y, oCloud.size, oCloud.color);
+    });
+}
+
+function _drawActiveBirds() {
+    this._aActiveBirds.forEach(oBird => {
+        _drawBird(oBird.x, oBird.y);
     });
 }
 
@@ -138,15 +161,22 @@ function _initializeClouds() {
     spawnCloud(3, -100);
 
     this.__cloudSpawningInterval = setInterval(() => {
-        spawnCloud(Math.round(Math.random()+3), -200);
+        spawnCloud(Math.round(Math.random()*2+2), -200);
     }, this._iCloudTimeout);
+}
+
+function _initializeBirds() {
+    this._iBirdTimeout = 30000;
+    this._sBirdSpeed = 10;
+
+    spawnBird();
 }
 
 function _initializePlayers() {
     const that = this;
 
     this._oInitialValues = {
-        health: 400,
+        health: 50,
         stones: 8,
         builder: 2,
         weapons: 8,
@@ -185,6 +215,7 @@ function _drawCanvas() {
     _drawCastle(710, this._iFloor, window._oPlayer2.castle.height);
     _drawGrass();
     _drawActiveClouds();
+    _drawActiveBirds();
 }
 
 function initializeCanvas() {
@@ -215,6 +246,7 @@ function start() {
     _initializePlayers();
     this.__gameInterval = setInterval(() => _drawCanvas());
     _initializeClouds();
+    _initializeBirds();
 }
 
 /**
@@ -246,14 +278,50 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
     let i = oCloud.x;
     let iSpeed = this._sCloudSpeed || Math.round(Math.random()*50)+50;
 
-    const iCloudInterval = setInterval(() => {
-        if (i < 850) {
+    const iInterval = setInterval(() => {
+        if (i < this._width + 100) {
             oCloud.x = i;
             i++;
         } else {
-            clearInterval(iCloudInterval);
+            clearInterval(iInterval);
         }
     }, iSpeed);
 
     this._aActiveClouds.push(oCloud);
+}
+
+/**
+ * Spawns bird which moves automatically
+ */
+function spawnBird() {
+    if (!this._aActiveBirds) {
+        this._aActiveBirds = [];
+    }
+
+    const oBird = {
+        id: "__bird_" + this._aActiveBirds.length,
+        x: -20,
+        y: Math.round(Math.random()*200+50),
+    };
+
+    let i = oBird.x;
+
+    const iInterval = setInterval(() => {
+        if (i < this._width + 100) {
+            oBird.x = i;
+            i++;
+
+            // random behavior of bird
+            if (Math.random() > 0.99) {
+                oBird.y++;
+            } else if(Math.random() < 0.01) {
+                oBird.y--;
+            }
+
+        } else {
+            clearInterval(iInterval);
+        }
+    }, 10);
+
+    this._aActiveBirds.push(oBird);
 }
