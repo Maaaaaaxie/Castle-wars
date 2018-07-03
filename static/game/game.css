@@ -32,15 +32,15 @@ canvas {
 
 /* --- stats ---------------------------------------------------------------------------------------------------------*/
 
-#stats-left {
+#stats-1 {
     position: absolute;
     left: 1rem;
     top: 3rem;
 }
 
-#stats-right {
+#stats-2 {
     position: absolute;
-    right: 1rem;
+    right: 2rem;
     top: 3rem;
 }
 
@@ -103,22 +103,22 @@ canvas {
     border-bottom: 4px dotted rgba(0,0,0,0.7);
 }
 
-.red {
+.stone {
     border: 0.5rem solid #6e3232;
     background: indianred;
 }
 
-.green {
+.weapon {
     border: 0.5rem solid #186218;
     background: limegreen;
 }
 
-.blue {
+.crystal {
     border: 0.5rem solid dodgerblue;
     background: #a5d9ff;
 }
 
-.black {
+.health {
     border: 0.5rem solid #343434;
     background: #969696;
 }

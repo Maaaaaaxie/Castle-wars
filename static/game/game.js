@@ -20,7 +20,7 @@ class Player {
         this.health = oInit.health;
 
         this.stones = oInit.stones;
-        this.builder = oInit.builder;
+        this.builders = oInit.builders;
 
         this.weapons = oInit.weapons;
         this.soldiers = oInit.soldiers;
@@ -39,6 +39,36 @@ class Player {
         this.castle.color = sColor;
     }
 
+    setBuilders(i) {
+        this.builders = i;
+        this._set("builders", i);
+    }
+
+    setStones(i) {
+        this.stones = i;
+        this._set("stones", i);
+    }
+
+    setSoldiers(i) {
+        this.soldiers = i;
+        this._set("soldiers", i);
+    }
+
+    setWeapons(i) {
+        this.weapons = i;
+        this._set("weapons", i);
+    }
+
+    setMages(i) {
+        this.mages = i;
+        this._set("mages", i);
+    }
+
+    setCrystals(i) {
+        this.crystals = i;
+        this._set("crystals", i);
+    }
+
     setHealth(iHealth) {
         if (iHealth < 0) {
             iHealth = 0;
@@ -47,7 +77,18 @@ class Player {
         }
 
         this.health = iHealth;
+        this._set("castle", i);
         _setCastleHeight(this.id, iHealth);
+    }
+
+    //TODO integrate fence
+    // setFence(i) {
+    //     this.fence = i;
+    //     this._set("fence", i);
+    // }
+
+    _set(sProperty, iValue) {
+        document.getElementById("stats-"+this.id).getElementsByClassName(sProperty)[0].innerText = iValue;
     }
 }
 
@@ -232,7 +273,7 @@ function _initializePlayers() {
     this._oInitialValues = {
         health: 0,
         stones: 8,
-        builder: 2,
+        builders: 2,
         weapons: 8,
         soldiers: 2,
         crystals: 8,
