@@ -7,8 +7,8 @@
     font-size: 1rem;
     line-height: 1.8rem;
     font-family: sans-serif;
-    background-color: #191919;
-    color: #efefef;
+    background-color: #f4f4f4;
+    color: #191919;
 }
 
 h1 {
@@ -19,6 +19,29 @@ h1 {
 h2 {
     font-size: 1.5rem;
     line-height: 2rem;
+}
+
+/* Information section */
+#information {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #b7b7b7;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.25rem;
+}
+
+#information * {
+    font-size: inherit;
+}
+
+#information article {
+    user-select: none;
+    /*display: inline-block;*/
 }
 
 /* Card section */
@@ -50,7 +73,7 @@ h2 {
     padding: 0.75rem;
     height: 12rem;
     width: 8rem;
-    background-color: #efefef;
+    /*background-color: #efefef;*/
     color: #191919;
     display: flex;
     flex-direction: column;
@@ -59,15 +82,17 @@ h2 {
 
 .card.defend {
     border: 2px solid #ff0800;
+    background-color: rgba(255, 8, 0, 0.3);
 }
 
 .card.attack {
     border: 2px solid #35ef0b;
+    background-color: rgba(53, 239, 11, 0.3);
 }
 
 .card * {
     color: inherit;
-    background-color: inherit;
+    background-color: transparent;
 }
 
 .card header {

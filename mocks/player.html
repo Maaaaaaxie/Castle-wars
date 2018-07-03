@@ -1,7 +1,7 @@
-<!--TODO: Timer for move-->
 <!--TODO: Card flip-->
 <!--TODO: Ressourcen-->
 <!--TODO: enable/disable cards based on available resources-->
+<!--TODO: Fullscreen (at login)-->
 
 <!DOCTYPE html>
 <html lang="de">
@@ -12,6 +12,12 @@
     <link rel="stylesheet" type="text/css" href="/mocks/base.css">
 </head>
 <body>
+<section id="information">
+    <article id="infotext">
+        <span>Du bist dran!</span>
+    </article>
+    <article id="timer">30</article>
+</section>
 <div id="cards">
     <div id="cards_inner">
         <!--<div class="card_wrap">-->
@@ -53,6 +59,7 @@
         </section>
     </div>
 </article>
+<button id="button">Fullscreen</button>
 </body>
 </html>
 <script>
@@ -82,6 +89,20 @@
 				target: "Turm",
 				value: "+5",
 				class: "defend"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "attack"
+			}, {
+				icon: sImg,
+				resourceCount: 4,
+				category: "Verteidigung",
+				target: "Turm",
+				value: "+5",
+				class: "attack"
 			}, {
 				icon: sImg,
 				resourceCount: 4,
@@ -175,5 +196,31 @@
     	// TEMPORARY
 		document.getElementById("icon_1").setAttribute("src", sImg);
 		document.getElementById("icon_2").setAttribute("src", sImg);
-    })();
+
+		const oTimer = document.getElementById("timer");
+		nSeconds = 5;
+		oTimer.innerText = nSeconds;
+		const timer = window.setInterval(() => {
+			if (nSeconds > 0) {
+				nSeconds--;
+				oTimer.innerText = nSeconds;
+			} else {
+				window.clearInterval(timer);
+            }
+        }, 1000);
+
+		function enterFullscreen(element) {
+			if(element.requestFullscreen) {
+				element.requestFullscreen();
+			} else if(element.mozRequestFullScreen) {
+				element.mozRequestFullScreen();
+			} else if(element.msRequestFullscreen) {
+				element.msRequestFullscreen();
+			} else if(element.webkitRequestFullscreen) {
+				element.webkitRequestFullscreen();
+			}
+		}
+
+		document.getElementById("button").onclick = () => enterFullscreen(document.documentElement);
+	})();
 </script>
