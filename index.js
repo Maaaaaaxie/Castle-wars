@@ -39,6 +39,10 @@ io.on('connection', function (socket) {
         console.log(oMessage.username + ': ' + oMessage.text);
         io.emit('chatOut', oMessage)
     });
+
+    socket.on('test', function() {
+       io.emit('test');
+    });
 });
 
 
