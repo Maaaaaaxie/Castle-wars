@@ -1,33 +1,79 @@
+const that = this;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+class Player {
+    constructor(id, x, color) {
+        this.id = id;
+
+        const oInit = that._oInitialValues;
+        this.health = oInit.health;
+
+        this.stones = oInit.stones;
+        this.builder = oInit.builder;
+
+        this.weapons = oInit.weapons;
+        this.soldiers = oInit.soldiers;
+
+        this.crystals = oInit.crystals;
+        this.mages = oInit.mages;
+
+        this.castle = {
+            x: x,
+            color: color,
+            height: this.health
+        }
+    }
+
+    setHealth(iHealth) {
+        if (iHealth < 0) {
+            iHealth = 0;
+        } else if (iHealth > 400) {
+            iHealth = 400;
+        }
+
+        this.health = iHealth;
+        _setCastleHeight(this.id, iHealth);
+    }
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-function getCtx() {
+function _getCtx() {
     const c = document.getElementById("canvas");
     return c.getContext("2d");
 }
 
-function _createSky() {
-    const ctx = getCtx();
+function _drawSky() {
+    const ctx = _getCtx();
 
     // sky
     ctx.fillStyle = "#85d6d7";
-    ctx.fillRect(0,0,800,500);
+    ctx.fillRect(0,0,this._width,this._height);
 }
 
-function _createGrass() {
-    const ctx = getCtx();
+function _drawGrass() {
+    const ctx = _getCtx();
+
+    const iFloor = this._height - Math.round(this._height / 5);
+    const iHeight = this._height - iFloor;
 
     // grass
     ctx.fillStyle = "#4ed749";
-    ctx.fillRect(0,500,800,100);
+    ctx.fillRect(0,iFloor,this._width,iHeight);
 
     ctx.fillStyle = "#40af3b";
-    ctx.fillRect(0,500,800,2);
+    ctx.fillRect(0,iFloor,this._width,2);
+
+    this._iFloor = iFloor;
 }
 
-function _createCastle(x, height) {
-    const ctx = getCtx();
+function _drawCastle(x, y, height) {
+    const ctx = _getCtx();
 
     // base
     ctx.fillStyle = "#d7945b";
@@ -52,8 +98,8 @@ function _createCastle(x, height) {
     ctx.fillRect(x+58,470-height,8,15);
 }
 
-function _createCloud(x, y, size, color = "#FFF") {
-    const ctx = getCtx();
+function _createCloud(x, y, size, color) {
+    const ctx = _getCtx();
 
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -76,68 +122,129 @@ function _getRandomColor() {
     return color;
 }
 
-function _createActiveClouds() {
-    window._activeClouds.forEach(oCloud => {
+function _drawActiveClouds() {
+    this._aActiveClouds.forEach(oCloud => {
         _createCloud(oCloud.x, oCloud.y, oCloud.size, oCloud.color);
     });
 }
 
 function _initializeClouds() {
-    this._iCloudTimeout = 10000;
-    this._sCloudColor = "#FFF";
+    this._iCloudTimeout = 15000;
+    this._sCloudColor = "rgba(255, 255, 255, 0.90)";
+    this._sCloudSpeed = undefined;
 
     spawnCloud(3);
     spawnCloud(4);
+    spawnCloud(3, -100);
 
-    window.__cloudSpawningInterval = setInterval(() => {
+    this.__cloudSpawningInterval = setInterval(() => {
         spawnCloud(Math.round(Math.random()+3), -200);
     }, this._iCloudTimeout);
 }
 
+function _initializePlayers() {
+    const that = this;
+
+    this._oInitialValues = {
+        health: 400,
+        stones: 8,
+        builder: 2,
+        weapons: 8,
+        soldiers: 2,
+        crystals: 8,
+        mages: 2
+    };
+
+    window._oPlayer1 = new Player("1", 90);
+    window._oPlayer2 = new Player("2", 710);
+}
+
+function _getCastle(id) {
+    return window["_oPlayer"+id].castle;
+}
+
+function _setCastleHeight(id, iHeight) {
+    const oCastle = _getCastle(id);
+    const iDiff = iHeight - oCastle.height;
+    const iTimeout = Math.abs(1 / iDiff * 1000);
+
+    let i = 0;
+    const iInterval = setInterval(() => {
+        if (i < Math.abs(iDiff)) {
+            iDiff > 0 ? oCastle.height++ : oCastle.height--;
+            i++;
+        } else {
+            clearInterval(iInterval);
+        }
+    }, iTimeout);
+}
+
 function _drawCanvas() {
-    _createSky();
-    _createCastle(90, sessionStorage.iCurrentHealth);
-    _createCastle(710, sessionStorage.iCurrentHealth);
-    _createGrass();
-    _createActiveClouds();
+    _drawSky();
+    _drawCastle(90, this._iFloor, window._oPlayer1.castle.height);
+    _drawCastle(710, this._iFloor, window._oPlayer2.castle.height);
+    _drawGrass();
+    _drawActiveClouds();
+}
+
+function initializeCanvas() {
+    this._width = 800; //window.innerWidth;
+    this._height = 600; //window.innerHeight;
+
+    document.getElementById("canvas").width = this._width;
+    document.getElementById("canvas").height = this._height;
 }
 
 function _onLoad() {
-    sessionStorage.iCurrentHealth = 30;
+    initializeCanvas();
     start();
 }
+
+window.onload = () => _onLoad();
+
+window.onresize = () => initializeCanvas();
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-window.onload = () => _onLoad();
-
+/**
+ * Launch the game
+ */
 function start() {
-    window.__gameInterval = setInterval(() => _drawCanvas());
+    _initializePlayers();
+    this.__gameInterval = setInterval(() => _drawCanvas());
     _initializeClouds();
 }
 
+/**
+ * Quit the game
+ */
 function quit() {
-    clearInterval(window.__gameInterval);
-    clearInterval(window.__cloudSpawningInterval);
+    clearInterval(this.__gameInterval);
+    clearInterval(this.__cloudSpawningInterval);
 }
 
-function spawnCloud(size = 4, x = Math.round(Math.random()*900-200)) {
-    if (!window._activeClouds) {
-        window._activeClouds = [];
+/**
+ * Spawns cloud which moves automatically
+ * @param [iSize] - size of cloud (e.g. 2,3,4,...)
+ * @param [x] - x position of cloud (e.g. 0, 200, 400)
+ */
+function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
+    if (!this._aActiveClouds) {
+        this._aActiveClouds = [];
     }
 
     const oCloud = {
-        id: "__cloud_" + window._activeClouds.length,
+        id: "__cloud_" + this._aActiveClouds.length,
         x: x,
         y: Math.round(Math.random()*200+50),
-        size: size,
+        size: iSize,
         color: this._sCloudColor || _getRandomColor()
     };
 
     let i = oCloud.x;
-    let speed = Math.round(Math.random()*50)+50;
+    let iSpeed = this._sCloudSpeed || Math.round(Math.random()*50)+50;
 
     const iCloudInterval = setInterval(() => {
         if (i < 850) {
@@ -146,24 +253,7 @@ function spawnCloud(size = 4, x = Math.round(Math.random()*900-200)) {
         } else {
             clearInterval(iCloudInterval);
         }
-    }, speed);
+    }, iSpeed);
 
-    window._activeClouds.push(oCloud);
-}
-
-function setCastleHealth(iHealth) {
-    const iDiff = iHealth - sessionStorage.iCurrentHealth;
-
-    const iTimeout = Math.abs(1 / iDiff * 1000);
-
-    let i = 0;
-    const iInterval = setInterval(() => {
-        if (i < Math.abs(iDiff)) {
-            iDiff > 0 ? sessionStorage.iCurrentHealth++ : sessionStorage.iCurrentHealth--;
-            // _drawCanvas();
-            i++;
-        } else {
-            clearInterval(iInterval);
-        }
-    }, iTimeout);
+    this._aActiveClouds.push(oCloud);
 }
