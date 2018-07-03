@@ -1,4 +1,12 @@
 const that = this;
+const socket = io();
+
+socket.on('test', () => {
+    const isItOrIsItNot = () => Math.random() > 0.5;
+    const oPlayer = isItOrIsItNot() ? _oPlayer1 : _oPlayer2;
+    const iHealth = isItOrIsItNot() ? oPlayer.health + 100 : oPlayer.health - 100;
+    oPlayer.setHealth(iHealth);
+});
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
@@ -55,29 +63,29 @@ function _getCtx() {
 function _drawSky() {
     const ctx = _getCtx();
     ctx.fillStyle = "#85d6d7";
-    ctx.fillRect(0,0,this._width,this._height);
+    ctx.fillRect(0,0,this._iWidth,this._iHeight);
 }
 
 function _drawGrass() {
     const ctx = _getCtx();
 
-    const iFloor = this._height - Math.round(this._height / 5);
-    const iHeight = this._height - iFloor;
+    const iFloor = this._iHeight - Math.round(this._iHeight / 5);
+    const iHeight = this._iHeight - iFloor;
 
     // grass
     ctx.fillStyle = "#4ed749";
-    ctx.fillRect(0,iFloor,this._width,iHeight);
+    ctx.fillRect(0,iFloor,this._iWidth,iHeight);
 
     ctx.fillStyle = "#40af3b";
-    ctx.fillRect(0,iFloor,this._width,2);
+    ctx.fillRect(0,iFloor,this._iWidth,2);
 
     this._iFloor = iFloor;
 }
 
-function _drawCastle(x, y, oDef) {
+function _drawCastle(x, y, oCastleDef) {
     const ctx = _getCtx();
-    const iHeight = oDef.height;
-    const sColor = oDef.color || "#b29759";
+    const iHeight = oCastleDef.height;
+    const sColor = oCastleDef.color || "#b29759";
 
     const fnDarkenColor = function(sColor, iAmt) {
         const num = parseInt(sColor.replace("#",""),16);
@@ -90,25 +98,28 @@ function _drawCastle(x, y, oDef) {
 
     // base
     ctx.fillStyle = sColor;
-    ctx.fillRect(x-50,505-iHeight,100,iHeight+45);
-    ctx.fillRect(x-40,495-iHeight,16,10);
-    ctx.fillRect(x-9,495-iHeight,16,10);
-    ctx.fillRect(x+22,495-iHeight,16,10);
+    ctx.fillRect(x-50,y-iHeight,100,iHeight+45);
+    ctx.fillRect(x-40,y-10-iHeight,16,10);
+    ctx.fillRect(x-9,y-10-iHeight,16,10);
+    ctx.fillRect(x+22,y-10-iHeight,16,10);
 
     // --- towers -----------
     ctx.fillStyle = "#" + fnDarkenColor(sColor, -35);
 
     // tower left
-    ctx.fillRect(x-62,480-iHeight,24,iHeight+70);
-    ctx.fillRect(x-66,470-iHeight,8,15);
-    ctx.fillRect(x-54,470-iHeight,8,15);
-    ctx.fillRect(x-42,470-iHeight,8,15);
+    ctx.fillRect(x-62,y-25-iHeight,24,iHeight+70);
+    ctx.fillRect(x-66,y-32-iHeight,8,15);
+    ctx.fillRect(x-54,y-32-iHeight,8,15);
+    ctx.fillRect(x-42,y-32-iHeight,8,15);
 
     // tower right
-    ctx.fillRect(x+38,480-iHeight,24,iHeight+70);
-    ctx.fillRect(x+34,470-iHeight,8,15);
-    ctx.fillRect(x+46,470-iHeight,8,15);
-    ctx.fillRect(x+58,470-iHeight,8,15);
+    ctx.fillRect(x+38,y-25-iHeight,24,iHeight+70);
+    ctx.fillRect(x+34,y-32-iHeight,8,15);
+    ctx.fillRect(x+46,y-32-iHeight,8,15);
+    ctx.fillRect(x+58,y-32-iHeight,8,15);
+
+    oCastleDef.top = y-32-iHeight;
+    oCastleDef.left = x-66;
 }
 
 function _drawCloud(x, y, size, color) {
@@ -126,7 +137,29 @@ function _drawCloud(x, y, size, color) {
     ctx.fill();
 }
 
-function _drawBird(x, y) {
+function _deleteBird(id) {
+    this._aActiveBirds.forEach((e, i) => {
+        if (e.id === id) {
+            this._aActiveBirds.splice(i, 1);
+        }
+    })
+}
+
+function _drawBird(x, y, id) {
+    const
+        top1 = _oPlayer1.castle.top,
+        top2 = _oPlayer2.castle.top,
+        left1 = _oPlayer1.castle.left,
+        left2 = _oPlayer2.castle.left;
+
+    if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
+        _deleteBird(id);
+    }
+
+    if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
+        _deleteBird(id);
+    }
+
     const ctx = _getCtx();
     ctx.fillStyle = "#464954";
 
@@ -162,7 +195,7 @@ function _drawActiveClouds() {
 
 function _drawActiveBirds() {
     this._aActiveBirds.forEach(oBird => {
-        _drawBird(oBird.x, oBird.y);
+        _drawBird(oBird.x, oBird.y, oBird.id);
     });
 }
 
@@ -197,7 +230,7 @@ function _initializePlayers() {
     const that = this;
 
     this._oInitialValues = {
-        health: 50,
+        health: 0,
         stones: 8,
         builder: 2,
         weapons: 8,
@@ -232,19 +265,19 @@ function _setCastleHeight(id, iHeight) {
 
 function _drawCanvas() {
     _drawSky();
-    _drawCastle(90, this._iFloor, window._oPlayer1.castle);
-    _drawCastle(710, this._iFloor, window._oPlayer2.castle);
+    _drawCastle(Math.round(this._iWidth * 0.2), this._iFloor, window._oPlayer1.castle);
+    _drawCastle(Math.round(this._iWidth * 0.8), this._iFloor, window._oPlayer2.castle);
     _drawGrass();
     _drawActiveClouds();
     _drawActiveBirds();
 }
 
 function initializeCanvas() {
-    this._width = 800; //window.innerWidth;
-    this._height = 600; //window.innerHeight;
+    this._iWidth = window.innerWidth;
+    this._iHeight = window.innerHeight;
 
-    document.getElementById("canvas").width = this._width;
-    document.getElementById("canvas").height = this._height;
+    document.getElementById("canvas").width = this._iWidth;
+    document.getElementById("canvas").height = this._iHeight;
 }
 
 function _onLoad() {
@@ -306,7 +339,7 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
     let iSpeed = this._sCloudSpeed || Math.round(Math.random()*50)+50;
 
     const iInterval = setInterval(() => {
-        if (i < this._width + 100) {
+        if (i < this._iWidth + 100) {
             oCloud.x = i;
             i++;
         } else {
@@ -331,7 +364,7 @@ function spawnBird() {
     }
 
     const oBird = {
-        id: "__bird_" + this._iBirdCount,
+        id: "__bird_" + this._iBirdCount++,
         x: -20,
         y: Math.round(Math.random()*200+50),
     };
@@ -339,7 +372,7 @@ function spawnBird() {
     let i = oBird.x;
 
     const iInterval = setInterval(() => {
-        if (i < this._width + 100) {
+        if (i < this._iWidth + 100) {
             oBird.x = i;
             i++;
 
@@ -350,7 +383,7 @@ function spawnBird() {
                 oBird.y--;
             }
         } else {
-            this._aActiveBirds.splice(0, 1);
+            _deleteBird(oBird.id);
             clearInterval(iInterval);
         }
     }, 10);
