@@ -446,6 +446,10 @@ function onCanvasClick(event) {
  * @param y - coordinate
  */
 function spawnBird(x, y) {
+    if (y >= this._iFloor) {
+        return;
+    }
+
     if (!this._aActiveBirds) {
         this._aActiveBirds = [];
     }

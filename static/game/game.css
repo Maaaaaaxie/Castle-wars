@@ -135,7 +135,7 @@ dialog::backdrop, #backdrop {
 
 /* --- responsiveness ------------------------------------------------------------------------------------------------*/
 
-@media(max-width: 1020px), (max-height: 600px) {
+@media (max-width: 1020px), (max-height: 600px) {
     .statsVisibility {
         display: none;
     }
@@ -144,7 +144,6 @@ dialog::backdrop, #backdrop {
         display: block !important;
     }
 }
-
 
 /* --- info ----------------------------------------------------------------------------------------------------------*/
 
@@ -162,7 +161,7 @@ dialog::backdrop, #backdrop {
 }
 
 .container {
-    border-top: 2px solid rgba(0,0,0,0.8);
+    border-top: 2px solid rgba(0, 0, 0, 0.8);
 }
 
 .infoProperty {
@@ -180,9 +179,8 @@ dialog::backdrop, #backdrop {
     margin: 0 0 0 0.5rem;
     padding-right: 0.5rem;
     user-select: none;
-    border-right: 1px dotted rgba(0,0,0,0.5);
+    border-right: 1px dotted rgba(0, 0, 0, 0.5);
 }
-
 
 /* --- stats ---------------------------------------------------------------------------------------------------------*/
 
@@ -254,7 +252,7 @@ dialog::backdrop, #backdrop {
 .spacer {
     margin: 0.4rem 0 0.4rem 0;
     width: 100%;
-    border-bottom: 4px dotted rgba(0,0,0,0.7);
+    border-bottom: 4px dotted rgba(0, 0, 0, 0.7);
 }
 
 .stone {
@@ -279,6 +277,64 @@ dialog::backdrop, #backdrop {
 
 .marginTop {
     margin-top: 2rem;
+}
+
+/* --- decks ---------------------------------------------------------------------------------------------------------*/
+
+@media (max-height: 725px) {
+    .hideOn725 {
+        display: none;
+    }
+}
+
+#deck-1 {
+    left: 1.5rem;
+}
+
+#deck-2 {
+    right: 1.5rem;
+}
+
+.deck {
+    position: absolute;
+    bottom: 1rem;
+    height: 7rem;
+    width: 6rem;
+    background: #f4bc7d;
+    border: 4px solid #733910;
+    border-radius: 5%;
+}
+
+.deck img {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.left-top {
+    position: absolute;
+    left: 0.2rem;
+    top: 0.2rem;
+}
+
+.right-top {
+    position: absolute;
+    right: 0.2rem;
+    top: 0.2rem;
+    transform: rotate(90deg);
+}
+
+.left-bot {
+    position: absolute;
+    left: 0.2rem;
+    bottom: 0.2rem;
+    transform: rotate(270deg);
+}
+
+.right-bot {
+    position: absolute;
+    right: 0.2rem;
+    bottom: 0.2rem;
+    transform: rotate(180deg);
 }
 
 /* --- control -------------------------------------------------------------------------- */
