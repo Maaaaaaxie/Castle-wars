@@ -7,241 +7,329 @@
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/game/game.js"></script>
+<script src="/game/Player.js"></script>
 <link href='https://fonts.googleapis.com/css?family=MedievalSharp' rel='stylesheet'>
 <link rel="stylesheet" type="text/css" href="/game/game.css">
 <body>
-<div id="game">
-    <div id="toolbar">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/500px-Speaker_Icon.svg.png"/>
-        <img onclick="toggleMusic()" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
-        <img onclick="toggleOptions()" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/VisualEditor_-_Icon_-_Menu.svg/1024px-VisualEditor_-_Icon_-_Menu.svg.png"/>
-        <img onclick="toggleFullscreen()" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
-    </div>
-
-    <dialog id="options">
-        <div class="option">
-            <span class="description"></span>
-            <input type="range" min="1" max="100" value="50" class="slider" oninput="changeVolume(event)">
-        </div>
-        <button id="close-options">Schließen</button>
-    </dialog>
-
-    <div id="stats-1">
-        <div class="stats-container">
-            <div class="stat">
-                <div class="outer stone">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/>
-                                </div>
-                                <div class="text">Baumeister</div>
-                            </div>
-                            <div class="value builders">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://png.icons8.com/metro/1600/rock.png"/>
-                                </div>
-                                <div class="text">Steine</div>
-                            </div>
-                            <div class="value stones">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="outer weapon">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://www.ccri.edu/about/images/knight_icon.svg"/>
-                                </div>
-                                <div class="text">Soldaten</div>
-                            </div>
-                            <div class="value soldiers">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/>
-                                </div>
-                                <div class="text">Waffen</div>
-                            </div>
-                            <div class="value weapons">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="outer crystal">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
-                                </div>
-                                <div class="text">Magier</div>
-                            </div>
-                            <div class="value mages">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/>
-                                </div>
-                                <div class="text">Kristalle</div>
-                            </div>
-                            <div class="value crystals">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat marginTop">
-                <div class="outer health">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://simpleicon.com/wp-content/uploads/castle.png"/>
-                                </div>
-                                <div class="text">Burg</div>
-                            </div>
-                            <div class="value castle">30</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/>
-                                </div>
-                                <div class="text">Zaun</div>
-                            </div>
-                            <div class="value fence">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="stats-2">
-        <div class="stats-container">
-            <div class="stat">
-                <div class="outer stone">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/>
-                                </div>
-                                <div class="text">Baumeister</div>
-                            </div>
-                            <div class="value builders">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://png.icons8.com/metro/1600/rock.png"/>
-                                </div>
-                                <div class="text">Steine</div>
-                            </div>
-                            <div class="value stones">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="outer weapon">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://www.ccri.edu/about/images/knight_icon.svg"/>
-                                </div>
-                                <div class="text">Soldaten</div>
-                            </div>
-                            <div class="value soldiers">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/>
-                                </div>
-                                <div class="text">Waffen</div>
-                            </div>
-                            <div class="value weapons">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="outer crystal">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
-                                </div>
-                                <div class="text">Magier</div>
-                            </div>
-                            <div class="value mages">2</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/>
-                                </div>
-                                <div class="text">Kristalle</div>
-                            </div>
-                            <div class="value crystals">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat marginTop">
-                <div class="outer health">
-                    <div class="inner">
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="http://simpleicon.com/wp-content/uploads/castle.png"/>
-                                </div>
-                                <div class="text">Burg</div>
-                            </div>
-                            <div class="value castle">30</div>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="property">
-                            <div class="description">
-                                <div class="icon">
-                                    <img src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/>
-                                </div>
-                                <div class="text">Zaun</div>
-                            </div>
-                            <div class="value fence">8</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <canvas id="canvas" onclick="onCanvasClick(event)"></canvas>
+<div id="toolbar">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/500px-Speaker_Icon.svg.png"/>
+    <img onclick="toggleMusic()"
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
+    <img onclick="toggleOptions()" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
+    <img onclick="toggleFullscreen()" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
 </div>
+
+<dialog id="options">
+    <div class="option">
+        <div class="description">Lautstärke</div>
+        <input type="range" min="1" max="100" value="50" class="slider" oninput="changeVolume(event)">
+    </div>
+    <div class="spacer"></div>
+    <div class="option">
+        <div class="description">Musik</div>
+        <input type="checkbox">
+    </div>
+    <div class="marginTop"></div>
+    <button id="close-options">Schließen</button>
+</dialog>
+
+<div id="info" class="infoVisibility">
+    <div id="info-1" class="container">
+        <div class="label">Spieler 1</div>
+        <div class="infoProperty">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/>
+            <div class="value builders"></div>
+        </div>
+        <div class="infoProperty">
+            <img src="https://png.icons8.com/metro/1600/rock.png"/>
+            <div class="value stones"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://www.ccri.edu/about/images/knight_icon.svg"/></div>
+            <div class="value soldiers"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img
+                    src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/></div>
+            <div class="value weapons"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
+            </div>
+            <div class="value mages"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/></div>
+            <div class="value crystals"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="http://simpleicon.com/wp-content/uploads/castle.png"/></div>
+            <div class="value castle"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img
+                    src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/></div>
+            <div class="value fence"></div>
+        </div>
+    </div>
+    <div id="info-2" class="container">
+        <div class="label">Spieler 2</div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/></div>
+            <div class="value builders"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://png.icons8.com/metro/1600/rock.png"/></div>
+            <div class="value stones"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://www.ccri.edu/about/images/knight_icon.svg"/></div>
+            <div class="value soldiers"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img
+                    src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/>
+            </div>
+            <div class="value weapons"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
+            </div>
+            <div class="value mages"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/></div>
+            <div class="value crystals"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img src="http://simpleicon.com/wp-content/uploads/castle.png"/></div>
+            <div class="value castle"></div>
+        </div>
+        <div class="infoProperty">
+            <div class="icon"><img
+                    src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/>
+            </div>
+            <div class="value fence"></div>
+        </div>
+    </div>
+</div>
+
+<div id="stats-1" class="statsVisibility">
+    <div class="stats-container">
+        <div class="stat">
+            <div class="outer stone">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/>
+                            </div>
+                            <div class="text">Baumeister</div>
+                        </div>
+                        <div class="value builders"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://png.icons8.com/metro/1600/rock.png"/>
+                            </div>
+                            <div class="text">Steine</div>
+                        </div>
+                        <div class="value stones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="outer weapon">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://www.ccri.edu/about/images/knight_icon.svg"/>
+                            </div>
+                            <div class="text">Soldaten</div>
+                        </div>
+                        <div class="value soldiers"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/>
+                            </div>
+                            <div class="text">Waffen</div>
+                        </div>
+                        <div class="value weapons"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="outer crystal">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
+                            </div>
+                            <div class="text">Magier</div>
+                        </div>
+                        <div class="value mages"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/>
+                            </div>
+                            <div class="text">Kristalle</div>
+                        </div>
+                        <div class="value crystals"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat marginTop">
+            <div class="outer health">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://simpleicon.com/wp-content/uploads/castle.png"/>
+                            </div>
+                            <div class="text">Burg</div>
+                        </div>
+                        <div class="value castle"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/>
+                            </div>
+                            <div class="text">Zaun</div>
+                        </div>
+                        <div class="value fence"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="stats-2" class="statsVisibility">
+    <div class="stats-container">
+        <div class="stat">
+            <div class="outer stone">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png"/>
+                            </div>
+                            <div class="text">Baumeister</div>
+                        </div>
+                        <div class="value builders"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://png.icons8.com/metro/1600/rock.png"/>
+                            </div>
+                            <div class="text">Steine</div>
+                        </div>
+                        <div class="value stones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="outer weapon">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://www.ccri.edu/about/images/knight_icon.svg"/>
+                            </div>
+                            <div class="text">Soldaten</div>
+                        </div>
+                        <div class="value soldiers"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png"/>
+                            </div>
+                            <div class="text">Waffen</div>
+                        </div>
+                        <div class="value weapons"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="outer crystal">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png"/>
+                            </div>
+                            <div class="text">Magier</div>
+                        </div>
+                        <div class="value mages"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"/>
+                            </div>
+                            <div class="text">Kristalle</div>
+                        </div>
+                        <div class="value crystals"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat marginTop">
+            <div class="outer health">
+                <div class="inner">
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="http://simpleicon.com/wp-content/uploads/castle.png"/>
+                            </div>
+                            <div class="text">Burg</div>
+                        </div>
+                        <div class="value castle"></div>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="property">
+                        <div class="description">
+                            <div class="icon">
+                                <img src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png"/>
+                            </div>
+                            <div class="text">Zaun</div>
+                        </div>
+                        <div class="value fence"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="canvas" onclick="onCanvasClick(event)"></canvas>
+
 </body>
 </html>
