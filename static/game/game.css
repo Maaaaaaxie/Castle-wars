@@ -135,21 +135,21 @@ dialog::backdrop, #backdrop {
 
 /* --- responsiveness ------------------------------------------------------------------------------------------------*/
 
-@media(max-width: 1020px) {
+@media(max-width: 1020px), (max-height: 600px) {
     .statsVisibility {
         display: none;
     }
-}
 
-@media(min-width: 1020px) {
     .infoVisibility {
-        display: none;
+        display: block !important;
     }
 }
+
 
 /* --- info ----------------------------------------------------------------------------------------------------------*/
 
 #info {
+    display: none;
     position: absolute;
     left: 0.5rem;
     top: 0.5rem;
