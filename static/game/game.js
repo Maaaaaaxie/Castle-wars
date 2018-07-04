@@ -24,9 +24,10 @@ socket.on('test', () => {
 // ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 class Sound {
-    constructor(sSrc, bLoop = false) {
+    constructor(sSrc, fVolume = 0.5, bLoop = false) {
         this.sound = document.createElement("audio");
         this.sound.src = sSrc;
+        this.sound.volume = fVolume;
         this.sound.loop = bLoop;
         this.sound.setAttribute("preload", "auto");
         this.sound.setAttribute("controls", "none");
@@ -40,7 +41,10 @@ class Sound {
         };
         this.mute = function() {
             this.sound.muted = !this.sound.muted;
-        }
+        };
+        this.volume = function(f) {
+            this.sound.volume = f;
+        };
     }
 }
 
@@ -378,7 +382,7 @@ window.onresize = () => initializeCanvas();
  * Launches the game
  */
 function start() {
-    this._music = new Sound("/sounds/music.mp3", true);
+    this._music = new Sound("/sounds/music.mp3", 0.5, true);
     this._music.play();
     _initializePlayers();
     this.__gameInterval = setInterval(() => _drawCanvas());
@@ -516,4 +520,27 @@ function toggleFullscreen() {
 
 function toggleMusic() {
     this._music.mute();
+}
+
+function toggleOptions() {
+    const
+        dialog = document.getElementById('options'),
+        btnClose = document.getElementById('close-options');
+
+    if (dialog.open) {
+        dialog.close();
+    } else {
+        dialog.showModal();
+        btnClose.focus();
+        btnClose.addEventListener('click', toggleOptions);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                dialog.close();
+            }
+        }, true);
+    }
+}
+
+function changeVolume(event) {
+    this._music.volume(event.srcElement.value/100);
 }
