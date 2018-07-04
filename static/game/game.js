@@ -142,6 +142,75 @@ function _deleteBird(id) {
     })
 }
 
+function _deleteDeadBird(id) {
+    this._aDeadBirds.forEach((e, i) => {
+        if (e.id === id) {
+            this._aDeadBirds.splice(i, 1);
+        }
+    })
+}
+
+function _drawDeadBird(x, y) {
+    const ctx = _getCtx();
+    ctx.fillStyle = "#464954";
+
+    // body
+    ctx.fillRect(x,y,10,6);
+    ctx.fillRect(x-4,y,4,4);
+    ctx.fillRect(x-8,y,4,2);
+
+    // head
+    ctx.fillRect(x+6,y-4,6,4);
+    ctx.fillStyle = "#FFF";
+    ctx.fillRect(x+9,y-2,2,2);
+    ctx.fillStyle = "#000";
+    ctx.fillRect(x+10,y-1,1,1);
+    ctx.fillStyle = "#cb8d1e";
+    ctx.fillRect(x+10,y,4, 3);
+}
+
+function _spawnDeadBird(id) {
+    const oBird = this._aActiveBirds.filter(e => e.id === id)[0];
+
+    const oDeadBird = {
+        id: oBird.id,
+        x: oBird.x,
+        y: oBird.y
+    };
+
+    if (!this._aDeadBirds) {
+        this._aDeadBirds = [];
+    }
+
+    this._aDeadBirds.push(oDeadBird);
+
+    let i = 1;
+    const iIntervalY = setInterval(() => {
+        if (oDeadBird.y < this._iFloor) {
+            oDeadBird.y+=i;
+        } else {
+            clearInterval(iIntervalY);
+            _deleteDeadBird(id);
+        }
+    });
+
+    const iIntervalI = setInterval(() => {
+        if(oDeadBird.y < this._iFloor) {
+            i++;
+        } else {
+            clearInterval(iIntervalI);
+        }
+    }, 100);
+
+    const iIntervalX = setInterval(() => {
+        if (oDeadBird.y < this._iFloor) {
+            oDeadBird.x++;
+        } else {
+            clearInterval(iIntervalX);
+        }
+    }, 5);
+}
+
 function _drawBird(x, y, id) {
     const
         top1 = _oPlayer1.castle.top,
@@ -150,10 +219,12 @@ function _drawBird(x, y, id) {
         left2 = _oPlayer2.castle.left;
 
     if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
+        _spawnDeadBird(id);
         _deleteBird(id);
     }
 
     if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
+        _spawnDeadBird(id);
         _deleteBird(id);
     }
 
@@ -194,6 +265,14 @@ function _drawActiveBirds() {
     this._aActiveBirds.forEach(oBird => {
         _drawBird(oBird.x, oBird.y, oBird.id);
     });
+}
+
+function _drawDeadBirds() {
+    if (this._aDeadBirds) {
+        this._aDeadBirds.forEach(oBird => {
+            _drawDeadBird(oBird.x, oBird.y);
+        });
+    }
 }
 
 function _initializeClouds() {
@@ -267,6 +346,7 @@ function _drawCanvas() {
     _drawGrass();
     _drawActiveClouds();
     _drawActiveBirds();
+    _drawDeadBirds();
 }
 
 function initializeCanvas() {
