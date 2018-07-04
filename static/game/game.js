@@ -4,7 +4,6 @@ const socket = io();
 //TODO
 // bird sounds
 // karten decks
-// options => music
 
 socket.on('test', () => {
     spawnBird(Math.round(Math.random()*100+100));
@@ -25,10 +24,10 @@ socket.on('test', () => {
 // ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 class Sound {
-    constructor(sSrc, bAutoplay = false) {
+    constructor(sSrc, bLoop = false) {
         this.sound = document.createElement("audio");
         this.sound.src = sSrc;
-        this.sound.autoplay = bAutoplay;
+        this.sound.loop = bLoop;
         this.sound.setAttribute("preload", "auto");
         this.sound.setAttribute("controls", "none");
         this.sound.style.display = "none";
@@ -39,8 +38,8 @@ class Sound {
         this.stop = function(){
             this.sound.pause();
         };
-        this.mute = function(b) {
-            this.sound.muted = b;
+        this.mute = function() {
+            this.sound.muted = !this.sound.muted;
         }
     }
 }
@@ -516,5 +515,5 @@ function toggleFullscreen() {
 }
 
 function toggleMusic() {
-
+    this._music.mute();
 }
