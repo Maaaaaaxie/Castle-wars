@@ -1,7 +1,20 @@
 const that = this;
 const socket = io();
 
+//TODO
+// bird sounds
+// karten decks
+// options => music
+
 socket.on('test', () => {
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
+    spawnBird(Math.round(Math.random()*100+100));
     const isItOrIsItNot = () => Math.random() > 0.5;
     const oPlayer = isItOrIsItNot() ? _oPlayer1 : _oPlayer2;
     const iHealth = isItOrIsItNot() ? oPlayer.health + 100 : oPlayer.health - 100;
@@ -11,6 +24,27 @@ socket.on('test', () => {
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
+class Sound {
+    constructor(sSrc, bAutoplay = false) {
+        this.sound = document.createElement("audio");
+        this.sound.src = sSrc;
+        this.sound.autoplay = bAutoplay;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function(){
+            this.sound.play();
+        };
+        this.stop = function(){
+            this.sound.pause();
+        };
+        this.mute = function(b) {
+            this.sound.muted = b;
+        }
+    }
+}
+
 
 class Player {
     constructor(id, x, sColor) {
@@ -18,15 +52,22 @@ class Player {
 
         const oInit = that._oInitialValues;
         this.health = oInit.health;
+        this._set("castle", oInit.health);
 
         this.stones = oInit.stones;
+        this._set("stones", oInit.stones);
         this.builders = oInit.builders;
+        this._set("builders", oInit.builders);
 
         this.weapons = oInit.weapons;
+        this._set("weapons", oInit.weapons);
         this.soldiers = oInit.soldiers;
+        this._set("soldiers", oInit.soldiers);
 
         this.crystals = oInit.crystals;
+        this._set("crystals", oInit.crystals);
         this.mages = oInit.mages;
+        this._set("mages", oInit.mages);
 
         this.castle = {
             x: x,
@@ -77,7 +118,7 @@ class Player {
         }
 
         this.health = iHealth;
-        this._set("castle", i);
+        this._set("castle", iHealth);
         _setCastleHeight(this.id, iHealth);
     }
 
@@ -271,7 +312,7 @@ function _initializePlayers() {
     const that = this;
 
     this._oInitialValues = {
-        health: 0,
+        health: 50,
         stones: 8,
         builders: 2,
         weapons: 8,
@@ -338,6 +379,8 @@ window.onresize = () => initializeCanvas();
  * Launches the game
  */
 function start() {
+    this._music = new Sound("/sounds/music.mp3", true);
+    this._music.play();
     _initializePlayers();
     this.__gameInterval = setInterval(() => _drawCanvas());
     _initializeClouds();
@@ -348,6 +391,7 @@ function start() {
  * Stops the game
  */
 function quit() {
+    this._music.stop();
     clearInterval(this.__gameInterval);
     clearInterval(this.__cloudSpawningInterval);
     clearInterval(this.__birdSpawningInterval1);
@@ -392,12 +436,18 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
     this._aActiveClouds.push(oCloud);
 }
 
+/**
+ * Spawns a bird on the cursor position
+ * @param event - Event information of browser event 'onclick'
+ */
 function onCanvasClick(event) {
     spawnBird(event.x, event.y);
 }
 
 /**
  * Spawns bird which moves automatically
+ * @param x - coordinate
+ * @param y - coordinate
  */
 function spawnBird(x, y) {
     if (!this._aActiveBirds) {
@@ -434,4 +484,37 @@ function spawnBird(x, y) {
     }, 10);
 
     this._aActiveBirds.push(oBird);
+}
+
+function toggleFullscreen() {
+    const element = document.documentElement;
+    if(element.requestFullscreen) {
+        if (document.isFullScreen) {
+            document.exitFullscreen();
+        } else {
+            element.requestFullscreen();
+        }
+    } else if(element.mozRequestFullScreen) {
+        if (document.mozIsFullScreen) {
+            document.mozExitFullscreen();
+        } else {
+            element.mozRequestFullscreen();
+        }
+    } else if(element.msRequestFullscreen) {
+        if (document.msIsFullScreen) {
+            document.msExitFullscreen();
+        } else {
+            element.msRequestFullscreen();
+        }
+    } else if(element.webkitRequestFullscreen) {
+        if (document.webkitIsFullScreen) {
+            document.webkitExitFullscreen();
+        } else {
+            element.webkitRequestFullscreen();
+        }
+    }
+}
+
+function toggleMusic() {
+
 }
