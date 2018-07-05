@@ -6,6 +6,9 @@ class Player {
         this.health = oInit.health;
         this._set("castle", oInit.health);
 
+        this.fence = oInit.fence;
+        this._set("fence", oInit.fence);
+
         this.stones = oInit.stones;
         this._set("stones", oInit.stones);
         this.builders = oInit.builders;
@@ -24,7 +27,10 @@ class Player {
         this.castle = {
             x: x,
             color: sColor,
-            height: this.health
+            height: this.health,
+            fence: {
+                height: this.fence
+            }
         }
     }
 
@@ -63,22 +69,26 @@ class Player {
     }
 
     setHealth(iHealth) {
+        const iModifier = Math.round(that._iHeight / 150);
+
         if (iHealth < 0) {
             iHealth = 0;
-        } else if (iHealth > 400) {
-            iHealth = 400;
+        } else if (iHealth > 100) {
+            iHealth = 100;
         }
 
         this.health = iHealth;
         this._set("castle", iHealth);
-        _setCastleHeight(this.id, iHealth);
+        _setCastleHeight(this.id, iHealth*iModifier);
     }
 
-    //TODO integrate fence
-    // setFence(i) {
-    //     this.fence = i;
-    //     this._set("fence", i);
-    // }
+    setFence(i) {
+        const iModifier = Math.round(that._iHeight / 150);
+
+        this.fence = i;
+        this._set("fence", i);
+        _setFenceHeight(this.id, i*iModifier);
+    }
 
     _set(sProperty, iValue) {
         document.getElementById("stats-"+this.id).getElementsByClassName(sProperty)[0].innerText = iValue;

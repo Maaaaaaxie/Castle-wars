@@ -4,7 +4,6 @@ const socket = io();
 //TODO
 // bird sounds
 // wining flag
-// karten decks
 
 socket.on('test', () => {
     spawnBird(Math.round(Math.random()*100+100));
@@ -120,6 +119,30 @@ function _drawCastle(x, y, oCastleDef) {
     oCastleDef.left = x-66;
 }
 
+function _drawFence(x, y, oCastleDef) {
+    const ctx = _getCtx();
+    const iHeight = oCastleDef.fence.height;
+    const sColor = oCastleDef.color || "#b29759";
+
+    const fnDarkenColor = function(sColor, iAmt) {
+        const num = parseInt(sColor.replace("#",""),16);
+        const r = (num >> 16) + iAmt;
+        const b = ((num >> 8) & 0x00FF) + iAmt;
+        const g = (num & 0x0000FF) + iAmt;
+        const sNewColor = g | (b << 8) | (r << 16);
+        return sNewColor.toString(16);
+    };
+
+    ctx.fillStyle = sColor;
+    ctx.fillRect(x-5,y-iHeight,10,iHeight+45);
+
+    ctx.fillStyle = "#"+fnDarkenColor(sColor,-30);
+    ctx.fillRect(x-5,y-iHeight, 10,10);
+
+    oCastleDef.fence.top = y-iHeight;
+    oCastleDef.fence.left = x-5;
+}
+
 function _drawCloud(x, y, size, color) {
     const ctx = _getCtx();
 
@@ -216,8 +239,12 @@ function _drawBird(x, y, id) {
     const
         top1 = _oPlayer1.castle.top,
         top2 = _oPlayer2.castle.top,
+        top3 = _oPlayer1.castle.fence.top,
+        top4 = _oPlayer2.castle.fence.top,
         left1 = _oPlayer1.castle.left,
-        left2 = _oPlayer2.castle.left;
+        left2 = _oPlayer2.castle.left,
+        left3 = _oPlayer1.castle.fence.left,
+        left4 = _oPlayer2.castle.fence.left;
 
     if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
         _spawnDeadBird(id);
@@ -225,6 +252,16 @@ function _drawBird(x, y, id) {
     }
 
     if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
+        _spawnDeadBird(id);
+        _deleteBird(id);
+    }
+
+    if (y >= top3 && x >= left3-8 && x <= left3 + 10) {
+        _spawnDeadBird(id);
+        _deleteBird(id);
+    }
+
+    if (y >= top4 && x >= left4-8 && x <= left4 + 10) {
         _spawnDeadBird(id);
         _deleteBird(id);
     }
@@ -308,6 +345,7 @@ function _initializePlayers() {
 
     this._oInitialValues = {
         health: 50,
+        fence: 20,
         stones: 8,
         builders: 2,
         weapons: 8,
@@ -340,10 +378,28 @@ function _setCastleHeight(id, iHeight) {
     }, iTimeout);
 }
 
+function _setFenceHeight(id, iHeight) {
+    const oCastle = _getCastle(id);
+    const iDiff = iHeight - oCastle.fence.height;
+    const iTimeout = Math.abs(1 / iDiff * 1000);
+
+    let i = 0;
+    const iInterval = setInterval(() => {
+        if (i < Math.abs(iDiff)) {
+            iDiff > 0 ? oCastle.fence.height++ : oCastle.fence.height--;
+            i++;
+        } else {
+            clearInterval(iInterval);
+        }
+    }, iTimeout);
+}
+
 function _drawCanvas() {
     _drawSky();
     _drawCastle(Math.round(this._iWidth * 0.2), this._iFloor, window._oPlayer1.castle);
     _drawCastle(Math.round(this._iWidth * 0.8), this._iFloor, window._oPlayer2.castle);
+    _drawFence(Math.round(this._iWidth * 0.35), this._iFloor, window._oPlayer1.castle);
+    _drawFence(Math.round(this._iWidth * 0.65), this._iFloor, window._oPlayer2.castle);
     _drawGrass();
     _drawActiveClouds();
     _drawActiveBirds();
@@ -437,11 +493,12 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
  * Animates the card deck
  * @param iPlayerId
  */
-function placeCard(iPlayerId, iCardId) {
+function placeCard(event, iPlayerId, iCardId) {
     if (this._placingCard) {
         return;
     }
 
+    iPlayerId = parseInt(event.currentTarget.id.slice(5));
     this._placingCard = true;
     const oCard = document.getElementById("card-"+iPlayerId);
 
@@ -495,8 +552,8 @@ function placeCard(iPlayerId, iCardId) {
  * @param event - Event information of browser event 'onclick'
  */
 function onCanvasClick(event) {
-    placeCard(Math.round(Math.random()+1));
-    // spawnBird(event.x, event.y);
+    // placeCard(Math.round(Math.random()+1));
+    spawnBird(event.x, event.y);
 }
 
 /**
