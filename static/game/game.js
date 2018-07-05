@@ -3,6 +3,7 @@ const socket = io();
 
 //TODO
 // bird sounds
+// wining flag
 // karten decks
 
 socket.on('test', () => {
@@ -433,11 +434,69 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
 }
 
 /**
+ * Animates the card deck
+ * @param iPlayerId
+ */
+function placeCard(iPlayerId, iCardId) {
+    if (this._placingCard) {
+        return;
+    }
+
+    this._placingCard = true;
+    const oCard = document.getElementById("card-"+iPlayerId);
+
+    let styleSheet;
+    for (let i = 0; i < document.styleSheets.length; i++) {
+        const e = document.styleSheets[i];
+        if (e.href.indexOf("game.css") !== -1) {
+            styleSheet = e;
+            break;
+        }
+    }
+    const iIndex = styleSheet.cssRules.length;
+    const sUrl = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
+    const sSide = iPlayerId === 1 ? "left" : "right";
+    const sSidePercentage = iPlayerId === 1 ? "50%" : "-50%";
+
+    const sRule1 =
+        "@keyframes cardAnimation {" +
+            "to {" +
+                sSide + ": 50%;" +
+                "bottom: 70%;" +
+                "width: 12rem;" +
+                "height: 14rem;" +
+                "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
+                "background-size: 100px 100px;" +
+                "background: url('"+ sUrl +"');" +
+            "}" +
+        "}";
+
+    const sRule2 =
+        ".cardAnimation {" +
+            "animation-name: cardAnimation;" +
+            "animation-duration: 1s;" +
+            "animation-fill-mode: forwards"+
+        "}";
+
+    styleSheet.insertRule(sRule1, iIndex);
+    styleSheet.insertRule(sRule2, iIndex + 1);
+
+    oCard.classList.add("cardAnimation");
+    setTimeout(() => {
+        oCard.classList.remove("cardAnimation");
+        styleSheet.deleteRule(iIndex);
+        styleSheet.deleteRule(iIndex);
+        this._placingCard = false;
+    }, 3000);
+}
+
+/**
  * Spawns a bird on the cursor position
  * @param event - Event information of browser event 'onclick'
  */
 function onCanvasClick(event) {
-    spawnBird(event.x, event.y);
+    placeCard(Math.round(Math.random()+1));
+    // spawnBird(event.x, event.y);
 }
 
 /**
