@@ -6,23 +6,11 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
 
-const fnServeFiles = (req, res) => {
-    switch (req.url) {
-        case '/mocks/player.html':
-        case '/mocks/base.css':
-            res.sendFile(path.join(__dirname, req.url.slice(1)));
-            break;
-        default:
-            res.sendFile(INDEX);
-            break;
-    }
-};
-
 // Start server
 const
     app = express()
         .use(express.static('static'))
-        .use(fnServeFiles)
+        .use((req, res) => res.sendFile(INDEX))
         .listen(PORT, () => console.log('Listening on localhost:' + PORT));
 
 const io = require('socket.io')(app);
