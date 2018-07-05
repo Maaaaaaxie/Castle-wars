@@ -9,13 +9,27 @@
 <link rel="stylesheet" type="text/css" href="/style.css">
 
 <script>
-    function openChat() {
-        window.location.href = window.location.href + "chat/login.html";
+    function openLocation(location) {
+        let sHref;
+        switch (location) {
+            case "chat":
+                sHref = "chat/login.html";
+                break;
+            case "menu":
+                sHref = "game/menu.html";
+                break;
+            case "game":
+                sHref = "game/game.html";
+                break;
+        }
+        window.location.href = window.location.href + sHref;
     }
 </script>
 
 <body>
     <h1>Welcome</h1>
-    <button class="hvr-grow" onclick="openChat()">Chat</button>
+    <button class="hvr-grow" onclick="openLocation('chat')">Chat</button>
+    <button class="hvr-grow" onclick="openLocation('menu')">Menu</button>
+    <button class="hvr-grow" onclick="openLocation('game')">Game</button>
 </body>
 </html>

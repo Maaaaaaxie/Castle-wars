@@ -3,17 +3,22 @@
 }
 
 html, body {
-    height: 100%;
-    margin: 0 0 0 10%;
     background: aliceblue;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
 }
 
 button {
-    height: 2rem;
-    width: 6rem;
+    height: 3rem;
+    width: 100%;
     background-color: #efefef;
     border: 1px solid darkgray;
     cursor: pointer;
+    font-size: 16pt;
+    font-weight: bold;
 }
 
 .hvr-grow {
