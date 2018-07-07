@@ -9,18 +9,14 @@ requirejs(["./cardRenderer"], function(CardRenderer) {
 		 * @param {MouseEvent} e
 		 * @param {MouseEvent.target} e.target
 		 */
-		document.getElementById("cards").onclick = e => {
+		document.getElementById("cards").onclick = function(e) {
 			if (!bMoveAllowed) {
 				return;
 			}
 
-			if (e && e.target && (e.target.classList.contains("card_face") || e.target.parentElement.classList.contains("card_face"))) {
-				// card_face || sub element of card_face
-				e.target.closest(".scene_inner") && e.target.closest(".scene_inner").classList.toggle("is-flipped");
-
-				// TODO: add some real logic to prevent new move being made (only one card can be selected)
-				// bMoveAllowed = false;
-				// window.setTimeout(() => bMoveAllowed = true, 2000);
+			const oSceneInner = e.target.closest(".scene_inner");
+			if (oSceneInner) {
+				oSceneInner.classList.toggle("is-flipped");
 			}
 		}
 	}
