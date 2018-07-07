@@ -1,4 +1,4 @@
-define(["./cssLoader"], (CSSLoader) => {
+define(["../complete/cssLoader"], (CSSLoader) => {
 	"use strict";
 
 	// import stylesheet necessary for this section
