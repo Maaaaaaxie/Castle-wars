@@ -37,10 +37,10 @@
     <div class="spacer"></div>
     <div class="option">
         <div class="description">Mitspieler</div>
-        <div class="player">Spieler 1: Verbunden</div>
-        <button class="kick disabled">Kicken</button>
+        <div class="player">Spieler 1: Nicht verbunden</div>
+        <button class="kick disabled" onclick="kickPlayer(1)">Kicken</button>
         <div class="player">Spieler 2: Nicht verbunden</div>
-        <button class="kick disabled">Kicken</button>
+        <button class="kick disabled" onclick="kickPlayer(2)">Kicken</button>
     </div>
     <div class="marginTop"></div>
     <button id="close">Schließen</button>
@@ -342,13 +342,14 @@
     </div>
 </div>
 
-<div class="deck-bot card left hideOn725">
+<div id="deck-1">
+    <div class="deck-bot card left hideOn725">
     <div class="inner">
         <img class="left-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
 </div>
-<div class="deck-mid card left hideOn725">
+    <div class="deck-mid card left hideOn725">
     <div class="inner">
         <img class="left-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
@@ -356,22 +357,24 @@
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
 </div>
-<div id="card-1" class="card left hideOn725" onclick="placeCard(event)">
+    <div id="card-1" class="card left hideOn725" onclick="placeCard(event)">
     <div class="inner">
         <img class="left-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="left-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
+</div>
 </div>
 
-<div class="deck-bot card right hideOn725">
+<div id="deck-2">
+    <div class="deck-bot card right hideOn725">
     <div class="inner">
         <img class="left-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
 </div>
-<div class="deck-mid card right hideOn725">
+    <div class="deck-mid card right hideOn725">
     <div class="inner">
         <img class="left-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
@@ -379,13 +382,14 @@
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
 </div>
-<div id="card-2" class="card right hideOn725" onclick="placeCard(event)">
+    <div id="card-2" class="card right hideOn725" onclick="placeCard(event)">
     <div class="inner">
         <img class="left-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-top" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="left-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
         <img class="right-bot" src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png" />
     </div>
+</div>
 </div>
 
 <div id="toast"></div>

@@ -23,27 +23,35 @@ socket.on('test', () => {
 socket.on('clientUpdate', oInfo => {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
+    const oDeck1 = document.getElementById("deck-1");
+    const oDeck2 = document.getElementById("deck-2");
 
     toast(oInfo.message);
+    this._oPlayer1.id = oInfo.player1;
+    this._oPlayer2.id = oInfo.player2;
 
     if (oInfo.player1) {
         aPlayer[0].innerHTML = "Spieler 1: Verbunden";
         aButtons[0].disabled = false;
         aButtons[0].classList.remove("disabled");
+        oDeck1.classList.add("deckFadeIn");
     } else {
         aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
         aButtons[0].disabled = true;
         aButtons[0].classList.add("disabled");
+        oDeck1.classList.remove("deckFadeIn");
     }
 
     if (oInfo.player2) {
         aPlayer[1].innerHTML = "Spieler 2: Verbunden";
         aButtons[1].disabled = false;
         aButtons[1].classList.remove("disabled");
+        oDeck2.classList.add("deckFadeIn");
     } else {
         aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
         aButtons[1].disabled = true;
         aButtons[1].classList.add("disabled");
+        oDeck2.classList.remove("deckFadeIn");
     }
 });
 
@@ -717,4 +725,8 @@ function toast(sText) {
             that._toasting = false;
         }
     }
+}
+
+function kickPlayer(id) {
+    socket.emit("kickClient", id);
 }

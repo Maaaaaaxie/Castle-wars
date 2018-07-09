@@ -75,12 +75,12 @@ function handleClientConnected(socket) {
         this._iPlayer1 = id;
         socket.join("player1");
         console.log("Player 1 joined the game");
-        updateClient("Spieler 1 ist dem Spiel beigetreten");
+        updateClient("Spieler 1 ist dem Spiel beigetreten", true);
     } else if (!this._iPlayer2) {
         this._iPlayer2 = id;
         socket.join("player2");
         console.log("Player 2 joined the game");
-        updateClient("Spieler 2 ist dem Spiel beigetreten");
+        updateClient("Spieler 2 ist dem Spiel beigetreten", true);
     } else {
         console.warn("No client slot available");
     }
@@ -90,19 +90,20 @@ function handleClientDisconnected(id) {
     if (this._iPlayer1 === id) {
         console.log("Removed player 1");
         this._iPlayer1 = undefined;
-        updateClient("Spieler 1 hat das Spiel verlassen");
+        updateClient("Spieler 1 hat das Spiel verlassen", false);
     } else if (this._iPlayer2 === id) {
         console.log("Removed player 2");
         this._iPlayer2 = undefined;
-        updateClient("Spieler 2 hat das Spiel verlassen");
+        updateClient("Spieler 2 hat das Spiel verlassen", false);
     }
 }
 
-function updateClient(msg) {
+function updateClient(sMessage, bType) {
     io.emit("clientUpdate", {
         player1: this._iPlayer1,
         player2: this._iPlayer2,
-        message: msg
+        message: sMessage,
+        type: bType ? "connection" : "disconnection"
     });
 }
 

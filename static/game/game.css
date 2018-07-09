@@ -362,12 +362,12 @@ dialog::backdrop, #backdrop {
 }
 
 .toastAnimation {
-    animation: fadeIn;
+    animation: toastFadeIn;
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
 
-@keyframes fadeIn {
+@keyframes toastFadeIn {
     to {
         bottom: 7%;
         opacity: 1;
@@ -403,6 +403,26 @@ dialog::backdrop, #backdrop {
 .card img {
     width: 2.5rem;
     height: 2.5rem;
+}
+
+#deck-1 {
+    opacity: 0;
+}
+
+#deck-2 {
+    opacity: 0;
+}
+
+.deckFadeIn {
+    animation: deckFadeIn;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes deckFadeIn {
+    to {
+        opacity: 1;
+    }
 }
 
 .deck-mid {
