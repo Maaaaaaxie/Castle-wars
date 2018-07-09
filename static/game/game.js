@@ -19,6 +19,31 @@ socket.on('test', () => {
     oPlayer.setHealth(iHealth);
 });
 
+socket.on('updateUser', oUserInfo => {
+    const aPlayer = document.getElementsByClassName('player');
+    const aButtons = document.getElementsByClassName('kick');
+
+    if (oUserInfo.player1) {
+        aPlayer[0].innerHTML = "Spieler 1: Verbunden";
+        aButtons[0].disabled = false;
+        aButtons[0].classList.remove("disabled");
+    } else {
+        aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
+        aButtons[0].disabled = true;
+        aButtons[0].classList.add("disabled");
+    }
+
+    if (oUserInfo.player2) {
+        aPlayer[1].innerHTML = "Spieler 2: Verbunden";
+        aButtons[1].disabled = false;
+        aButtons[1].classList.remove("disabled");
+    } else {
+        aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
+        aButtons[1].disabled = true;
+        aButtons[1].classList.add("disabled");
+    }
+});
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| CLASSES ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -643,7 +668,7 @@ function toggleMusic() {
 function toggleOptions() {
     const
         dialog = document.getElementById('options'),
-        btnClose = document.getElementById('close-options');
+        btnClose = document.getElementById('close');
 
     if (dialog.open) {
         dialog.close();

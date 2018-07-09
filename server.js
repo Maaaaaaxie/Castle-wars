@@ -22,8 +22,6 @@ io.on('connection', function (socket) {
     console.log('User connected: ' + id);
     handlePlayerConnected(id);
 
-    io.emit("userConnected", { id: id, player: 1 });
-
     socket.on('disconnect', function () {
         const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
         handlePlayerDisconnected(id);
@@ -38,14 +36,20 @@ io.on('connection', function (socket) {
     socket.on('test', function() {
        io.emit('test');
     });
+
+    socket.on('kickUser', function(id) {
+        handlePlayerDisconnected(id);
+    });
 });
 
 
 function handlePlayerConnected(id) {
     if (!this._iPlayer1) {
         this._iPlayer1 = id;
+        updateUser();
     } else if (!this._iPlayer2) {
         this._iPlayer2 = id;
+        updateUser();
     } else {
         console.warn("No slot available");
     }
@@ -53,12 +57,20 @@ function handlePlayerConnected(id) {
 
 function handlePlayerDisconnected(id) {
     if (this._iPlayer1 === id) {
+        console.log("Deleted user: " + id);
         this._iPlayer1 = undefined;
         delete this._iPlayer1;
+        updateUser();
     } else if (this._iPlayer2 === id) {
+        console.log("Deleted user: " + id);
         this._iPlayer2 = undefined;
         delete this._iPlayer2;
+        updateUser();
     }
+}
+
+function updateUser() {
+    io.emit("updateUser", { player1: this._iPlayer1, player2: this._iPlayer2 });
 }
 
 
