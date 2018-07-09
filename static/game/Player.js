@@ -27,9 +27,9 @@ class Player {
         this.castle = {
             x: x,
             color: sColor,
-            height: this.health,
+            height: this.health * that._iModifier,
             fence: {
-                height: this.fence
+                height: this.fence * that._iModifier
             }
         }
     }
@@ -69,25 +69,23 @@ class Player {
     }
 
     setHealth(iHealth) {
-        const iModifier = Math.round(that._iHeight / 150);
+        let callback;
 
         if (iHealth < 0) {
             iHealth = 0;
-        } else if (iHealth > 100) {
+        } else if (iHealth >= 100) {
             iHealth = 100;
         }
 
         this.health = iHealth;
         this._set("castle", iHealth);
-        _setCastleHeight(this.id, iHealth*iModifier);
+        _setCastleHeight(this.id, iHealth * that._iModifier);
     }
 
-    setFence(i) {
-        const iModifier = Math.round(that._iHeight / 150);
-
-        this.fence = i;
-        this._set("fence", i);
-        _setFenceHeight(this.id, i*iModifier);
+    setFence(iHeight) {
+        this.fence = iHeight;
+        this._set("fence", iHeight);
+        _setFenceHeight(this.id, iHeight * that._iModifier);
     }
 
     _set(sProperty, iValue) {

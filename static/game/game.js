@@ -100,6 +100,11 @@ function _drawCastle(x, y, oCastleDef) {
     ctx.fillRect(x-9,y-10-iHeight,16,10);
     ctx.fillRect(x+22,y-10-iHeight,16,10);
 
+    ctx.fillStyle = "#63472e";
+    const sDoorHeight = iHeight < 70 ? iHeight-10 : 60;
+
+    ctx.fillRect(x-20,y-sDoorHeight,40,sDoorHeight);
+
     // --- towers -----------
     ctx.fillStyle = "#" + fnDarkenColor(sColor, -35);
 
@@ -193,48 +198,6 @@ function _drawDeadBird(x, y) {
     ctx.fillRect(x+10,y,4, 3);
 }
 
-function _spawnDeadBird(id) {
-    const oBird = this._aActiveBirds.filter(e => e.id === id)[0];
-
-    const oDeadBird = {
-        id: oBird.id,
-        x: oBird.x,
-        y: oBird.y
-    };
-
-    if (!this._aDeadBirds) {
-        this._aDeadBirds = [];
-    }
-
-    this._aDeadBirds.push(oDeadBird);
-
-    let i = 1;
-    const iIntervalY = setInterval(() => {
-        if (oDeadBird.y < this._iFloor) {
-            oDeadBird.y+=i;
-        } else {
-            clearInterval(iIntervalY);
-            _deleteDeadBird(id);
-        }
-    });
-
-    const iIntervalI = setInterval(() => {
-        if(oDeadBird.y < this._iFloor) {
-            i++;
-        } else {
-            clearInterval(iIntervalI);
-        }
-    }, 100);
-
-    const iIntervalX = setInterval(() => {
-        if (oDeadBird.y < this._iFloor) {
-            oDeadBird.x++;
-        } else {
-            clearInterval(iIntervalX);
-        }
-    }, 5);
-}
-
 function _drawBird(x, y, id) {
     const
         top1 = _oPlayer1.castle.top,
@@ -313,6 +276,48 @@ function _drawDeadBirds() {
     }
 }
 
+function _spawnDeadBird(id) {
+    const oBird = this._aActiveBirds.filter(e => e.id === id)[0];
+
+    const oDeadBird = {
+        id: oBird.id,
+        x: oBird.x,
+        y: oBird.y
+    };
+
+    if (!this._aDeadBirds) {
+        this._aDeadBirds = [];
+    }
+
+    this._aDeadBirds.push(oDeadBird);
+
+    let i = 1;
+    const iIntervalY = setInterval(() => {
+        if (oDeadBird.y < this._iFloor) {
+            oDeadBird.y+=i;
+        } else {
+            clearInterval(iIntervalY);
+            _deleteDeadBird(id);
+        }
+    });
+
+    const iIntervalI = setInterval(() => {
+        if(oDeadBird.y < this._iFloor) {
+            i++;
+        } else {
+            clearInterval(iIntervalI);
+        }
+    }, 100);
+
+    const iIntervalX = setInterval(() => {
+        if (oDeadBird.y < this._iFloor) {
+            oDeadBird.x++;
+        } else {
+            clearInterval(iIntervalX);
+        }
+    }, 5);
+}
+
 function _initializeClouds() {
     this._iCloudTimeout = 15000;
     this._sCloudColor = "rgba(255, 255, 255, 0.90)";
@@ -344,8 +349,8 @@ function _initializePlayers() {
     const that = this;
 
     this._oInitialValues = {
-        health: 50,
-        fence: 20,
+        health: 20,
+        fence: 10,
         stones: 8,
         builders: 2,
         weapons: 8,
@@ -365,7 +370,7 @@ function _getCastle(id) {
 function _setCastleHeight(id, iHeight) {
     const oCastle = _getCastle(id);
     const iDiff = iHeight - oCastle.height;
-    const iTimeout = Math.abs(1 / iDiff * 1000);
+    const iTimeout = Math.abs(1 / iDiff * 300);
 
     let i = 0;
     const iInterval = setInterval(() => {
@@ -409,6 +414,7 @@ function _drawCanvas() {
 function initializeCanvas() {
     this._iWidth = window.innerWidth;
     this._iHeight = window.innerHeight;
+    this._iModifier = Math.round(that._iHeight / 150);
 
     document.getElementById("canvas").width = this._iWidth;
     document.getElementById("canvas").height = this._iHeight;

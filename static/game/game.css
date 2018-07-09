@@ -5,6 +5,19 @@ html, body {
     font-family: "MedievalSharp";
 }
 
+#title {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+    padding-top: 1rem;
+    font-size: 36pt;
+    font-weight: bold;
+    user-select: none;
+    color: #f4bc7d;
+    text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
+}
+
 #game {
     position: relative;
 }
@@ -23,6 +36,31 @@ canvas {
     right: 0.5rem;
     user-select: none;
 }
+
+#toolbar .title {
+    display: none;
+    height: 1.5rem;
+    font-size: 14pt;
+    width: 4rem;
+    user-select: none;
+}
+
+@media (max-width: 750px) {
+    .breakOn750 {
+        left: 0.5rem;
+    }
+
+    .translateOn750 {
+        top: 3.7rem !important;
+    }
+}
+
+@media (max-width: 1020px) {
+    .showOn1020 {
+        display: inline-block !important;
+    }
+}
+
 
 #toolbar img {
     margin: 0.5rem;

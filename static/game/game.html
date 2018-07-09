@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Castlewars</title>
+    <title>Castle Wars</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/game/game.js"></script>
@@ -11,13 +11,18 @@
 <link href='https://fonts.googleapis.com/css?family=MedievalSharp' rel='stylesheet'>
 <link rel="stylesheet" type="text/css" href="/game/game.css">
 <body>
-<div id="toolbar">
+
+<div id="title" class="statsVisibility">Castle Wars</div>
+
+<div id="toolbar" class="breakOn750">
+    <div class="title showOn1020">Castle Wars</div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/500px-Speaker_Icon.svg.png"/>
     <img onclick="toggleMusic()"
          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
     <img onclick="toggleOptions()" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
     <img onclick="toggleFullscreen()" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
 </div>
+
 
 <dialog id="options">
     <div class="option">
@@ -33,7 +38,7 @@
     <button id="close-options">Schließen</button>
 </dialog>
 
-<div id="info" class="infoVisibility">
+<div id="info" class="infoVisibility translateOn750">
     <div id="info-1" class="container">
         <div class="label">Spieler 1</div>
         <div class="infoProperty">
