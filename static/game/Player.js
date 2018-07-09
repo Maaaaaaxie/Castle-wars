@@ -69,8 +69,6 @@ class Player {
     }
 
     setHealth(iHealth) {
-        let callback;
-
         if (iHealth < 0) {
             iHealth = 0;
         } else if (iHealth >= 100) {

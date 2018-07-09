@@ -3,7 +3,6 @@ const socket = io();
 
 //TODO
 // bird sounds
-// wining flag
 
 socket.on('test', () => {
     spawnBird(Math.round(Math.random()*100+100));
