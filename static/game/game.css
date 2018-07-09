@@ -342,6 +342,38 @@ dialog::backdrop, #backdrop {
     margin-top: 2rem;
 }
 
+/* --- toast ---------------------------------------------------------------------------------------------------------*/
+#toast {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    margin-left: 50%;
+    margin-right: 50%;
+    background: transparent;
+    color: rgba(74, 47, 26, 1);
+    width: 100%;
+    max-width: 24rem;
+    font-size: 18pt;
+    text-align: center;
+    display: block;
+    opacity: 0;
+}
+
+.toastAnimation {
+    animation: fadeIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        bottom: 7%;
+        opacity: 1;
+    }
+}
+
 /* --- decks ---------------------------------------------------------------------------------------------------------*/
 
 @media (max-height: 725px) {

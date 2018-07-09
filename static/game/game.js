@@ -1,5 +1,6 @@
 const that = this;
 const socket = io();
+socket.emit("hostConnect", {});
 
 //TODO
 // bird sounds
@@ -19,11 +20,13 @@ socket.on('test', () => {
     oPlayer.setHealth(iHealth);
 });
 
-socket.on('updateUser', oUserInfo => {
+socket.on('clientUpdate', oInfo => {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
 
-    if (oUserInfo.player1) {
+    toast(oInfo.message);
+
+    if (oInfo.player1) {
         aPlayer[0].innerHTML = "Spieler 1: Verbunden";
         aButtons[0].disabled = false;
         aButtons[0].classList.remove("disabled");
@@ -33,7 +36,7 @@ socket.on('updateUser', oUserInfo => {
         aButtons[0].classList.add("disabled");
     }
 
-    if (oUserInfo.player2) {
+    if (oInfo.player2) {
         aPlayer[1].innerHTML = "Spieler 2: Verbunden";
         aButtons[1].disabled = false;
         aButtons[1].classList.remove("disabled");
@@ -686,4 +689,32 @@ function toggleOptions() {
 
 function changeVolume(event) {
     this._music.volume(event.srcElement.value/100);
+}
+
+function toast(sText) {
+    if (!this._aToasts) {
+        this._aToasts = [];
+    }
+    this._aToasts.push(sText);
+
+    if (!this._toasting) {
+        _displayToast();
+    }
+
+    function _displayToast() {
+        if (that._aToasts.length > 0) {
+            that._toasting = true;
+            const sText = that._aToasts[0];
+            that._aToasts = that._aToasts.slice(1);
+            const oToast = document.getElementById("toast");
+            oToast.innerText = sText;
+            oToast.classList.add("toastAnimation");
+            setTimeout(() => {
+                oToast.classList.remove("toastAnimation");
+                setTimeout(() => _displayToast(), 100);
+            }, 3000);
+        } else {
+            that._toasting = false;
+        }
+    }
 }
