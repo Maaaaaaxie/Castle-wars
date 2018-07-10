@@ -18,9 +18,7 @@ html, body {
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
 
-#game {
-    position: relative;
-}
+/* --- toolbar -------------------------------------------------------------------------------------------------------*/
 
 canvas {
     width: 100%;
@@ -458,26 +456,4 @@ dialog::backdrop, #backdrop {
     right: 0.2rem;
     bottom: 0.2rem;
     transform: rotate(180deg);
-}
-
-/* --- control -------------------------------------------------------------------------- */
-#wrapper {
-    margin: 0 auto;
-    width: 80%;
-}
-
-#spawnButton {
-    margin: 0 auto;
-    font-size: 20pt;
-    font-family: Arial;
-    font-weight: bold;
-    width: 20rem;
-    height: 20rem;
-    border-radius: 100%;
-    background: aliceblue;
-    border: 4px solid cornflowerblue;
-}
-
-#spawnButton:active {
-    background: #c1c8cd;
 }
