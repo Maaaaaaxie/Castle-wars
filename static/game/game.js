@@ -4,6 +4,11 @@ socket.emit("hostConnect", {});
 
 //TODO
 // bird sounds
+socket.on('init', ip => {
+   document.getElementById("qrCode").getElementsByTagName("img")[0].src =
+       "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + ip + "/control";
+   document.getElementById("ip").innerText = "http://" + ip + "/control";
+});
 
 socket.on('clientUpdate', handleClientUpdate);
 
@@ -527,4 +532,13 @@ function toast(sText) {
  */
 function kickPlayer(number) {
     socket.emit("clientKick", number);
+}
+
+function toggleQR() {
+    const qr = document.getElementById("qrCode");
+    if (qr.style.display === "block") {
+        qr.style.display = "none";
+    } else {
+        qr.style.display = "block";
+    }
 }

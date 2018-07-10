@@ -98,13 +98,14 @@ canvas {
 }
 
 #options button {
-    border: none;
     outline: none;
     background: #733910;
     -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
     color: #f4bc7d;
     font-family: "MedievalSharp";
+    cursor: pointer;
+    border: 2px solid #49240a;
 }
 
 #options button:hover {
@@ -113,10 +114,7 @@ canvas {
 }
 
 #options #close {
-    position: absolute;
     margin-top: 1rem;
-    bottom: 0;
-    left: 0;
     width: 100%;
     height: 3rem;
     font-size: 18pt;
@@ -140,6 +138,7 @@ dialog::backdrop, #backdrop {
 .option .description {
     text-align: center;
     width: 100%;
+    margin-bottom: 0.2rem;
 }
 
 .option .player {
@@ -192,6 +191,33 @@ dialog::backdrop, #backdrop {
     border-radius: 50%;
     background: #4CAF50;
     cursor: pointer;
+}
+
+#join {
+    text-align: center;
+}
+
+#join button {
+    font-size: 14pt;
+}
+
+#ip {
+    font-size: 14pt;
+    font-weight: normal;
+    text-align: center;
+}
+
+#qrCode {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#qrCode button {
+    position: absolute;
+    right: 0;
 }
 
 /* --- responsiveness ------------------------------------------------------------------------------------------------*/

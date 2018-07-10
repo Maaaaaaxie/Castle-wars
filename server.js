@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
+const ip = require('my-local-ip')();
 
 // Configuration
 const PORT = process.env.PORT || 3000;
@@ -51,6 +52,7 @@ io.on('connection', function (socket) {
     // -------- game ---------------------------------------------------------------------------------------------------
     socket.on('hostConnect', function() {
         socket.join('host');
+        socket.emit('init', ip + ":" + PORT);
         updateClient();
         console.log('Host connected');
     });
@@ -67,7 +69,6 @@ io.on('connection', function (socket) {
         handleClientDisconnected(oPlayer.socket, oPlayer.id);
     });
 });
-
 
 function handleHostDisconnected(socket) {
     socket.leave('host');
