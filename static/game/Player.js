@@ -1,6 +1,6 @@
 class Player {
-    constructor(id, x, sColor) {
-        this.id = id;
+    constructor(number, x, sColor) {
+        this.number = number;
 
         const oInit = that._oInitialValues;
         this.health = oInit.health;
@@ -87,7 +87,7 @@ class Player {
     }
 
     _set(sProperty, iValue) {
-        document.getElementById("stats-"+this.id).getElementsByClassName(sProperty)[0].innerText = iValue;
-        document.getElementById("info-"+this.id).getElementsByClassName(sProperty)[0].innerText = iValue;
+        document.getElementById("stats-"+this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
+        document.getElementById("info-"+this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
     }
 }

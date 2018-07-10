@@ -5,30 +5,20 @@ socket.emit("hostConnect", {});
 //TODO
 // bird sounds
 
-socket.on('test', () => {
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    spawnBird(Math.round(Math.random()*100+100));
-    const isItOrIsItNot = () => Math.random() > 0.5;
-    const oPlayer = isItOrIsItNot() ? _oPlayer1 : _oPlayer2;
-    const iHealth = isItOrIsItNot() ? oPlayer.health + 100 : oPlayer.health - 100;
-    oPlayer.setHealth(iHealth);
-});
+socket.on('clientUpdate', handleClientUpdate);
 
-socket.on('clientUpdate', oInfo => {
+function handleClientUpdate(oInfo) {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
     const oDeck1 = document.getElementById("deck-1");
     const oDeck2 = document.getElementById("deck-2");
 
-    toast(oInfo.message);
-    this._oPlayer1.id = oInfo.player1;
-    this._oPlayer2.id = oInfo.player2;
+    if (oInfo.message) {
+        toast(oInfo.message);
+    }
+
+    window._oPlayer1 = Object.assign(window._oPlayer1 || {}, { id: oInfo.player1 });
+    window._oPlayer2 = Object.assign(window._oPlayer2 || {}, { id: oInfo.player2 });
 
     if (oInfo.player1) {
         aPlayer[0].innerHTML = "Spieler 1: Verbunden";
@@ -53,7 +43,7 @@ socket.on('clientUpdate', oInfo => {
         aButtons[1].classList.add("disabled");
         oDeck2.classList.remove("deckFadeIn");
     }
-});
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
@@ -220,8 +210,8 @@ function _initializePlayers() {
         mages: 2
     };
 
-    window._oPlayer1 = new Player("1", 90, "#d3b961");
-    window._oPlayer2 = new Player("2", 710, "#912b32");
+    window._oPlayer1 = Object.assign(window._oPlayer1 || {}, new Player("1", 90, "#d3b961"));
+    window._oPlayer2 = Object.assign(window._oPlayer2 || {}, new Player("2", 710, "#912b32"));
 }
 
 function _initializeCanvas() {
@@ -536,5 +526,5 @@ function toast(sText) {
  * @param number - Either '1' or '2'
  */
 function kickPlayer(number) {
-    socket.emit("kickClient", number);
+    socket.emit("clientKick", number);
 }
