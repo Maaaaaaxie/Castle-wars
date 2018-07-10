@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-*, html, body {
+html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -41,7 +41,26 @@ h2 {
 
 #information article {
     user-select: none;
+    display: flex;
     /*display: inline-block;*/
+}
+
+#information img {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 1rem;
+}
+
+.joined {
+    animation: joining;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes joining {
+    to {
+      background: lightgreen;
+    }
 }
 
 /* Card section */

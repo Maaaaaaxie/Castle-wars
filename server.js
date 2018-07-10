@@ -83,6 +83,7 @@ function handleClientConnected(socket) {
             socket
         };
         socket.join("player1");
+        socket.emit("join", 1);
         console.log("Player 1 joined the game");
         updateClient("Spieler 1 ist dem Spiel beigetreten");
     } else if (!game._oPlayer2) {
@@ -91,6 +92,7 @@ function handleClientConnected(socket) {
             socket
         };
         socket.join("player2");
+        socket.emit("join", 2);
         console.log("Player 2 joined the game");
         updateClient("Spieler 2 ist dem Spiel beigetreten");
     } else {
@@ -101,11 +103,13 @@ function handleClientConnected(socket) {
 function handleClientDisconnected(socket, id) {
     if (game._oPlayer1 && game._oPlayer1.id === id) {
         console.log("Player 1 left the game");
+        socket.emit('leave');
         socket.leave('player1');
         game._oPlayer1 = undefined;
         updateClient("Spieler 1 hat das Spiel verlassen");
     } else if (game._oPlayer2 && game._oPlayer2.id === id) {
         console.log("Player 2 left the game");
+        socket.emit('leave');
         socket.leave('player2');
         game._oPlayer2 = undefined;
         updateClient("Spieler 2 hat das Spiel verlassen");
