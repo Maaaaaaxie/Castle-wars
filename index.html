@@ -21,6 +21,9 @@
             case "game":
                 sHref = "game/game.html";
                 break;
+            case "control":
+                sHref = "player/player.html";
+                break;
         }
         window.location.href = window.location.href + sHref;
     }
@@ -31,5 +34,6 @@
     <button class="hvr-grow" onclick="openLocation('chat')">Chat</button>
     <button class="hvr-grow" onclick="openLocation('menu')">Menu</button>
     <button class="hvr-grow" onclick="openLocation('game')">Game</button>
+    <button class="hvr-grow" onclick="openLocation('control')">Control</button>
 </body>
 </html>
