@@ -63,8 +63,6 @@ io.on('connection', function (socket) {
 
     socket.on('clientKick', function(number) {
         console.log("Player " + number + " was kicked");
-        console.log(game._oPlayer1);
-        console.log(game._oPlayer2);
         const oPlayer = number === 1 ? game._oPlayer1 : game._oPlayer2;
         handleClientDisconnected(oPlayer.socket, oPlayer.id);
     });
