@@ -4,31 +4,38 @@ const path = require('path');
 const crypto = require('crypto');
 const ip = require('my-local-ip')();
 
+// Import game engine
+const game = require('./game.js');
+
+game.start();
+
 // Configuration
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
-const GAME = path.join(__dirname, '/static/game/game.html');
+const GAME = path.join(__dirname, '/static/host/host.html');
 const CONTROL = path.join(__dirname, '/static/player/player.html');
 const CHAT = path.join(__dirname, '/static/chat/login.html');
 const CARDS = path.join(__dirname, '/static/data/cards.json');
 
-let game = {};
+// let game = {};
+
+function fnRouting(req, res) {
+    if (req.url === '/control') {
+        res.sendFile(CONTROL);
+    } else if (req.url === '/chatroom') {
+        res.sendFile(CHAT);
+    } else if (req.url === '/cards') {
+        res.sendFile(CARDS)
+    } else {
+        res.sendFile(GAME);
+    }
+}
 
 // Start server
 const
     app = express()
         .use(express.static('static'))
-        .use((req, res) => {
-            if (req.url === '/control') {
-                res.sendFile(CONTROL);
-            } else if (req.url === '/chatroom') {
-                res.sendFile(CHAT);
-            } else if (req.url === '/cards') {
-                res.sendFile(CARDS)
-            } else {
-                res.sendFile(GAME);
-            }
-        })
+        .use(fnRouting)
         .listen(PORT, () => console.log('Listening on localhost:' + PORT));
 
 const io = require('socket.io')(app);
@@ -66,7 +73,7 @@ io.on('connection', function (socket) {
 
     socket.on('clientKick', function(number) {
         console.log("Player " + number + " was kicked");
-        const oPlayer = number === 1 ? game._oPlayer1 : game._oPlayer2;
+        const oPlayer = number === 1 ? game.player1 : game.player2;
         handleClientDisconnected(oPlayer.socket, oPlayer.id);
     });
 });
@@ -80,51 +87,43 @@ function handleClientConnected(socket) {
     const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
     console.log('Client connected');
 
-    if (!game._oPlayer1) {
-        game._oPlayer1 = {
-            id,
-            socket
-        };
-        socket.join("player1");
-        socket.emit("join", 1);
-        console.log("Player 1 joined the game");
-        updateClient("Spieler 1 ist dem Spiel beigetreten");
-    } else if (!game._oPlayer2) {
-        game._oPlayer2 = {
-            id,
-            socket
-        };
-        socket.join("player2");
-        socket.emit("join", 2);
-        console.log("Player 2 joined the game");
-        updateClient("Spieler 2 ist dem Spiel beigetreten");
+    let iNumber;
+    if (!game.player1) {
+        iNumber = 1;
+    } else if (!game.player2) {
+        iNumber = 2;
     } else {
         console.warn("No client slot available");
+        return;
     }
+
+    game["player"+iNumber] = { id, socket };
+    socket.join("player"+iNumber);
+    socket.emit("join", iNumber);
+    console.log("Player " + iNumber + " joined the game");
+    updateClient("Spieler " + iNumber + " ist dem Spiel beigetreten");
 }
 
 function handleClientDisconnected(socket, id) {
-    if (game._oPlayer1 && game._oPlayer1.id === id) {
+    if (game.player1 && game.player1.id === id) {
         console.log("Player 1 left the game");
         socket.emit('leave');
         socket.leave('player1');
-        game._oPlayer1 = undefined;
+        game.player1 = undefined;
         updateClient("Spieler 1 hat das Spiel verlassen");
-    } else if (game._oPlayer2 && game._oPlayer2.id === id) {
+    } else if (game.player2 && game.player2.id === id) {
         console.log("Player 2 left the game");
         socket.emit('leave');
         socket.leave('player2');
-        game._oPlayer2 = undefined;
+        game.player2 = undefined;
         updateClient("Spieler 2 hat das Spiel verlassen");
     }
 }
 
 function updateClient(sMessage) {
     io.to('host').emit("clientUpdate", {
-        player1: game._oPlayer1 && game._oPlayer1.id,
-        player2: game._oPlayer2 && game._oPlayer2.id,
+        player1: game.player1 && game.player1.id,
+        player2: game.player2 && game.player2.id,
         message: sMessage
     });
 }
-
-

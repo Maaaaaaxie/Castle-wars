@@ -12,6 +12,22 @@ socket.on('init', ip => {
 
 socket.on('clientUpdate', handleClientUpdate);
 
+const xhr = new XMLHttpRequest();
+
+xhr.onload = () => {
+    if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+            console.log(JSON.parse(xhr.response));
+        }
+        else {
+            throw new Error("XMLHttpRequest status is not '200'");
+        }
+    }
+};
+
+xhr.open("GET", "/cards", true);
+xhr.send();
+
 function handleClientUpdate(oInfo) {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
