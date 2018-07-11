@@ -1,0 +1,129 @@
+@charset "utf-8";
+
+#stats_resources {
+    width: 100%;
+    border: 1px solid green;
+    height: 10rem;
+    padding: 1rem;
+}
+.stats_resources:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
+}
+
+#stats_resources section {
+    height: 100%;
+    /*border: 1px solid yellow;*/
+    float: left;
+}
+
+#stats {
+    width: 8rem;
+    user-select: none;
+}
+#resources {
+    width: calc(100% - 9rem);
+    overflow: auto;
+    white-space: nowrap;
+    margin-left: 1rem;
+    background-color: brown;
+}
+
+.stat {
+    border: 0.5rem solid #6e3232;
+    border-radius: 0.5rem;
+    background: indianred;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    padding: 0.5rem;
+}
+.stat aside:first-child {
+    border-bottom: 4px dotted rgba(0, 0, 0, 0.7);
+}
+.stat * {
+    background-color: inherit;
+}
+
+.property {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    margin-top: 0.25rem;
+}
+.property img {
+    height: 1rem;
+    width: 1rem;
+}
+
+.description span {
+    font-size: 8pt;
+}
+
+.description {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+}
+
+.noMarginTop {
+    margin-top: -1rem;
+    background: transparent;
+}
+
+.propertyValue {
+    text-align: right;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+/*#resources {*/
+    /*padding: 1rem;*/
+/*}*/
+
+/*#resources_inner {*/
+    /*width: 100%;*/
+    /*overflow: auto;*/
+    /*white-space: nowrap;*/
+/*}*/
+
+/*#resources_inner section {*/
+    /*display: inline-block;*/
+    /*margin-left: 1rem;*/
+/*}*/
+
+/*#resources_inner section:first-child {*/
+    /*margin-left: 0;*/
+/*}*/
+
+/*.resources_icon {*/
+    /*height: 1rem;*/
+/*}*/
+
+/*#resources_inner {*/
+    /*display: grid;*/
+    /*grid-template-columns: 1fr 1fr;*/
+/*}*/
+
+/*.gridElemen {*/
+    /*border: 1px solid green;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*padding: 0.5rem;*/
+/*}*/
+
+/*.gridElemen section {*/
+    /*display: inline-block;*/
+/*}*/
+/*.gridElemen section:first-child {*/
+    /*border-bottom: 1px solid black;*/
+/*}*/
