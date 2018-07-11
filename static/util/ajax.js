@@ -19,5 +19,8 @@ define(() => {
 				this._xhr.send();
 			});
 		}
+		static getCards() {
+			return new this("/data/cards.json");
+		}
 	}
 });
