@@ -20,7 +20,7 @@ define(() => {
 			});
 		}
 		static getCards() {
-			return new this("/data/cards.json");
+			return new this("/cards");
 		}
 	}
 });
