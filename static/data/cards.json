@@ -1,38 +1,618 @@
-{
-  "id": "001",
-  "name": "",
-  "image": "",
-  "self": {
-    "builder": 0,
-    "stone": 0,
-    "soldiers": 0,
-    "weapons": 0,
-    "mages": 0,
-    "crystals": 0,
-    "health": 0,
-    "castle": 0,
-    "fence": 0
+[
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
   },
-  "enemy": {
-    "builder": 0,
-    "stone": 0,
-    "soldiers": 0,
-    "weapons": 0,
-    "mages": 0,
-    "crystals": 0,
-    "health": 0,
-    "castle": 0,
-    "fence": 0
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
   },
-  "costs": {
-    "builder": 0,
-    "stone": 0,
-    "soldiers": 0,
-    "weapons": 0,
-    "mages": 0,
-    "crystals": 0,
-    "health": 0,
-    "castle": 0,
-    "fence": 0
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "001",
+    "name": "Schwertkämpfer",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -5,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -3,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "002",
+    "name": "Bogenschützen",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -8,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -5,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "003",
+    "name": "Balliste",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -12,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -8,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "004",
+    "name": "Rammbock",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -18,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -15,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "005",
+    "name": "Katapult",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -30,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -25,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "006",
+    "name": "Infiltrator",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": -10,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -15,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "007",
+    "name": "Assasine",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": -18,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -25,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "008",
+    "name": "Raubritter",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builder": 0,
+      "stone": 5,
+      "soldiers": 0,
+      "weapons": 5,
+      "mages": 0,
+      "crystals": 5,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builder": 0,
+      "stone": -5,
+      "soldiers": 0,
+      "weapons": -5,
+      "mages": 0,
+      "crystals": -5,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builder": 0,
+      "stone": 0,
+      "soldiers": 0,
+      "weapons": -14,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
   }
-}
+]
