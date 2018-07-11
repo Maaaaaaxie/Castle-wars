@@ -3,37 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Castlewars - Projekt</title>
+    <title>Castlewars</title>
 </head>
-<script src="/socket.io/socket.io.js"></script>
-<link rel="stylesheet" type="text/css" href="/style.css">
-
-<script>
-    function openLocation(location) {
-        let sHref;
-        switch (location) {
-            case "chat":
-                sHref = "chat/login.html";
-                break;
-            case "menu":
-                sHref = "game/menu.html";
-                break;
-            case "game":
-                sHref = "game/game.html";
-                break;
-            case "control":
-                sHref = "player/player.html";
-                break;
-        }
-        window.location.href = window.location.href + sHref;
-    }
-</script>
-
 <body>
     <h1>Welcome</h1>
-    <button class="hvr-grow" onclick="openLocation('chat')">Chat</button>
-    <button class="hvr-grow" onclick="openLocation('menu')">Menu</button>
-    <button class="hvr-grow" onclick="openLocation('game')">Game</button>
-    <button class="hvr-grow" onclick="openLocation('control')">Control</button>
 </body>
 </html>
