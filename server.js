@@ -10,6 +10,7 @@ const INDEX = path.join(__dirname, 'index.html');
 const GAME = path.join(__dirname, '/static/game/game.html');
 const CONTROL = path.join(__dirname, '/static/player/player.html');
 const CHAT = path.join(__dirname, '/static/chat/login.html');
+const CARDS = path.join(__dirname, '/static/data/cards.json');
 
 let game = {};
 
@@ -22,6 +23,8 @@ const
                 res.sendFile(CONTROL);
             } else if (req.url === '/chatroom') {
                 res.sendFile(CHAT);
+            } else if (req.url === '/cards') {
+                res.sendFile(CARDS)
             } else {
                 res.sendFile(GAME);
             }
