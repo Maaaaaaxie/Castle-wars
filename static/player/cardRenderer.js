@@ -5,6 +5,9 @@ define(["deck"], (oCards) => {
 				throw new Error("Can not render cards without a container");
 			}
 
+			// TODO: addapt to this
+			this._cards = new AJAX("/data/cards.json");
+
 			this._cardContainer = oCardContainer;
 		}
 		// TODO: is-flipped = true by default

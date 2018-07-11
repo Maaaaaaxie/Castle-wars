@@ -11,6 +11,10 @@
     color: #191919;
 }
 
+html, body {
+    height: 100%;
+}
+
 h1 {
     font-size: 1.8rem;
     line-height: 2.5rem;
