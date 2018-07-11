@@ -24,8 +24,12 @@ requirejs(["./cardRenderer"], function(CardRenderer) {
 	// renderer
 	{
 		const oCardRenderer = new CardRenderer(document.getElementById("cards_inner"));
-		[0,1,2,3,4,5,6,7].forEach(e => oCardRenderer.render(e));
-
-		oCardRenderer._removeCard(2);
+		// oCardRenderer.render(); // TODO: not all cards lol
+		[1,2,3,4,5,6,7].forEach(e => oCardRenderer.render(e));
+		//
+		// oCardRenderer._removeCard(2);
+		// oCardRenderer.render(1);
+		//
+		// oCardRenderer._removeCard(1)
 	}
 });

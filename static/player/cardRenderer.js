@@ -1,42 +1,44 @@
-define(["deck"], (oCards) => {
+define(["deck" ,"../../util/ajax"], (oCards, AJAX) => {
 	return class cardRenderer {
 		constructor(oCardContainer) {
 			if (!oCardContainer) {
 				throw new Error("Can not render cards without a container");
 			}
 
-			// TODO: addapt to this
-			this._cards = new AJAX("/data/cards.json");
+			this._cards = AJAX.getCards();
 
 			this._cardContainer = oCardContainer;
 		}
 		// TODO: is-flipped = true by default
 		render(nCard, bFlipped = false) {
-			const oCard = oCards.attack.find(e => e.id === nCard) || oCards.defend.find(e => e.id === nCard);
-			if (!oCard) {
-				throw new Error("Could not find card with id " + nCard + ". Rendering not possible");
-			}
+			this._cards.then(oCards => {
+				const oCard = oCards.find(e => Number.parseInt(e.id, 10) === Number.parseInt(nCard, 10));
 
-			const oArticle = document.createElement("article");
-			oArticle.setAttribute("class", "card");
-			oArticle.setAttribute("data-id", nCard);
+				if (oCard) {
+					const oArticle = document.createElement("article");
+					oArticle.setAttribute("class", "card");
+					oArticle.setAttribute("data-id", nCard);
 
-			const oScene = document.createElement("div");
-			oScene.setAttribute("class", "scene");
-			oArticle.appendChild(oScene);
+					const oScene = document.createElement("div");
+					oScene.setAttribute("class", "scene");
+					oArticle.appendChild(oScene);
 
-			const oSceneInner = document.createElement("div");
-			oSceneInner.setAttribute("class", `scene_inner ${bFlipped ? "is-flipped" : ""} ${oCard.class}`);
-			oScene.appendChild(oSceneInner);
+					const oSceneInner = document.createElement("div");
+					oSceneInner.setAttribute("class", `scene_inner ${bFlipped ? "is-flipped" : ""} ${oCard.category.toLowerCase()}`);
+					oScene.appendChild(oSceneInner);
 
-			oSceneInner.appendChild(this._createFront(oCard));
+					oSceneInner.appendChild(this._createFront(oCard));
 
-			const oBack = document.createElement("div");
-			oBack.setAttribute("class", "card_face back");
-			oBack.innerText = "Back";
-			oSceneInner.appendChild(oBack);
+					const oBack = document.createElement("div");
+					oBack.setAttribute("class", "card_face back");
+					oBack.innerText = "Back";
+					oSceneInner.appendChild(oBack);
 
-			this._cardContainer.appendChild(oArticle);
+					this._cardContainer.appendChild(oArticle);
+				} else {
+					throw new Error("Could not find card with id " + nCard + ". Rendering not possible");
+				}
+			});
 		}
 		_createFront(oCard) {
 			const oFront = document.createElement("div");
@@ -48,17 +50,18 @@ define(["deck"], (oCards) => {
 
 			const oImg = document.createElement("img");
 			oImg.setAttribute("class", "_icon");
-			oImg.setAttribute("src", oCard.icon);
+			oImg.setAttribute("src", oCard.image);
 			oHeader.appendChild(oImg);
 
 			const oResourceCount = document.createElement("span");
 			oResourceCount.setAttribute("class", "_resourceCount");
-			oResourceCount.innerText = oCard.resourceCount.toString();
+			// oResourceCount.innerText = oCard.resourceCount.toString();
 			oHeader.appendChild(oResourceCount);
 
 			// middle
 			const oSection = document.createElement("section");
-			oSection.innerText = oCard.category;
+			// oSection.innerText = oCard.category;
+			oSection.innerText = oCard.name;
 			oFront.appendChild(oSection);
 
 			// footer
@@ -80,16 +83,17 @@ define(["deck"], (oCards) => {
 			return oFront;
 		}
 		_removeCard(nCard) {
-			const oCards = document.getElementsByClassName("card");
+			this._cards.then(() => {
+				const oCards = document.getElementsByClassName("card");
 
-			for (const _card in oCards) {
-				let oCard = oCards[_card];
-				if (oCards && oCards.hasOwnProperty(_card) && parseInt(oCard.getAttribute("data-id"), 10) === nCard) {
-					console.log("Deleting Card", oCard);
-					oCard.parentNode.removeChild(oCard);
-					break;
+				for (const oCard of oCards) {
+					if (Number.parseInt(oCard.getAttribute("data-id"), 10) === Number.parseInt(nCard, 19)) {
+						console.log("Deleting Card", oCard);
+						oCard.parentNode.removeChild(oCard);
+						return;
+					}
 				}
-			}
+			});
 		}
 	}
 });
