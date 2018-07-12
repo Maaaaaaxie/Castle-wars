@@ -13,6 +13,7 @@ module.exports = class GameEngine {
             this.initializePlayer(this.player1);
             this.initializePlayer(this.player2);
             console.log("Started game");
+            this.io.to("host").emit("toast", "Das Spiel wurde gestartet");
             this.io.emit("start");
             this.nextRound();
         }
@@ -108,14 +109,16 @@ module.exports = class GameEngine {
      * @returns {Player || undefined}
      */
     getWinner() {
-        if (this.player1.castle === 0) {
-            return this.player2;
-        } else if (this.player1.castle === 100) {
-            return this.player1;
-        } else if (this.player2.castle === 0) {
-            return this.player1;
-        } else if (this.player2.castle === 100) {
-            return this.player2;
+        if (this.player1 && this.player2) {
+            if (this.player1.castle === 0) {
+                return this.player2;
+            } else if (this.player1.castle === 100) {
+                return this.player1;
+            } else if (this.player2.castle === 0) {
+                return this.player1;
+            } else if (this.player2.castle === 100) {
+                return this.player2;
+            }
         }
     }
 
