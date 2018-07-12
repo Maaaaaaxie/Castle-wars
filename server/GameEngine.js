@@ -1,6 +1,10 @@
 const Player = require('./Timer.js');
 
 module.exports = class GameEngine {
+    constructor(io) {
+        this.io = io;
+    }
+
     start() {
         console.log("Started game");
         this.nextRound();
