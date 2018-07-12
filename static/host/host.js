@@ -5,64 +5,80 @@ socket.emit("hostConnect", {});
 //TODO
 // bird sounds
 socket.on('init', ip => {
-   document.getElementById("qrCode").getElementsByTagName("img")[0].src =
-       "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + ip + "/control";
-   document.getElementById("ip").innerText = "http://" + ip + "/control";
+    document.getElementById("qrCode").getElementsByTagName("img")[0].src =
+        "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + ip + "/control";
+    document.getElementById("ip").innerText = "http://" + ip + "/control";
 });
 
-socket.on('clientUpdate', handleClientUpdate);
-
-const xhr = new XMLHttpRequest();
-
-xhr.onload = () => {
-    if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            console.log(JSON.parse(xhr.response));
-        }
-        else {
-            throw new Error("XMLHttpRequest status is not '200'");
-        }
+socket.on('clientUpdate', oInfo => {
+    if (!that._iModifier) {
+        setTimeout(() => handleClientUpdate(oInfo), 300);
+    } else {
+        handleClientUpdate(oInfo);
     }
-};
-
-xhr.open("GET", "/cards", true);
-xhr.send();
+});
 
 function handleClientUpdate(oInfo) {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
     const oDeck1 = document.getElementById("deck-1");
     const oDeck2 = document.getElementById("deck-2");
+    const oStat1 = document.getElementById("stats-1");
+    const oStat2 = document.getElementById("stats-2");
+    const oInfo1 = document.getElementById("info-1");
+    const oInfo2 = document.getElementById("info-2");
 
-    if (oInfo.message) {
-        toast(oInfo.message);
-    }
+    const toggleButton = (oButton, bEnabled) => {
+        if (bEnabled) {
+            oButton.classList.remove("disabled");
+        } else {
+            oButton.classList.add("disabled");
+        }
+        oButton.disabled = !bEnabled;
+    };
 
-    window._oPlayer1 = Object.assign(window._oPlayer1 || {}, { id: oInfo.player1 });
-    window._oPlayer2 = Object.assign(window._oPlayer2 || {}, { id: oInfo.player2 });
+    const toggleElement = (oElement, bEnabled) => {
+        if (bEnabled) {
+            oElement.classList.add("fadeIn");
+        } else {
+            oElement.classList.remove("fadeIn");
+        }
+    };
 
     if (oInfo.player1) {
+        window._oPlayer1 = new Player(oInfo.player1);
         aPlayer[0].innerHTML = "Spieler 1: Verbunden";
-        aButtons[0].disabled = false;
-        aButtons[0].classList.remove("disabled");
-        oDeck1.classList.add("deckFadeIn");
+        toggleButton(aButtons[0], true);
+        toggleElement(oDeck1, true);
+        toggleElement(oStat1, true);
+        toggleElement(oInfo1, true);
     } else {
+        window._oPlayer1 = undefined;
         aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
-        aButtons[0].disabled = true;
-        aButtons[0].classList.add("disabled");
-        oDeck1.classList.remove("deckFadeIn");
+        toggleButton(aButtons[0], false);
+        toggleElement(oDeck1, false);
+        toggleElement(oStat1, false);
+        toggleElement(oInfo1, false);
     }
 
     if (oInfo.player2) {
+        window._oPlayer2 = new Player(oInfo.player2);
         aPlayer[1].innerHTML = "Spieler 2: Verbunden";
-        aButtons[1].disabled = false;
-        aButtons[1].classList.remove("disabled");
-        oDeck2.classList.add("deckFadeIn");
+        toggleButton(aButtons[1], true);
+        toggleElement(oDeck2, true);
+        toggleElement(oStat2, true);
+        toggleElement(oInfo2, true);
     } else {
+        window._oPlayer2 = undefined;
         aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
-        aButtons[1].disabled = true;
-        aButtons[1].classList.add("disabled");
-        oDeck2.classList.remove("deckFadeIn");
+        toggleButton(aButtons[1], false);
+        toggleElement(oDeck2, false);
+        toggleElement(oStat2, false);
+        toggleElement(oInfo2, false);
+    }
+
+    if (oInfo.message) {
+        toast(oInfo.message);
     }
 }
 
@@ -132,7 +148,7 @@ function _spawnDeadBird(id) {
     let i = 1;
     const iIntervalY = setInterval(() => {
         if (oDeadBird.y < this._iFloor) {
-            oDeadBird.y+=i;
+            oDeadBird.y += i;
         } else {
             clearInterval(iIntervalY);
             _deleteDeadBird(id);
@@ -140,7 +156,7 @@ function _spawnDeadBird(id) {
     });
 
     const iIntervalI = setInterval(() => {
-        if(oDeadBird.y < this._iFloor) {
+        if (oDeadBird.y < this._iFloor) {
             i++;
         } else {
             clearInterval(iIntervalI);
@@ -166,7 +182,7 @@ function _initializeClouds() {
     spawnCloud(3, -100);
 
     this.__cloudSpawningInterval = setInterval(() => {
-        spawnCloud(Math.round(Math.random()*2+2), -200);
+        spawnCloud(Math.round(Math.random() * 2 + 2), -200);
     }, this._iCloudTimeout);
 }
 
@@ -179,12 +195,12 @@ function _initializeBirds() {
 
     this.__birdSpawningInterval2 = setInterval(() => {
         spawnBird();
-        setTimeout(() => spawnBird(), Math.random()*1000+400);
+        setTimeout(() => spawnBird(), Math.random() * 1000 + 400);
     }, 50000);
 }
 
 function _getCastle(id) {
-    return window["_oPlayer"+id].castle;
+    return window["_oPlayer" + id].castle;
 }
 
 function _setCastleHeight(id, iHeight) {
@@ -219,22 +235,6 @@ function _setFenceHeight(id, iHeight) {
     }, iTimeout);
 }
 
-function _initializePlayers() {
-    this._oInitialValues = {
-        health: 20,
-        fence: 10,
-        stones: 8,
-        builders: 2,
-        weapons: 8,
-        soldiers: 2,
-        crystals: 8,
-        mages: 2
-    };
-
-    window._oPlayer1 = Object.assign(window._oPlayer1 || {}, new Player("1", 90, "#d3b961"));
-    window._oPlayer2 = Object.assign(window._oPlayer2 || {}, new Player("2", 710, "#912b32"));
-}
-
 function _initializeCanvas() {
     this._iWidth = window.innerWidth;
     this._iHeight = window.innerHeight;
@@ -264,7 +264,6 @@ function start() {
     this._music = new Sound("/sounds/music.mp3", 0.5, true);
     this._music.play();
     this._music.mute();
-    _initializePlayers();
     this.__gameInterval = setInterval(() => _drawCanvas());
     _initializeClouds();
     _initializeBirds();
@@ -286,7 +285,7 @@ function quit() {
  * @param [iSize] - size of cloud (e.g. 2,3,4,...)
  * @param [x] - x position of cloud (e.g. 0, 200, 400)
  */
-function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
+function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
     if (!this._aActiveClouds) {
         this._aActiveClouds = [];
     }
@@ -298,13 +297,13 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random()*900-200)) {
     const oCloud = {
         id: "__cloud_" + this._iCloudCount++,
         x: x,
-        y: Math.round(Math.random()*200+50),
+        y: Math.round(Math.random() * 200 + 50),
         size: iSize,
         color: this._sCloudColor || _getRandomColor()
     };
 
     let i = oCloud.x;
-    let iSpeed = this._sCloudSpeed || Math.round(Math.random()*50)+50;
+    let iSpeed = this._sCloudSpeed || Math.round(Math.random() * 50) + 50;
 
     const iInterval = setInterval(() => {
         if (i < this._iWidth + 100) {
@@ -330,12 +329,12 @@ function animateCard(event, iPlayerId, iCardId) {
 
     iPlayerId = parseInt(event.currentTarget.id.slice(5));
     this._placingCard = true;
-    const oCard = document.getElementById("card-"+iPlayerId);
+    const oCard = document.getElementById("card-" + iPlayerId);
 
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
         const e = document.styleSheets[i];
-        if (e.href.indexOf("game.css") !== -1) {
+        if (e.href.indexOf("host.css") !== -1) {
             styleSheet = e;
             break;
         }
@@ -347,22 +346,22 @@ function animateCard(event, iPlayerId, iCardId) {
 
     const sRule1 =
         "@keyframes cardAnimation {" +
-            "to {" +
-                sSide + ": 50%;" +
-                "bottom: 70%;" +
-                "width: 12rem;" +
-                "height: 14rem;" +
-                "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
-                "background-size: 100px 100px;" +
-                "background: url('"+ sUrl +"');" +
-            "}" +
+        "to {" +
+        sSide + ": 50%;" +
+        "bottom: 70%;" +
+        "width: 12rem;" +
+        "height: 14rem;" +
+        "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
+        "background-size: 100px 100px;" +
+        "background: url('" + sUrl + "');" +
+        "}" +
         "}";
 
     const sRule2 =
         ".cardAnimation {" +
-            "animation-name: cardAnimation;" +
-            "animation-duration: 1s;" +
-            "animation-fill-mode: forwards"+
+        "animation-name: cardAnimation;" +
+        "animation-duration: 1s;" +
+        "animation-fill-mode: forwards" +
         "}";
 
     styleSheet.insertRule(sRule1, iIndex);
@@ -408,7 +407,7 @@ function spawnBird(x, y) {
     const oBird = {
         id: "__bird_" + this._iBirdCount++,
         x: x || -20,
-        y: y || Math.round(Math.random()*200+50),
+        y: y || Math.round(Math.random() * 200 + 50),
     };
 
     let i = oBird.x;
@@ -421,7 +420,7 @@ function spawnBird(x, y) {
             // random behavior of bird
             if (Math.random() > 0.95) {
                 oBird.y++;
-            } else if(Math.random() < 0.05) {
+            } else if (Math.random() < 0.05) {
                 oBird.y--;
             }
         } else {
@@ -438,25 +437,25 @@ function spawnBird(x, y) {
  */
 function toggleFullscreen() {
     const element = document.documentElement;
-    if(element.requestFullscreen) {
+    if (element.requestFullscreen) {
         if (document.isFullScreen) {
             document.exitFullscreen();
         } else {
             element.requestFullscreen();
         }
-    } else if(element.mozRequestFullScreen) {
+    } else if (element.mozRequestFullScreen) {
         if (document.mozIsFullScreen) {
             document.mozExitFullscreen();
         } else {
             element.mozRequestFullscreen();
         }
-    } else if(element.msRequestFullscreen) {
+    } else if (element.msRequestFullscreen) {
         if (document.msIsFullScreen) {
             document.msExitFullscreen();
         } else {
             element.msRequestFullscreen();
         }
-    } else if(element.webkitRequestFullscreen) {
+    } else if (element.webkitRequestFullscreen) {
         if (document.webkitIsFullScreen) {
             document.webkitExitFullscreen();
         } else {
@@ -487,7 +486,7 @@ function toggleOptions() {
         dialog.showModal();
         btnClose.focus();
         btnClose.addEventListener('click', toggleOptions);
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === "Escape") {
                 dialog.close();
             }
@@ -502,7 +501,7 @@ function toggleOptions() {
  */
 function changeVolume(volume, event) {
     if (event) {
-        this._music.volume(event.srcElement.value/100);
+        this._music.volume(event.srcElement.value / 100);
     }
 
     if (volume) {

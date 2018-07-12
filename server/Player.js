@@ -1,8 +1,11 @@
 module.exports = class Player {
-    constructor(number, sColor) {
-        this.number = number;
+    constructor(id, iNumber, socket, sColor) {
+        this.id = id;
+        this.number = iNumber;
+        this.socket = socket;
+        this.color = sColor;
 
-        this.castle = 20;
+        this.health = 20;
         this.fence = 10;
         this.stones = 8;
         this.builders = 2;
@@ -11,4 +14,4 @@ module.exports = class Player {
         this.crystals = 8;
         this.mages = 2;
     }
-}
+};

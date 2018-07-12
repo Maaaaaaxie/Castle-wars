@@ -1,32 +1,30 @@
 class Player {
-    constructor(number, x, sColor) {
-        this.number = number;
+    constructor(oDef) {
+        this.number = oDef.number;
 
-        const oInit = that._oInitialValues;
-        this.health = oInit.health;
-        this._set("castle", oInit.health);
+        this.health = oDef.health;
+        this._set("castle", oDef.health);
 
-        this.fence = oInit.fence;
-        this._set("fence", oInit.fence);
+        this.fence = oDef.fence;
+        this._set("fence", oDef.fence);
 
-        this.stones = oInit.stones;
-        this._set("stones", oInit.stones);
-        this.builders = oInit.builders;
-        this._set("builders", oInit.builders);
+        this.stones = oDef.stones;
+        this._set("stones", oDef.stones);
+        this.builders = oDef.builders;
+        this._set("builders", oDef.builders);
 
-        this.weapons = oInit.weapons;
-        this._set("weapons", oInit.weapons);
-        this.soldiers = oInit.soldiers;
-        this._set("soldiers", oInit.soldiers);
+        this.weapons = oDef.weapons;
+        this._set("weapons", oDef.weapons);
+        this.soldiers = oDef.soldiers;
+        this._set("soldiers", oDef.soldiers);
 
-        this.crystals = oInit.crystals;
-        this._set("crystals", oInit.crystals);
-        this.mages = oInit.mages;
-        this._set("mages", oInit.mages);
+        this.crystals = oDef.crystals;
+        this._set("crystals", oDef.crystals);
+        this.mages = oDef.mages;
+        this._set("mages", oDef.mages);
 
         this.castle = {
-            x: x,
-            color: sColor,
+            color: oDef.color,
             height: this.health * that._iModifier,
             fence: {
                 height: this.fence * that._iModifier

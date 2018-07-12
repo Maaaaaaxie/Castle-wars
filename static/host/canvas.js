@@ -129,34 +129,40 @@ function _drawDeadBird(x, y) {
 }
 
 function _drawBird(x, y, id) {
-    const
-        top1 = _oPlayer1.castle.top,
-        top2 = _oPlayer2.castle.top,
-        top3 = _oPlayer1.castle.fence.top,
-        top4 = _oPlayer2.castle.fence.top,
-        left1 = _oPlayer1.castle.left,
-        left2 = _oPlayer2.castle.left,
-        left3 = _oPlayer1.castle.fence.left,
-        left4 = _oPlayer2.castle.fence.left;
+    if (window._oPlayer1) {
+        const
+            top1 = _oPlayer1.castle.top,
+            top3 = _oPlayer1.castle.fence.top,
+            left1 = _oPlayer1.castle.left,
+            left3 = _oPlayer1.castle.fence.left;
 
-    if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
-        _spawnDeadBird(id);
-        _deleteBird(id);
+        if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
+            _spawnDeadBird(id);
+            _deleteBird(id);
+        }
+
+        if (y >= top3 && x >= left3-8 && x <= left3 + 10) {
+            _spawnDeadBird(id);
+            _deleteBird(id);
+        }
     }
 
-    if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
-        _spawnDeadBird(id);
-        _deleteBird(id);
-    }
+    if (window._oPlayer2) {
+        const
+            top2 = _oPlayer2.castle.top,
+            top4 = _oPlayer2.castle.fence.top,
+            left2 = _oPlayer2.castle.left,
+            left4 = _oPlayer2.castle.fence.left;
 
-    if (y >= top3 && x >= left3-8 && x <= left3 + 10) {
-        _spawnDeadBird(id);
-        _deleteBird(id);
-    }
+        if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
+            _spawnDeadBird(id);
+            _deleteBird(id);
+        }
 
-    if (y >= top4 && x >= left4-8 && x <= left4 + 10) {
-        _spawnDeadBird(id);
-        _deleteBird(id);
+        if (y >= top4 && x >= left4-8 && x <= left4 + 10) {
+            _spawnDeadBird(id);
+            _deleteBird(id);
+        }
     }
 
     const ctx = _getCtx();
@@ -179,10 +185,14 @@ function _drawBird(x, y, id) {
 
 function _drawCanvas() {
     _drawSky();
-    _drawCastle(Math.round(this._iWidth * 0.2), this._iFloor, window._oPlayer1.castle);
-    _drawCastle(Math.round(this._iWidth * 0.8), this._iFloor, window._oPlayer2.castle);
-    _drawFence(Math.round(this._iWidth * 0.35), this._iFloor, window._oPlayer1.castle);
-    _drawFence(Math.round(this._iWidth * 0.65), this._iFloor, window._oPlayer2.castle);
+    if (window._oPlayer1) {
+        _drawCastle(Math.round(this._iWidth * 0.2), this._iFloor, window._oPlayer1.castle);
+        _drawFence(Math.round(this._iWidth * 0.35), this._iFloor, window._oPlayer1.castle);
+    }
+    if (window._oPlayer2) {
+        _drawCastle(Math.round(this._iWidth * 0.8), this._iFloor, window._oPlayer2.castle);
+        _drawFence(Math.round(this._iWidth * 0.65), this._iFloor, window._oPlayer2.castle);
+    }
     _drawGrass();
     _drawActiveClouds();
     _drawActiveBirds();

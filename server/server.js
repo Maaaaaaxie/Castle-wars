@@ -4,10 +4,9 @@ const path = require('path');
 const crypto = require('crypto');
 const ip = require('my-local-ip')();
 
-// Import game engine
-const game = require('./game.js');
-
-game.start();
+// Initialize game
+const GameEngine = require('./GameEngine.js');
+const game = new GameEngine;
 
 // Configuration
 const PORT = process.env.PORT || 3000;
@@ -43,6 +42,10 @@ const
 
 const io = require('socket.io')(app);
 
+// Initialize connection helper
+const ConnectionHelper = require('./ConnectionHelper.js');
+const connection = new ConnectionHelper(game, io);
+
 // Initiatlize SocketIO
 io.on('connection', function (socket) {
     // -------- general ------------------------------------------------------------------------------------------------
@@ -51,8 +54,8 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-        handleClientDisconnected(socket, id);
-        handleHostDisconnected(socket);
+        connection.handleClientDisconnected(socket, id);
+        connection.handleHostDisconnected(socket);
         console.log('User disconnected: ' + id);
     });
 
@@ -66,67 +69,23 @@ io.on('connection', function (socket) {
     socket.on('hostConnect', function() {
         socket.join('host');
         socket.emit('init', ip + ":" + PORT);
-        updateClient();
+        connection.updateClient();
         console.log('Host connected');
     });
 
     socket.on('clientConnect', function(username) {
-        handleClientConnected(socket, username);
+        connection.handleClientConnected(socket, username);
     });
 
     socket.on('clientKick', function(number) {
         console.log("Player " + number + " was kicked");
         const oPlayer = number === 1 ? game.player1 : game.player2;
-        handleClientDisconnected(oPlayer.socket, oPlayer.id);
+        connection.handleClientDisconnected(oPlayer.socket, oPlayer.id);
+    });
+
+    socket.on('start', function() {
+        game.start();
     });
 });
 
-function handleHostDisconnected(socket) {
-    socket.leave('host');
-    console.log("Host disconnected");
-}
 
-function handleClientConnected(socket) {
-    const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-    console.log('Client connected');
-
-    let iNumber;
-    if (!game.player1) {
-        iNumber = 1;
-    } else if (!game.player2) {
-        iNumber = 2;
-    } else {
-        console.warn("No client slot available");
-        return;
-    }
-
-    game["player"+iNumber] = { id, socket };
-    socket.join("player"+iNumber);
-    socket.emit("join", iNumber);
-    console.log("Player " + iNumber + " joined the game");
-    updateClient("Spieler " + iNumber + " ist dem Spiel beigetreten");
-}
-
-function handleClientDisconnected(socket, id) {
-    if (game.player1 && game.player1.id === id) {
-        console.log("Player 1 left the game");
-        socket.emit('leave');
-        socket.leave('player1');
-        game.player1 = undefined;
-        updateClient("Spieler 1 hat das Spiel verlassen");
-    } else if (game.player2 && game.player2.id === id) {
-        console.log("Player 2 left the game");
-        socket.emit('leave');
-        socket.leave('player2');
-        game.player2 = undefined;
-        updateClient("Spieler 2 hat das Spiel verlassen");
-    }
-}
-
-function updateClient(sMessage) {
-    io.to('host').emit("clientUpdate", {
-        player1: game.player1 && game.player1.id,
-        player2: game.player2 && game.player2.id,
-        message: sMessage
-    });
-}
