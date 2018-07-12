@@ -21,14 +21,16 @@ module.exports = class GameEngine {
 
     resume() {
         if (this.started) {
-            this.paused = false;
+            console.log("Resumed");
+            this.io.to('host').emit("toast", "Spiel fortgesetzt");
             this.getActivePlayer().timer.resume();
         }
     }
 
     pause() {
         if (this.started) {
-            this.paused = true;
+            console.log("Paused");
+            this.io.to('host').emit("toast", "Spiel pausiert");
             this.getActivePlayer().timer.pause();
         }
     }
@@ -41,8 +43,10 @@ module.exports = class GameEngine {
         if (this.started) {
             this.started = false;
             console.log("Quited game");
-            this.player1 = undefined;
-            this.player2 = undefined;
+            this.io.to("host").emit("toast", "Das Spiel wurde beendet");
+            this.io.emit("quit");
+            this.player1;
+            this.player2;
         }
     }
 

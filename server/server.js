@@ -78,17 +78,26 @@ io.on('connection', function (socket) {
     });
 
     socket.on('clientKick', function(number) {
-        console.log("Player " + number + " was kicked");
+        if(game.started) {
+            console.log("Players can't be kicked while a game is runninng");
+            io.to('host').emit("toast", "Spieler können während einem Spiel nicht gekickt werden");
+            return;
+        }
         const oPlayer = number === 1 ? game.player1 : game.player2;
         connection.handleClientDisconnected(oPlayer.socket, oPlayer.id);
+        console.log("Player " + number + " was kicked");
     });
 
     socket.on('start', function() {
         game.start();
     });
 
-    socket.on('pause', function() {
-        game.pause();
+    socket.on('pause', function(bPaused) {
+        if (bPaused) {
+            game.pause();
+        } else {
+            game.resume();
+        }
     });
 
     socket.on('quit', function() {

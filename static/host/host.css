@@ -113,6 +113,11 @@ canvas {
     color: #733910;
 }
 
+#options button:active {
+    background: #c08a4e;
+    color: #733910;
+}
+
 #options #close {
     margin-top: 1rem;
     width: 100%;
@@ -155,6 +160,19 @@ dialog::backdrop, #backdrop {
     margin: 0 auto;
     width: 25%;
     cursor: pointer;
+}
+
+.option .game {
+    text-align: center;
+}
+
+.option .game button {
+    border-radius: 5%;
+    font-size: 14pt;
+    height: 2rem;
+    width: 40%;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .disabled {

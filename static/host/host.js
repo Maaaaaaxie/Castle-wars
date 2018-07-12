@@ -12,13 +12,13 @@ socket.on('init', ip => {
 
 socket.on('clientUpdate', oInfo => {
     if (!that._iModifier) {
-        setTimeout(() => handleClientUpdate(oInfo), 300);
+        setTimeout(() => _handleClientUpdate(oInfo), 300);
     } else {
-        handleClientUpdate(oInfo);
+        _handleClientUpdate(oInfo);
     }
 });
 
-function handleClientUpdate(oInfo) {
+function _handleClientUpdate(oInfo) {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
     const oDeck1 = document.getElementById("deck-1");
@@ -27,6 +27,9 @@ function handleClientUpdate(oInfo) {
     const oStat2 = document.getElementById("stats-2");
     const oInfo1 = document.getElementById("info-1");
     const oInfo2 = document.getElementById("info-2");
+
+    const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
 
     const toggleButton = (oButton, bEnabled) => {
         if (bEnabled) {
@@ -80,6 +83,20 @@ function handleClientUpdate(oInfo) {
     if (oInfo.message) {
         toast(oInfo.message);
     }
+
+    if (oInfo.player1 && oInfo.player2) {
+        if (this.started) {
+            oPauseButton.classList.remove("disabled");
+            oPauseButton.disabled = false;
+        }
+        oStartButton.classList.remove("disabled");
+        oStartButton.disabled = false;
+    } else {
+        oPauseButton.classList.add("disabled");
+        oPauseButton.disabled = true;
+        oStartButton.classList.add("disabled");
+        oStartButton.disabled = true;
+    }
 }
 
 socket.on('playerUpdate', aPlayers => {
@@ -94,6 +111,23 @@ function _translateToFrontend(oFrontend, oBackend) {
         }
     }
 }
+
+socket.on('start', () => {
+    const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+    oGameToggleButton.innerText = "Beenden";
+    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+    oPauseButton.disabled = false;
+    oPauseButton.classList.remove("disabled");
+});
+
+
+socket.on('quit', () => {
+    const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+    oGameToggleButton.innerText = "Neustarten";
+    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+    oPauseButton.disabled = true;
+    oPauseButton.classList.add("disabled");
+});
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
@@ -259,7 +293,7 @@ function _initializeCanvas() {
 
 function _onLoad() {
     _initializeCanvas();
-    launch();
+    init();
 }
 
 window.onload = () => _onLoad();
@@ -270,16 +304,37 @@ window.onresize = () => _initializeCanvas();
 // ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 /**
- * Launches the game
- * Initializes music, players, clouds and birds
+ * Initializes the game
+ * Initializes music, gameInterval, clouds and birds
  */
-function launch() {
+function init() {
     this._music = new Sound("/sounds/music.mp3", 0.5, true);
     this._music.play();
     this._music.mute();
     this.__gameInterval = setInterval(() => _drawCanvas());
     _initializeClouds();
     _initializeBirds();
+}
+
+function toggleGame() {
+    this.started = !this.started;
+    if (this.started) {
+        socket.emit('start');
+    } else {
+        socket.emit('quit');
+    }
+}
+
+function pause() {
+    this.paused = !this.paused;
+    socket.emit('pause', this.paused);
+    if (this.paused) {
+        const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+        oButton.innerText = "Fortsetzen";
+    } else {
+        const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+        oButton.innerText = "Pause";
+    }
 }
 
 /**

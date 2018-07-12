@@ -29,6 +29,14 @@
 
 <dialog id="options">
     <div class="option">
+        <div class="description">Spiel</div>
+        <div class="game">
+            <button class="disabled" onclick="toggleGame()">Start</button>
+            <button class="disabled" onclick="pause()">Pause</button>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="option">
         <div class="description">Lautstärke</div>
         <input type="range" min="1" max="100" value="50" class="slider" oninput="changeVolume(null, event)">
     </div>
