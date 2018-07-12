@@ -40,6 +40,19 @@ define(["deck" ,"../../util/ajax"], (oCards, AJAX) => {
 				}
 			});
 		}
+		_getResourceCount(oProperty) {
+			let aResources = [];
+			for (let prop in oProperty) {
+				if (oProperty.hasOwnProperty(prop)) {
+					if (oProperty[prop] !== 0) {
+						aResources.push({
+							[prop]: oProperty[prop]
+						});
+					}
+				}
+			}
+			return aResources;
+		}
 		_createFront(oCard) {
 			const oFront = document.createElement("div");
 			oFront.setAttribute("class", "card_face front");
@@ -53,9 +66,16 @@ define(["deck" ,"../../util/ajax"], (oCards, AJAX) => {
 			oImg.setAttribute("src", oCard.image);
 			oHeader.appendChild(oImg);
 
+			// TODO
+			const
+				oResourcesSelf = this._getResourceCount(oCard.self),
+				oResourcesEnemy = this._getResourceCount(oCard.enemy),
+				oResourcesCosts = this._getResourceCount(oCard.costs);
+
+			debugger;
 			const oResourceCount = document.createElement("span");
 			oResourceCount.setAttribute("class", "_resourceCount");
-			// oResourceCount.innerText = oCard.resourceCount.toString();
+			oResourceCount.innerText = oResourcesCosts[0][0];
 			oHeader.appendChild(oResourceCount);
 
 			// middle

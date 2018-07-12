@@ -2,7 +2,7 @@
 
 #stats_resources {
     width: 100%;
-    border: 1px solid green;
+    border-bottom: 1px solid #b7b7b7;
     height: 10rem;
     padding: 1rem;
 }
@@ -24,18 +24,9 @@
     width: 8rem;
     user-select: none;
 }
-#resources {
-    width: calc(100% - 9rem);
-    overflow: auto;
-    white-space: nowrap;
-    margin-left: 1rem;
-    background-color: brown;
-}
 
 .stat {
-    border: 0.5rem solid #6e3232;
     border-radius: 0.5rem;
-    background: indianred;
     height: 100%;
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -46,6 +37,23 @@
 }
 .stat * {
     background-color: inherit;
+}
+
+.health {
+    border: 0.5rem solid #343434;
+    background: #969696;
+}
+.stone {
+    border: 0.5rem solid #6e3232;
+    background: indianred;
+}
+.weapon {
+    border: 0.5rem solid #186218;
+    background: limegreen;
+}
+.crystal {
+    border: 0.5rem solid dodgerblue;
+    background: #a5d9ff;
 }
 
 .property {
@@ -80,50 +88,21 @@
 }
 
 
+#resources {
+    width: calc(100% - 9rem);
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-left: 1rem;
+    height: calc(100% + 1rem) !important;
+}
 
-
-
-
-
-
-/*#resources {*/
-    /*padding: 1rem;*/
-/*}*/
-
-/*#resources_inner {*/
-    /*width: 100%;*/
-    /*overflow: auto;*/
-    /*white-space: nowrap;*/
-/*}*/
-
-/*#resources_inner section {*/
-    /*display: inline-block;*/
-    /*margin-left: 1rem;*/
-/*}*/
-
-/*#resources_inner section:first-child {*/
-    /*margin-left: 0;*/
-/*}*/
-
-/*.resources_icon {*/
-    /*height: 1rem;*/
-/*}*/
-
-/*#resources_inner {*/
-    /*display: grid;*/
-    /*grid-template-columns: 1fr 1fr;*/
-/*}*/
-
-/*.gridElemen {*/
-    /*border: 1px solid green;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*padding: 0.5rem;*/
-/*}*/
-
-/*.gridElemen section {*/
-    /*display: inline-block;*/
-/*}*/
-/*.gridElemen section:first-child {*/
-    /*border-bottom: 1px solid black;*/
-/*}*/
+#resources article.stat {
+    display: inline-block;
+    width: 8rem;
+    height: 8rem;
+    margin-left: 0.5rem;
+}
+#resources article.stat:first-child {
+    margin-left: 0;
+}
