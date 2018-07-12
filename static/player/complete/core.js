@@ -1,7 +1,8 @@
 requirejs([
 	"../information/information",
+	"../resources/resources"
 	/*, "./cards", "./stats"*/
-], (Information, Cards, Stats) => {
+], (Information, Resources, Cards, Stats) => {
 	"use strict";
 
 	console.log("Rendering player view");
@@ -16,9 +17,12 @@ requirejs([
 
 			// add the information area to the page
 			document.body.appendChild(Information.render());
-			Information.start();
+			// Information.start();
 
-			// window.timer.start();
+			// add the resources area to the page
+			document.body.appendChild(Resources.render());
+
+			window.setTimeout(() => Resources.setHealth(37), 1000);
 		}, 475);
-	}, 0);
+	}, 250);
 });

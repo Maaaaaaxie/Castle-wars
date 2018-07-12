@@ -25,7 +25,6 @@ define(["../complete/cssLoader", "./timer"], (CSSLoader, Timer) => {
 			oInfoText.setAttribute("id", "infotext");
 			oSection.appendChild(oInfoText);
 
-			// TODO: oInfo needs an ID so the text can be updated
 			const oInfo = document.createElement("span");
 			oInfo.setAttribute("id", "currentPlayer");
 			oInfo.innerText = "Du bist dran!";
@@ -33,7 +32,7 @@ define(["../complete/cssLoader", "./timer"], (CSSLoader, Timer) => {
 
 			const oTimer = document.createElement("article");
 			oTimer.setAttribute("id", "timer");
-			oTimer.innerText = 30;
+			oTimer.innerText = "" + 30;
 			oSection.appendChild(oTimer);
 
 			return oSection;

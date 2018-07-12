@@ -22,10 +22,10 @@
 
 #stats {
     width: 8rem;
-    user-select: none;
 }
 
 .stat {
+    user-select: none;
     border-radius: 0.5rem;
     height: 100%;
     display: grid;
