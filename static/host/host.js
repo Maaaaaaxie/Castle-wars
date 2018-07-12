@@ -82,6 +82,19 @@ function handleClientUpdate(oInfo) {
     }
 }
 
+socket.on('playerUpdate', aPlayers => {
+    _translateToFrontend(this._oPlayer1, aPlayers[0]);
+    _translateToFrontend(this._oPlayer2, aPlayers[1]);
+});
+
+function _translateToFrontend(oFrontend, oBackend) {
+    for (let property in oBackend) {
+        if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
+            oFrontend.set(property, oBackend[property]);
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------

@@ -1,18 +1,33 @@
 module.exports = class Timer {
     constructor(callback, delay) {
-        let iTimerId, oStart, iRemaining = delay;
+        this.callback = callback;
+        this.delay = delay;
+        this.begin = new Date();
+        this.remaining = delay;
+    }
 
-        this.pause = function() {
-            window.clearTimeout(iTimerId);
-            iRemaining -= new Date() - oStart;
-        };
-
-        this.resume = function() {
-            oStart = new Date();
-            clearTimeout(iTimerId);
-            iTimerId = setTimeout(callback, iRemaining);
-        };
-
+    start() {
         this.resume();
     }
-}
+
+    stop() {
+        clearTimeout(this.id);
+        this.remaining = this.delay;
+    }
+
+    pause() {
+        clearTimeout(this.id);
+        this.remaining -= new Date() - this.begin;
+    }
+
+    resume() {
+        clearTimeout(this.id);
+        this.begin = new Date();
+        this.id = setTimeout(this.callback, this.remaining);
+    }
+
+    finish() {
+        this.stop();
+        this.callback();
+    }
+};

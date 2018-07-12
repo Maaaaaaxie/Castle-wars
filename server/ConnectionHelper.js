@@ -25,7 +25,10 @@ module.exports = class ConnectionHelper {
         socket.emit("join", iNumber);
         console.log("Player " + iNumber + " joined the game");
         this.updateClient("Spieler " + iNumber + " ist dem Spiel beigetreten");
-        this.checkReady();
+
+        if (this.checkReady()) {
+            this.game.start();
+        }
     }
 
     handleClientDisconnected(socket, id) {
@@ -65,6 +68,6 @@ module.exports = class ConnectionHelper {
     }
 
     checkReady() {
-        this.game.ready = this.game.player1 && this.game.player2;
+        return this.game.player1 && this.game.player2;
     }
 };

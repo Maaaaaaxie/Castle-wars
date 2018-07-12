@@ -2,8 +2,8 @@ class Player {
     constructor(oDef) {
         this.number = oDef.number;
 
-        this.health = oDef.health;
-        this._set("castle", oDef.health);
+        this.castle = oDef.castle;
+        this._set("castle", oDef.castle);
 
         this.fence = oDef.fence;
         this._set("fence", oDef.fence);
@@ -25,10 +25,44 @@ class Player {
 
         this.castle = {
             color: oDef.color,
-            height: this.health * that._iModifier,
+            height: this.castle * that._iModifier,
             fence: {
                 height: this.fence * that._iModifier
             }
+        }
+    }
+
+    set(property, value) {
+        switch (property) {
+            case "color":
+                this.setColor(value);
+                break;
+            case "castle":
+                this.setCastle(value);
+                break;
+            case "fence":
+                this.setFence(value);
+                break;
+            case "builders":
+                this.setBuilders(value);
+                break;
+            case "stones":
+                this.setStones(value);
+                break;
+            case "soldier":
+                this.setSoldiers(value);
+                break;
+            case "weapons":
+                this.setWeapons(value);
+                break;
+            case "mages":
+                this.setMages(value);
+                break;
+            case "crystals":
+                this.setCrystals(value);
+                break;
+            default:
+                throw new Error("Invalid property")
         }
     }
 
@@ -66,16 +100,16 @@ class Player {
         this._set("crystals", i);
     }
 
-    setHealth(iHealth) {
-        if (iHealth < 0) {
-            iHealth = 0;
-        } else if (iHealth >= 100) {
-            iHealth = 100;
+    setCastle(i) {
+        if (i < 0) {
+            i = 0;
+        } else if (i >= 100) {
+            i = 100;
         }
 
-        this.health = iHealth;
-        this._set("castle", iHealth);
-        _setCastleHeight(this.number, iHealth * that._iModifier);
+        this.health = i;
+        this._set("castle", i);
+        _setCastleHeight(this.number, i * that._iModifier);
     }
 
     setFence(iHeight) {
@@ -85,7 +119,7 @@ class Player {
     }
 
     _set(sProperty, iValue) {
-        document.getElementById("stats-"+this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
-        document.getElementById("info-"+this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
+        document.getElementById("stats-" + this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
+        document.getElementById("info-" + this.number).getElementsByClassName(sProperty)[0].innerText = iValue;
     }
 }

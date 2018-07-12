@@ -5,7 +5,7 @@ module.exports = class Player {
         this.socket = socket;
         this.color = sColor;
 
-        this.health = 20;
+        this.castle = 20;
         this.fence = 10;
         this.stones = 8;
         this.builders = 2;
