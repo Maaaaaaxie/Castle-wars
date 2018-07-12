@@ -246,7 +246,7 @@ function _initializeCanvas() {
 
 function _onLoad() {
     _initializeCanvas();
-    start();
+    launch();
 }
 
 window.onload = () => _onLoad();
@@ -260,7 +260,7 @@ window.onresize = () => _initializeCanvas();
  * Launches the game
  * Initializes music, players, clouds and birds
  */
-function start() {
+function launch() {
     this._music = new Sound("/sounds/music.mp3", 0.5, true);
     this._music.play();
     this._music.mute();
@@ -508,6 +508,8 @@ function changeVolume(volume, event) {
         this._music.volume(volume);
     }
 }
+
+socket.on('toast', msg => toast(msg));
 
 /**
  * Displays a notification message on the bottom of the screen

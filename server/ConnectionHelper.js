@@ -2,9 +2,9 @@ const crypto = require('crypto');
 const Player = require('./Player.js');
 
 module.exports = class ConnectionHelper {
-    constructor(game, io) {
-        this.io = io;
+    constructor(game) {
         this.game = game;
+        this.io = game.io;
     }
 
     handleClientConnected(socket) {
@@ -22,7 +22,6 @@ module.exports = class ConnectionHelper {
         }
 
         this.game["player"+iNumber] = new Player(id, iNumber, socket);
-        socket.join("player"+iNumber);
         socket.emit("join", iNumber);
         console.log("Player " + iNumber + " joined the game");
         this.updateClient("Spieler " + iNumber + " ist dem Spiel beigetreten");
@@ -33,13 +32,11 @@ module.exports = class ConnectionHelper {
         if (this.game.player1 && this.game.player1.id === id) {
             console.log("Player 1 left the game");
             socket.emit('leave');
-            socket.leave('player1');
             this.game.player1 = undefined;
             this.updateClient("Spieler 1 hat das Spiel verlassen");
         } else if (this.game.player2 && this.game.player2.id === id) {
             console.log("Player 2 left the game");
             socket.emit('leave');
-            socket.leave('player2');
             this.game.player2 = undefined;
             this.updateClient("Spieler 2 hat das Spiel verlassen");
         }

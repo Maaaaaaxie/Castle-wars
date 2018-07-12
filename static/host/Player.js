@@ -75,13 +75,13 @@ class Player {
 
         this.health = iHealth;
         this._set("castle", iHealth);
-        _setCastleHeight(this.id, iHealth * that._iModifier);
+        _setCastleHeight(this.number, iHealth * that._iModifier);
     }
 
     setFence(iHeight) {
         this.fence = iHeight;
         this._set("fence", iHeight);
-        _setFenceHeight(this.id, iHeight * that._iModifier);
+        _setFenceHeight(this.number, iHeight * that._iModifier);
     }
 
     _set(sProperty, iValue) {

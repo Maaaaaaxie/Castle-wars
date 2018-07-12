@@ -4,10 +4,6 @@ const path = require('path');
 const crypto = require('crypto');
 const ip = require('my-local-ip')();
 
-// Initialize game
-const GameEngine = require('./GameEngine.js');
-const game = new GameEngine;
-
 // Configuration
 const PORT = process.env.PORT || 3000;
 
@@ -42,9 +38,13 @@ const
 
 const io = require('socket.io')(app);
 
+// Initialize game
+const GameEngine = require('./GameEngine.js');
+const game = new GameEngine(io);
+
 // Initialize connection helper
 const ConnectionHelper = require('./ConnectionHelper.js');
-const connection = new ConnectionHelper(game, io);
+const connection = new ConnectionHelper(game);
 
 // Initiatlize SocketIO
 io.on('connection', function (socket) {
@@ -85,6 +85,14 @@ io.on('connection', function (socket) {
 
     socket.on('start', function() {
         game.start();
+    });
+
+    socket.on('pause', function() {
+        game.pause();
+    });
+
+    socket.on('quit', function() {
+        game.quit();
     });
 });
 
