@@ -62,8 +62,4 @@ module.exports = class ConnectionHelper {
             message: sMessage
         });
     }
-
-    checkReady() {
-        return this.game.player1 && this.game.player2;
-    }
 };

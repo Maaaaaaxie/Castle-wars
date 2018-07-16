@@ -4,7 +4,10 @@ module.exports = class Player {
         this.number = iNumber;
         this.socket = socket;
         this.color = sColor;
+        this.reset();
+    }
 
+    reset() {
         this.castle = 20;
         this.fence = 10;
         this.stones = 8;

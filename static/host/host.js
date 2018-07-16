@@ -68,16 +68,17 @@ function _handleClientUpdate(oInfo) {
     }
 }
 
-function _translateToFrontend(oFrontend, oBackend) {
-    for (let property in oBackend) {
-        if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
-            oFrontend.set(property, oBackend[property]);
-        }
-    }
-}
 socket.on('playerUpdate', aPlayers => {
-    _translateToFrontend(this._oPlayer1, aPlayers[0]);
-    _translateToFrontend(this._oPlayer2, aPlayers[1]);
+    const fnTranslateToFrontend = function(oFrontend, oBackend) {
+        for (let property in oBackend) {
+            if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
+                oFrontend.set(property, oBackend[property]);
+            }
+        }
+    };
+
+    fnTranslateToFrontend(this._oPlayer1, aPlayers[0]);
+    fnTranslateToFrontend(this._oPlayer2, aPlayers[1]);
 });
 
 function togglePlayer(iNumber, b) {
@@ -109,13 +110,13 @@ socket.on('start', () => {
     togglePlayer(2, true);
 });
 
-socket.on('pause', () => {
+socket.on('pause', paused => {
     if (paused) {
         toast("Spiel pausiert");
-        document.getElementsByTagName('html')[0].classList.add("paused");
+        document.getElementById("pause").classList.add("paused");
     } else {
         toast("Spiel wird fortgesetzt");
-        document.getElementsByTagName('html')[0].classList.remove("paused");
+        document.getElementById("pause").classList.remove("paused");
     }
 });
 

@@ -45,8 +45,10 @@ module.exports = class GameEngine {
             console.log("Quited game");
             this.io.to("host").emit("toast", "Das Spiel wurde beendet");
             this.io.emit("quit");
-            this.player1;
-            this.player2;
+            this.player1.reset();
+            this.player2.reset();
+            this.player1.timer.stop();
+            this.player2.timer.stop();
         }
     }
 
@@ -55,39 +57,23 @@ module.exports = class GameEngine {
     }
 
     initializePlayer(player) {
-        class FrontendPlayer {
-            constructor(oDef) {
-                this.castle = oDef.castle;
-                this.fence = oDef.fence;
-                this.builder = oDef.builder;
-                this.stones = oDef.stones;
-                this.soldiers = oDef.soldiers;
-                this.weapons = oDef.weapons;
-                this.mages = oDef.mages;
-                this.crystals = oDef.crystals;
-            }
-        }
-
-        const game = this;
-        player.timer = new Timer(() => {
+        const callback = function() {
             player.done = true;
-            if (game.getWinner()) {
-                game.finish(game.getWinner());
+            if (this.getWinner()) {
+                this.finish(this.getWinner());
             } else {
-                game.nextRound();
+                this.nextRound();
             }
-        }, 120000);
+        };
+
+        player.timer = new Timer(callback.bind(this), 1000);
 
         player.socket.on('card', id => {
             if (player.active) {
                 this.activateCard(id, player);
-
-                const oPlayer1 = new FrontendPlayer(this.player1);
-                const oPlayer2 = new FrontendPlayer(this.player2);
-
-                this.io.to('host').emit('playerUpdate', [ oPlayer1, oPlayer2 ]);
                 player.done = true;
                 player.timer.finish();
+                this.updatePlayerInfo();
             }
         });
     }
@@ -106,6 +92,7 @@ module.exports = class GameEngine {
         player.done = false;
         player.socket.emit('turn');
         player.timer.start();
+        console.log("Player " + player.number + " turn");
     }
 
     /**
@@ -154,6 +141,26 @@ module.exports = class GameEngine {
                 enemy[e] += card.enemy[e];
             }
         });
+    }
+
+    updatePlayerInfo() {
+        class FrontendPlayer {
+            constructor(oDef) {
+                this.castle = oDef.castle;
+                this.fence = oDef.fence;
+                this.builder = oDef.builder;
+                this.stones = oDef.stones;
+                this.soldiers = oDef.soldiers;
+                this.weapons = oDef.weapons;
+                this.mages = oDef.mages;
+                this.crystals = oDef.crystals;
+            }
+        }
+
+        const oPlayer1 = new FrontendPlayer(this.player1);
+        const oPlayer2 = new FrontendPlayer(this.player2);
+
+        this.io.emit('playerUpdate', [ oPlayer1, oPlayer2 ]);
     }
 };
 
