@@ -1,8 +1,11 @@
 html, body {
-    height: 100%;
     margin: 0;
     overflow: hidden;
     font-family: "MedievalSharp";
+}
+
+.paused {
+    border: 5px solid #ff3536;
 }
 
 #title {
@@ -13,7 +16,7 @@ html, body {
     padding-top: 1rem;
     font-size: 36pt;
     font-weight: bold;
-    user-select: none;
+    /*user-select: none;*/
     color: #f4bc7d;
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
@@ -21,10 +24,8 @@ html, body {
 /* --- toolbar -------------------------------------------------------------------------------------------------------*/
 
 canvas {
-    width: 100%;
-    height: 100%;
     padding: 0;
-    margin: 0;
+    margin-bottom: -4px;
     background: white;
 }
 

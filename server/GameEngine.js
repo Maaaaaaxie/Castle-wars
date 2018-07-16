@@ -22,7 +22,7 @@ module.exports = class GameEngine {
     resume() {
         if (this.started) {
             console.log("Resumed");
-            this.io.to('host').emit("toast", "Spiel fortgesetzt");
+            this.io.to('host').emit("pause", false);
             this.getActivePlayer().timer.resume();
         }
     }
@@ -30,7 +30,7 @@ module.exports = class GameEngine {
     pause() {
         if (this.started) {
             console.log("Paused");
-            this.io.to('host').emit("toast", "Spiel pausiert");
+            this.io.to('host').emit("pause", true);
             this.getActivePlayer().timer.pause();
         }
     }

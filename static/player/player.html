@@ -70,19 +70,17 @@
         const socket = io();
         socket.emit("clientConnect", {});
 
-        socket.on("join", iNumber => {
+        socket.on("join", sText => {
             const imgStatus = document.getElementById("infotext").getElementsByTagName("img")[0];
             const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[0];
-            if (iNumber === 1) {
+            if (sText) {
                 imgStatus.src = "/images/basic/wifi.png";
-                txtPlayer.innerText = "Spieler 1";
-                document.getElementById("information").classList.add("joined");
-            } else if (iNumber === 2) {
-                imgStatus.src = "/images/basic/wifi.png";
-                txtPlayer.innerText = "Spieler 2";
+                txtPlayer.innerText = sText;
                 document.getElementById("information").classList.add("joined");
             } else {
+                txtPlayer.innerText = "";
                 imgStatus.src = "/images/basic/no-wifi.png";
+                document.getElementById("information").classList.remove("joined");
             }
         });
 
@@ -93,7 +91,8 @@
         });
 
         socket.on("start", () => {
-            const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[1].innerText = "Spiel gestartet";
+            //TODO show cards on start
+            const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[1].innerText = "Spiel gestartet"; //TODO remove
         });
 
     	const oCardsWrap = document.getElementById("cards_inner");
