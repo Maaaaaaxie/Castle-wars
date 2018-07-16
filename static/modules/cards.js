@@ -26,6 +26,12 @@ export default class Cards {
 		oInner.setAttribute("id", "cards_inner");
 		oSection.appendChild(oInner);
 
+		this._registerPressHandler(oSection);
+
+		return oSection;
+	}
+
+	static _registerPressHandler(oSection) {
 		oSection.onclick = e => {
 			if (!bMoveAllowed) {
 				return;
@@ -41,8 +47,6 @@ export default class Cards {
 				}, 500);
 			}
 		};
-
-		return oSection;
 	}
 
 	static removeCard(oSceneInner) {

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Player view: Resources</title>
+    <link rel="stylesheet" type="text/css" href="./../reset.css">
+    <script type="module">
+        import Cards from "/modules/cards.js";
+
+        document.body.appendChild(Cards.render());
+
+        [1, 2, 3, 4, 5, 6, 7].forEach(e => Cards.renderCard(e));
+    </script>
+</head>
+<body>
+</body>
+</html>
