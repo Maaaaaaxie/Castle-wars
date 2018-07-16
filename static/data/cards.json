@@ -310,5 +310,551 @@
       "castle": 0,
       "fence": 0
     }
+  },
+  {
+    "id": "010",
+    "name": "Wehrgang",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 5,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -2,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "011",
+    "name": "Nachtwache",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 8,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -5,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "012",
+    "name": "Burggraben",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 12,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -8,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "013",
+    "name": "Festung",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 18,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -14,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "014",
+    "name": "Bergfried",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 30,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -24,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "015",
+    "name": "Stolperfalle",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 4
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -1,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "016",
+    "name": "Barrikade",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 10
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -4,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "017",
+    "name": "Burgwall",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 25
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": -16,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "020",
+    "name": "Beschwörung",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 8,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -4,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "021",
+    "name": "Beschwörung",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 8,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -4,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "022",
+    "name": "Beschwörung",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 8,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -4,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "023",
+    "name": "Moench",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 20,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -15,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "024",
+    "name": "Dunkler Magier",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 8,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": -28,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -24,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "025",
+    "name": "Drachenfeuer",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": -35
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -25,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
   }
 ]
