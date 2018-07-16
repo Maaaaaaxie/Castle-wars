@@ -1,30 +1,90 @@
 import Information from "/modules/information.js";
 import Resources from "/modules/resources.js";
 import Cards from "/modules/cards.js";
-import GameEngine from "/modules/gameEngine.js";
 
-console.log("Rendering player view");
+const socket = io();
+window.socket = socket;
 
-window.setTimeout(() => {
-	// clear loading animation
-	document.getElementById("canvas").classList.add("hidden");
+/**
+ * socket.on
+ * - join ("Spieler [1/2]")
+ * - start ()
+ * - leave ()
+ * - clientUpdate ({Player)
+ * - playerUpdate ({Player})
+ */
 
+// fired when the player has joined the game
+socket.on("join", sPlayerId => {
+	console.log("Joined game, player has id", sPlayerId);
+	startGame(sPlayerId);
+	// debugger;
+	// const imgStatus = document.getElementById("infotext").getElementsByTagName("img")[0];
+	// const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[0];
+	// if (sPlayerId) {
+	// 	imgStatus.src = "/images/basic/wifi.png";
+	// 	txtPlayer.innerText = sPlayerId;
+	// 	document.getElementById("information").classList.add("joined");
+	// } else {
+	// 	txtPlayer.innerText = "";
+	// 	imgStatus.src = "/images/basic/no-wifi.png";
+	// 	document.getElementById("information").classList.remove("joined");
+	// }
+});
+
+socket.on("clientUpdate", o => {
+	//
+});
+
+socket.on("playerUpdate", i => {
+
+});
+
+// fired when the connection is lost
+socket.on("leave", () => {
+	console.log("Left the game");
+	// debugger;
+	// document.getElementById("infotext").getElementsByTagName("img")[0].src = "/images/basic/no-wifi.png";
+	// document.getElementById("infotext").getElementsByTagName("span")[0].innerText = "";
+	// document.getElementById("information").classList.remove("joined");
+});
+
+// fired when the game starts
+socket.on("start", oInfo => {
+	console.log("The game has started");
+
+	for (const scene of document.getElementsByClassName("scene_inner")) {
+		scene.classList.toggle("is-flipped")
+	}
+
+	// debugger;
+	//TODO show cards on start
+	// const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[1].innerText = "Spiel gestartet"; //TODO remove
+});
+
+// try to connect to the server and start the websocket
+socket.emit("clientConnect", {});
+
+function startGame(nPlayerId) {
+	// hide loading canvas animation of the castle
 	window.setTimeout(() => {
-		window.clearInterval(window.loadingInterval);
-		document.body.removeChild(document.getElementById("canvas"));
+		// fade out the canvas
+		document.getElementById("canvas").classList.add("hidden");
 
-		// add the information area to the page
-		document.body.appendChild(Information.render());
-		// Information.start();
+		// after the fade out animation has finished, we...
+		window.setTimeout(() => {
+			window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
+			document.body.removeChild(document.getElementById("canvas")); // ... and remove the canvas element from the document
 
-		// add the resources area to the page
-		document.body.appendChild(Resources.render());
-		// window.setTimeout(() => Resources.setHealth(37), 1000);
+			// then, all the necessecary parts/wrappers are rendered:
+			document.body.appendChild(Information.render(nPlayerId)); // the information part on the top
+			document.body.appendChild(Resources.render()); // the resources in the middle
+			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
-		document.body.appendChild(Cards.render());
-		Cards.renderCard(1);
+			// render some placeholder cards
+			[ 1, 2, 3, 4, 5, 6, 7, 8 ].forEach(e => Cards.renderCard(1, true));
 
-		// TODO: connect
-		// on game start: start game engine with player id
-	}, 475);
-}, 250);
+
+		}, 475);
+	}, 250);
+}

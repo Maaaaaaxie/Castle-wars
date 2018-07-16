@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Complete Mock: Player view</title>
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="./../reset.css">
     <style>
         canvas {
@@ -58,12 +59,11 @@
 	}
 
 	function drawCastle() {
-		const ctx = getCtx();
-		// const iHeight = 30;
-		const x = window.innerWidth / 2;
+		const
+            ctx = getCtx(),
+            x = window.innerWidth / 2;
+
 		let y = window.innerHeight - Math.round(window.innerHeight / 5) - iHeight;
-		// const iFloor = window.innerHeight - Math.round(window.innerHeight / 5);
-		// const y = window.innerHeight - iFloor;
 
 		ctx.fillStyle = "rgba(156, 128, 78, 0.8)";
 
@@ -79,7 +79,6 @@
         y -= 20;
         let height = iHeight + 20;
         ctx.fillRect(x - 80, y, 30, height);
-        // ctx.fillRect(x - 80, y - 5, 10, 5);
 
         ctx.fillRect(x + 50, y, 30, height);
     }

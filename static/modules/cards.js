@@ -38,9 +38,9 @@ export default class Cards {
 			}
 
 			const oSceneInner = e.target.closest(".scene_inner");
-			if (oSceneInner && !oSceneInner.classList.contains("is-flipped")) {
+			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
 				bMoveAllowed = false;
-				oSceneInner.classList.add("is-flipped");
+				oSceneInner.classList.add("vanished");
 				window.setTimeout(() => {
 					this.removeCard(oSceneInner);
 					bMoveAllowed = true;
@@ -53,7 +53,8 @@ export default class Cards {
 		oSceneInner.closest(".card").parentElement.removeChild(oSceneInner.closest(".card"));
 	}
 
-	static renderCard(nCard) {
+	// TODO: cards flipped at start
+	static renderCard(nCard, bFlipped = false) {
 		oCardPromise.then(aCards => {
 			const oCard = aCards.find(e => Number.parseInt(e.id, 10) === Number.parseInt(nCard, 10));
 
@@ -67,10 +68,14 @@ export default class Cards {
 				oArticle.appendChild(oScene);
 
 				const oSceneInner = document.createElement("div");
-				oSceneInner.setAttribute("class", `scene_inner ${oCard.category.toLowerCase()}`);
+				oSceneInner.setAttribute("class", `scene_inner ${oCard.category.toLowerCase()} ${bFlipped ? "is-flipped" : ""}`);
 				oScene.appendChild(oSceneInner);
 
 				oSceneInner.appendChild(this._createFront(oCard));
+
+				const oBack = document.createElement("div");
+				oBack.setAttribute("class", "card_face back");
+				oSceneInner.appendChild(oBack);
 
 				document.getElementById("cards_inner").appendChild(oArticle);
 			} else {

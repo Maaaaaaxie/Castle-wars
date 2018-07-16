@@ -7,7 +7,7 @@ CSSLoader.loadStyleSheet("/player/information", "information");
  * @define class Information
  */
 export default class Information /*extends Timer */{
-	static render() {
+	static render(sPlayerId) {
 		/* oSection:
 			<section id="information">
 				<article id="infotext">
@@ -26,7 +26,7 @@ export default class Information /*extends Timer */{
 
 		const oInfo = document.createElement("span");
 		oInfo.setAttribute("id", "currentPlayer");
-		oInfo.innerText = "Du bist dran!";
+		oInfo.innerText = sPlayerId;
 		oInfoText.appendChild(oInfo);
 
 		const oTimer = document.createElement("article");

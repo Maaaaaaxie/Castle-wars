@@ -41,7 +41,9 @@ article.card:first-child {
 }
 
 .scene_inner.is-flipped {
-    /*transform: rotateY(180deg);*/
+    transform: rotateY(180deg);
+}
+.scene_inner.vanished {
     transform: translateY(-12rem);
     opacity: 0;
 }
