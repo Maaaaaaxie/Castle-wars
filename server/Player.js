@@ -35,6 +35,18 @@ module.exports = class Player {
         }
     }
 
+    switchCard(id) {
+        let index;
+        for (let i = 0; i < this.cards.length; i++) {
+            if (this.cards[i].id === id) {
+                index = i;
+                break;
+            }
+        }
+        this.cards.splice(index, 1);
+        this.cards.push(getRandomCard());
+    }
+
     reset() {
         this.castle = 20;
         this.fence = 10;

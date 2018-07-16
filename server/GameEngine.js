@@ -123,6 +123,8 @@ module.exports = class GameEngine {
 
     activateCard(id, player) {
         const card = cards.filter(e => e.id === id)[0];
+        player.switchCard(id);
+
         const enemy = player === this.player1 ? this.player2 : this.player1;
 
         const aSelf = Object.keys(card.self);
