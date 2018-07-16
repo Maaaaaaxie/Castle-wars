@@ -22,7 +22,7 @@ module.exports = class ConnectionHelper {
         }
 
         this.game["player"+iNumber] = new Player(id, iNumber, socket);
-        socket.emit("join", iNumber);
+        socket.emit("join", "Spieler " + iNumber);
         console.log("Player " + iNumber + " joined the game");
         this.updateClient("Spieler " + iNumber + " ist dem Spiel beigetreten");
     }

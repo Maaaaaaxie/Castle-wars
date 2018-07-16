@@ -21,13 +21,6 @@ socket.on('clientUpdate', oInfo => {
 function _handleClientUpdate(oInfo) {
     const aPlayer = document.getElementsByClassName('player');
     const aButtons = document.getElementsByClassName('kick');
-    const oDeck1 = document.getElementById("deck-1");
-    const oDeck2 = document.getElementById("deck-2");
-    const oStat1 = document.getElementById("stats-1");
-    const oStat2 = document.getElementById("stats-2");
-    const oInfo1 = document.getElementById("info-1");
-    const oInfo2 = document.getElementById("info-2");
-
     const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
 
@@ -40,44 +33,24 @@ function _handleClientUpdate(oInfo) {
         oButton.disabled = !bEnabled;
     };
 
-    const toggleElement = (oElement, bEnabled) => {
-        if (bEnabled) {
-            oElement.classList.add("fadeIn");
-        } else {
-            oElement.classList.remove("fadeIn");
-        }
-    };
-
     if (oInfo.player1) {
         window._oPlayer1 = new Player(oInfo.player1);
         aPlayer[0].innerHTML = "Spieler 1: Verbunden";
         toggleButton(aButtons[0], true);
-        toggleElement(oDeck1, true);
-        toggleElement(oStat1, true);
-        toggleElement(oInfo1, true);
     } else {
         window._oPlayer1 = undefined;
         aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
         toggleButton(aButtons[0], false);
-        toggleElement(oDeck1, false);
-        toggleElement(oStat1, false);
-        toggleElement(oInfo1, false);
     }
 
     if (oInfo.player2) {
         window._oPlayer2 = new Player(oInfo.player2);
         aPlayer[1].innerHTML = "Spieler 2: Verbunden";
         toggleButton(aButtons[1], true);
-        toggleElement(oDeck2, true);
-        toggleElement(oStat2, true);
-        toggleElement(oInfo2, true);
     } else {
         window._oPlayer2 = undefined;
         aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
         toggleButton(aButtons[1], false);
-        toggleElement(oDeck2, false);
-        toggleElement(oStat2, false);
-        toggleElement(oInfo2, false);
     }
 
     if (oInfo.message) {
@@ -86,23 +59,14 @@ function _handleClientUpdate(oInfo) {
 
     if (oInfo.player1 && oInfo.player2) {
         if (this.started) {
-            oPauseButton.classList.remove("disabled");
-            oPauseButton.disabled = false;
+            toggleButton(oPauseButton, true);
         }
-        oStartButton.classList.remove("disabled");
-        oStartButton.disabled = false;
+        toggleButton(oStartButton, true);
     } else {
-        oPauseButton.classList.add("disabled");
-        oPauseButton.disabled = true;
-        oStartButton.classList.add("disabled");
-        oStartButton.disabled = true;
+        toggleButton(oPauseButton, false);
+        toggleButton(oStartButton, false);
     }
 }
-
-socket.on('playerUpdate', aPlayers => {
-    _translateToFrontend(this._oPlayer1, aPlayers[0]);
-    _translateToFrontend(this._oPlayer2, aPlayers[1]);
-});
 
 function _translateToFrontend(oFrontend, oBackend) {
     for (let property in oBackend) {
@@ -111,6 +75,28 @@ function _translateToFrontend(oFrontend, oBackend) {
         }
     }
 }
+socket.on('playerUpdate', aPlayers => {
+    _translateToFrontend(this._oPlayer1, aPlayers[0]);
+    _translateToFrontend(this._oPlayer2, aPlayers[1]);
+});
+
+function togglePlayer(iNumber, b) {
+    const oDeck = document.getElementById("deck-" + iNumber);
+    const oStat = document.getElementById("stats-" + iNumber);
+    const oInfo = document.getElementById("info-" + iNumber);
+
+    const toggleElement = (oElement, bEnabled) => {
+        if (bEnabled) {
+            oElement.classList.add("fadeIn");
+        } else {
+            oElement.classList.remove("fadeIn");
+        }
+    };
+
+    toggleElement(oDeck, b);
+    toggleElement(oStat, b);
+    toggleElement(oInfo, b);
+}
 
 socket.on('start', () => {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
@@ -118,6 +104,19 @@ socket.on('start', () => {
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
+
+    togglePlayer(1, true);
+    togglePlayer(2, true);
+});
+
+socket.on('pause', () => {
+    if (paused) {
+        toast("Spiel pausiert");
+        document.getElementsByTagName('html')[0].classList.add("paused");
+    } else {
+        toast("Spiel wird fortgesetzt");
+        document.getElementsByTagName('html')[0].classList.remove("paused");
+    }
 });
 
 
@@ -127,6 +126,9 @@ socket.on('quit', () => {
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     oPauseButton.disabled = true;
     oPauseButton.classList.add("disabled");
+
+    togglePlayer(1, false);
+    togglePlayer(2, false);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
