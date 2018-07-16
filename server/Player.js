@@ -1,3 +1,15 @@
+const cards = require('../static/data/cards.json');
+
+function getRandomCard() {
+    if (!this.cards || this.cards.length === 0) {
+        this.cards = cards.slice(0);
+    }
+    const i = Math.round(Math.random() * (this.cards.length-1));
+    const card = this.cards[i].id;
+    this.cards.splice(i, 1);
+    return card;
+}
+
 module.exports = class Player {
     constructor(oDef, bSocket = false, bInitial = false) {
         this.id = oDef.id;
@@ -19,6 +31,7 @@ module.exports = class Player {
             this.soldiers = oDef.soldiers;
             this.crystals = oDef.crystals;
             this.mages = oDef.mages;
+            this.cards = oDef.cards;
         }
     }
 
@@ -31,5 +44,10 @@ module.exports = class Player {
         this.soldiers = 2;
         this.crystals = 8;
         this.mages = 2;
+        this.cards = [];
+
+        for (let i = 0; i < 8; i++) {
+            this.cards.push(getRandomCard());
+        }
     }
 };
