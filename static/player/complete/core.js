@@ -82,7 +82,7 @@ function startGame(nPlayerId) {
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
 			// render some placeholder cards
-			[ 1, 2, 3, 4, 5, 6, 7, 8 ].forEach(e => Cards.renderCard(1, true));
+			[ "001", "002", "003", "004", "005", "006", "007", "008" ].forEach(e => Cards.renderCard(e, false)); // TODO: false to hide at start
 
 
 		}, 475);

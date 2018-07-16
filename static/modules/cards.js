@@ -8,14 +8,25 @@ const oCardPromise = AJAX.getCards();
 const oImages = {
 	"castle": "http://simpleicon.com/wp-content/uploads/castle.png",
 	"fence": "https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png",
-	"builder": "https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png",
-	"stone": "https://png.icons8.com/metro/1600/rock.png",
+	"builders": "https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png",
+	"stones": "https://png.icons8.com/metro/1600/rock.png",
 	"soldiers": "https://www.ccri.edu/about/images/knight_icon.svg",
 	"weapons": "http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png",
 	"mages": "http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png",
 	"crystals": "https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png"
 };
 let bMoveAllowed = true;
+
+const oTexts = {
+	"castle": "Burg",
+	"fence": "Zaun",
+	"builders": "Baumeister",
+	"stones": "Steine",
+	"soldiers": "Soldaten",
+	"weapons": "Waffen",
+	"mages": "Magier",
+	"crystals": "Kristalle"
+};
 
 export default class Cards {
 	static render() {
@@ -39,6 +50,7 @@ export default class Cards {
 
 			const oSceneInner = e.target.closest(".scene_inner");
 			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
+				window.socket.emit("card", e.target.closest(".card").getAttribute("data-id"));
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
 				window.setTimeout(() => {
@@ -54,14 +66,14 @@ export default class Cards {
 	}
 
 	// TODO: cards flipped at start
-	static renderCard(nCard, bFlipped = false) {
+	static renderCard(sCardId, bFlipped = false) {
 		oCardPromise.then(aCards => {
-			const oCard = aCards.find(e => Number.parseInt(e.id, 10) === Number.parseInt(nCard, 10));
+			const oCard = aCards.find(e => e.id === sCardId);
 
 			if (oCard) {
 				const oArticle = document.createElement("article");
 				oArticle.setAttribute("class", "card");
-				oArticle.setAttribute("data-id", nCard);
+				oArticle.setAttribute("data-id", sCardId);
 
 				const oScene = document.createElement("div");
 				oScene.setAttribute("class", "scene");
@@ -79,7 +91,7 @@ export default class Cards {
 
 				document.getElementById("cards_inner").appendChild(oArticle);
 			} else {
-				throw new Error("Could not find card with id " + nCard + ". Rendering not possible");
+				throw new Error("Could not find card with id " + sCardId + ". Rendering not possible");
 			}
 		});
 	}
@@ -99,29 +111,29 @@ export default class Cards {
 
 		const oResourceCount = document.createElement("span");
 		oResourceCount.setAttribute("class", "_resourceCount");
-		oResourceCount.innerText = this.getResourceCount(oCard);
+		oResourceCount.innerText = (this.getResourceCount(oCard) * -1).toString();
 		oHeader.appendChild(oResourceCount);
 
 		// middle
 		const oSection = document.createElement("section");
-		// oSection.innerText = oCard.category;
 		oSection.innerText = oCard.name;
 		oFront.appendChild(oSection);
 
 		// footer
-		const oTarget = document.createElement("span");
-		oTarget.innerText = oCard.target;
-
-		const oSpace = document.createElement("span");
-		oSpace.innerText = " ";
-
-		const oValue = document.createElement("span");
-		oValue.innerText = oCard.value;
-
 		const oFooter = document.createElement("footer");
-		oFooter.appendChild(oTarget);
-		oFooter.appendChild(oSpace);
-		oFooter.appendChild(oValue);
+		let aProperties = [];
+		/** @property {Number} oCard.enemy */
+		for (const p in oCard.enemy) {
+			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(p);
+		}
+		if (aProperties.length > 0) {
+			aProperties.forEach(e => {
+				const oText = document.createElement("div");
+				oText.innerText = (oTexts[e] ? oTexts[e] : "Attacke") + " " + oCard.enemy[e];
+				oFooter.appendChild(oText);
+			});
+		}
+		// TODO: for self
 		oFront.appendChild(oFooter);
 
 		return oFront;
