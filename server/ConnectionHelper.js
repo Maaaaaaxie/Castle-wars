@@ -47,7 +47,7 @@ module.exports = class ConnectionHelper {
     }
 
     updateClient(sMessage) {
-        this.io.to('host').emit("clientUpdate", {
+        this.io.emit("clientUpdate", {
             player1: this.game.player1 && new Player(this.game.player1),
             player2: this.game.player2 && new Player(this.game.player2),
             message: sMessage
