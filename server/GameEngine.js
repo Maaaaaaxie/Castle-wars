@@ -73,7 +73,10 @@ module.exports = class GameEngine {
                 this.activateCard(id, player);
                 player.done = true;
                 player.timer.finish();
-                this.updatePlayerInfo();
+                this.io.emit('playerUpdate', [
+                    new Player(this.player1),
+                    new Player(this.player2)
+                ]);
             }
         });
     }
@@ -141,26 +144,6 @@ module.exports = class GameEngine {
                 enemy[e] += card.enemy[e];
             }
         });
-    }
-
-    updatePlayerInfo() {
-        class FrontendPlayer {
-            constructor(oDef) {
-                this.castle = oDef.castle;
-                this.fence = oDef.fence;
-                this.builder = oDef.builder;
-                this.stones = oDef.stones;
-                this.soldiers = oDef.soldiers;
-                this.weapons = oDef.weapons;
-                this.mages = oDef.mages;
-                this.crystals = oDef.crystals;
-            }
-        }
-
-        const oPlayer1 = new FrontendPlayer(this.player1);
-        const oPlayer2 = new FrontendPlayer(this.player2);
-
-        this.io.emit('playerUpdate', [ oPlayer1, oPlayer2 ]);
     }
 };
 

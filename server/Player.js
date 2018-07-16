@@ -1,10 +1,25 @@
 module.exports = class Player {
-    constructor(id, iNumber, socket, sColor) {
-        this.id = id;
-        this.number = iNumber;
-        this.socket = socket;
-        this.color = sColor;
-        this.reset();
+    constructor(oDef, bSocket = false, bInitial = false) {
+        this.id = oDef.id;
+        this.number = oDef.number;
+        this.color = oDef.color;
+
+        if (bSocket) {
+            this.socket = oDef.socket;
+        }
+
+        if (bInitial) {
+            this.reset();
+        } else {
+            this.castle = oDef.castle;
+            this.fence = oDef.fence;
+            this.stones = oDef.stones;
+            this.builders = oDef.builders;
+            this.weapons = oDef.weapons;
+            this.soldiers = oDef.soldiers;
+            this.crystals = oDef.crystals;
+            this.mages = oDef.mages;
+        }
     }
 
     reset() {
