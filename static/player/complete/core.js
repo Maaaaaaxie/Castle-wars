@@ -41,15 +41,15 @@ socket.on("done", () => {
 });
 
 socket.on("playerUpdate", o => {
-	// console.log("playerUpdate", o);
+	console.log("playerUpdate", o);
 
-	console.log(o["player" + window.nPlayer].cards);
+	const oPlayer = o["player" + window.nPlayer];
+
 	window.setTimeout(() => {
+		setResources(oPlayer);
 		document.body.appendChild(Cards.render());
-		o["player" + window.nPlayer].cards.forEach(e => Cards.renderCard(e));
+		o["player" + window.nPlayer].cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer }));
 	}, 500);
-
-	// debugger;
 });
 
 // fired when the connection is lost
@@ -63,6 +63,17 @@ socket.on("leave", () => {
 
 // try to connect to the server and start the websocket
 socket.emit("clientConnect", {});
+
+function setResources(oPlayer) {
+	Resources.setHealth(oPlayer.castle);
+	Resources.setHealth(oPlayer.fence, false);
+	Resources.setWeapon(oPlayer.soldiers);
+	Resources.setWeapon(oPlayer.weapons, false);
+	Resources.setStone(oPlayer.builders);
+	Resources.setStone(oPlayer.stones, false);
+	Resources.setCrystal(oPlayer.mages);
+	Resources.setCrystal(oPlayer.crystals, false);
+}
 
 function startGame(oPlayer) {
 	// hide loading canvas animation of the castle
@@ -81,22 +92,10 @@ function startGame(oPlayer) {
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
 			// set the resources
-			Resources.setHealth(oPlayer.castle);
-			Resources.setHealth(oPlayer.fence, false);
-			Resources.setWeapon(oPlayer.soldiers);
-			Resources.setWeapon(oPlayer.weapons, false);
-			Resources.setStone(oPlayer.builders);
-			Resources.setStone(oPlayer.stones, false);
-			Resources.setCrystal(oPlayer.mages);
-			Resources.setCrystal(oPlayer.crystals, false);
+			setResources(oPlayer);
 
 			// render the deck
-			oPlayer.cards.forEach(e => Cards.renderCard(e, true, true));
-
-			// render some placeholder cards
-			// [ "001", "002", "003", "004", "005", "006", "007", "008" ].forEach(e => Cards.renderCard(e, Math.random() >= 0.5, true)); // TODO: false to hide at start
-			// [ "001", "017", "025" ].forEach(e => Cards.renderCard(e/*, Math.random() >= 0.5, true*/)); // TODO: false to hide at start
-			// Cards._renderAllCards();
+			oPlayer.cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer, bFlipped: true }));
 		}, 475);
 	}, 250);
 }

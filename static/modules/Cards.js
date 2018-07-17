@@ -51,9 +51,12 @@ export default class Cards {
 				return;
 			}
 
-			const oSceneInner = e.target.closest(".scene_inner");
-			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
-				const sCardId = e.target.closest(".card").getAttribute("data-id");
+			const
+				oSceneInner = e.target.closest(".scene_inner"),
+				oCard = e.target.closest(".card");
+
+			if (oSceneInner && !oSceneInner.classList.contains("vanished") && !oCard.classList.contains("disabled")) {
+				const sCardId = oCard.getAttribute("data-id");
 				console.log("Played card", sCardId);
 				window.socket.emit("card", sCardId);
 				bMoveAllowed = false;
@@ -71,9 +74,11 @@ export default class Cards {
 	}
 
 	// TODO: cards flipped at start
-	static renderCard(sCardId, bPlayable = true, bFlipped = false) {
+	static renderCard({ sCardId, bFlipped = false, oPlayer } = {}) {
+	// static renderCard(sCardId, bPlayable = true, bFlipped = false) {
 		oCardPromise.then(aCards => {
 			const oCard = aCards.find(e => e.id === sCardId);
+			const bPlayable = this._getPlayable(oCard, oPlayer);
 
 			if (oCard) {
 				const oArticle = document.createElement("article");
@@ -101,20 +106,13 @@ export default class Cards {
 		});
 	}
 
-	static _renderAllCards() {
-		for (let i = 0; i <= 25; i++) {
-			let s = i.toString();
-			if (s.length === 1) {
-				s = "00" + s;
-			} else if (s.length === 2) {
-				s = "0" + s;
-			}
-			// try {
-				this.renderCard(s);
-			// } catch(e) {
-			// 	console.error(e);
-			// }
+	static _getPlayable(oCard, oPlayer) {
+		const sCostKey = this.getCostProperty(oCard);
+		if (!sCostKey) {
+			throw new Error("Unable to find cost property for card " + oCard.id);
 		}
+
+		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) > 0;
 	}
 
 	static _createFront(oCard) {
