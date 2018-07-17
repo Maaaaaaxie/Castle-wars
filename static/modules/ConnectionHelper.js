@@ -22,10 +22,7 @@ module.exports = class ConnectionHelper {
         }
 
         const oPlayer = new Player({id, number, socket}, true, true);
-        socket.emit("join", {
-            number,
-            player: new Player(oPlayer)
-        });
+        socket.emit("join", new Player(oPlayer));
         this.game["player"+number] = oPlayer;
 
         console.log("Player " + number + " joined the game");
