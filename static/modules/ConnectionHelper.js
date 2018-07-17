@@ -39,17 +39,19 @@ module.exports = class ConnectionHelper {
             socket.emit('leave');
             this.game.player1 = undefined;
             this.updateClient("Spieler 1 hat das Spiel verlassen");
-            // if (this.game.started) {
-            //     this.startTimeoutCounter();
-            // }
+            if (this.game.started) {
+                this.game.pause();
+                this.startTimeoutCounter();
+            }
         } else if (this.game.player2 && this.game.player2.id === id) {
             console.log("Player 2 left the game");
             socket.emit('leave');
             this.game.player2 = undefined;
             this.updateClient("Spieler 2 hat das Spiel verlassen");
-            // if (this.game.started) {
-            //     this.startTimeoutCounter();
-            // }
+            if (this.game.started) {
+                this.game.pause();
+                this.startTimeoutCounter();
+            }
         }
     }
 

@@ -4,6 +4,7 @@ socket.emit("hostConnect", {});
 
 //TODO
 // bird sounds
+
 socket.on('init', ip => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =
         "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + ip + "/control";
@@ -11,62 +12,62 @@ socket.on('init', ip => {
 });
 
 socket.on('clientUpdate', oInfo => {
-    if (!that._iModifier) {
-        setTimeout(() => _handleClientUpdate(oInfo), 300);
-    } else {
-        _handleClientUpdate(oInfo);
-    }
-});
+    const handleClientUpdate = function(oInfo) {
+        const aPlayer = document.getElementsByClassName('player');
+        const aButtons = document.getElementsByClassName('kick');
+        const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+        const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
 
-function _handleClientUpdate(oInfo) {
-    const aPlayer = document.getElementsByClassName('player');
-    const aButtons = document.getElementsByClassName('kick');
-    const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
-    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+        const toggleButton = (oButton, bEnabled) => {
+            if (bEnabled) {
+                oButton.classList.remove("disabled");
+            } else {
+                oButton.classList.add("disabled");
+            }
+            oButton.disabled = !bEnabled;
+        };
 
-    const toggleButton = (oButton, bEnabled) => {
-        if (bEnabled) {
-            oButton.classList.remove("disabled");
+        if (oInfo.player1) {
+            window._oPlayer1 = new Player(oInfo.player1);
+            aPlayer[0].innerHTML = "Spieler 1: Verbunden";
+            toggleButton(aButtons[0], true);
         } else {
-            oButton.classList.add("disabled");
+            window._oPlayer1 = undefined;
+            aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
+            toggleButton(aButtons[0], false);
         }
-        oButton.disabled = !bEnabled;
+
+        if (oInfo.player2) {
+            window._oPlayer2 = new Player(oInfo.player2);
+            aPlayer[1].innerHTML = "Spieler 2: Verbunden";
+            toggleButton(aButtons[1], true);
+        } else {
+            window._oPlayer2 = undefined;
+            aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
+            toggleButton(aButtons[1], false);
+        }
+
+        if (oInfo.message) {
+            toast(oInfo.message);
+        }
+
+        if (oInfo.player1 && oInfo.player2) {
+            if (this.started) {
+                toggleButton(oPauseButton, true);
+            }
+            toggleButton(oStartButton, true);
+        } else {
+            toggleButton(oPauseButton, false);
+            toggleButton(oStartButton, false);
+        }
     };
 
-    if (oInfo.player1) {
-        window._oPlayer1 = new Player(oInfo.player1);
-        aPlayer[0].innerHTML = "Spieler 1: Verbunden";
-        toggleButton(aButtons[0], true);
+    if (!that._iModifier) {
+        setTimeout(() => handleClientUpdate(oInfo), 300);
     } else {
-        window._oPlayer1 = undefined;
-        aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
-        toggleButton(aButtons[0], false);
+        handleClientUpdate(oInfo);
     }
-
-    if (oInfo.player2) {
-        window._oPlayer2 = new Player(oInfo.player2);
-        aPlayer[1].innerHTML = "Spieler 2: Verbunden";
-        toggleButton(aButtons[1], true);
-    } else {
-        window._oPlayer2 = undefined;
-        aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
-        toggleButton(aButtons[1], false);
-    }
-
-    if (oInfo.message) {
-        toast(oInfo.message);
-    }
-
-    if (oInfo.player1 && oInfo.player2) {
-        if (this.started) {
-            toggleButton(oPauseButton, true);
-        }
-        toggleButton(oStartButton, true);
-    } else {
-        toggleButton(oPauseButton, false);
-        toggleButton(oStartButton, false);
-    }
-}
+});
 
 socket.on('playerUpdate', oInfo => {
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
@@ -81,30 +82,30 @@ socket.on('playerUpdate', oInfo => {
     fnTranslateToFrontend(this._oPlayer2, oInfo.player2);
 });
 
-function togglePlayer(iNumber, b) {
-    const oDeck = document.getElementById("deck-" + iNumber);
-    const oStat = document.getElementById("stats-" + iNumber);
-    const oInfo = document.getElementById("info-" + iNumber);
-
-    const toggleElement = (oElement, bEnabled) => {
-        if (bEnabled) {
-            oElement.classList.add("fadeIn");
-        } else {
-            oElement.classList.remove("fadeIn");
-        }
-    };
-
-    toggleElement(oDeck, b);
-    toggleElement(oStat, b);
-    toggleElement(oInfo, b);
-}
-
 socket.on('start', () => {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
+
+    const togglePlayer = function(iNumber, b) {
+        const oDeck = document.getElementById("deck-" + iNumber);
+        const oStat = document.getElementById("stats-" + iNumber);
+        const oInfo = document.getElementById("info-" + iNumber);
+
+        const toggleElement = (oElement, bEnabled) => {
+            if (bEnabled) {
+                oElement.classList.add("fadeIn");
+            } else {
+                oElement.classList.remove("fadeIn");
+            }
+        };
+
+        toggleElement(oDeck, b);
+        toggleElement(oStat, b);
+        toggleElement(oInfo, b);
+    };
 
     togglePlayer(1, true);
     togglePlayer(2, true);
@@ -119,7 +120,6 @@ socket.on('pause', paused => {
         document.getElementById("pause").classList.remove("paused");
     }
 });
-
 
 socket.on('quit', () => {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];

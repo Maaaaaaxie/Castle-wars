@@ -26,7 +26,9 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.io.to('host').emit("pause", false);
-            this.getActivePlayer().timer.resume();
+            if (this.getActivePlayer()) {
+                this.getActivePlayer().timer.resume();
+            }
         }
     }
 
@@ -34,7 +36,9 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Paused");
             this.io.to('host').emit("pause", true);
-            this.getActivePlayer().timer.pause();
+            if(this.getActivePlayer()) {
+                this.getActivePlayer().timer.pause();
+            }
         }
     }
 
@@ -56,7 +60,7 @@ module.exports = class GameEngine {
     }
 
     getActivePlayer() {
-        return [this.player1, this.player2].filter(e => e.active)[0];
+        return [this.player1, this.player2].filter(e => e && e.active)[0];
     }
 
     initializePlayer(player) {
@@ -95,11 +99,15 @@ module.exports = class GameEngine {
             this.player2.active = false;
         }
 
-        player.active = true;
-        player.done = false;
-        player.socket.emit('turn', this.turnLength);
-        player.timer.start();
-        console.log("Player " + player.number + " turn");
+        if (player) {
+            player.active = true;
+            player.done = false;
+            player.socket.emit('turn', this.turnLength);
+            player.timer.start();
+            console.log("Player " + player.number + " turn");
+        } else {
+            console.error("The player object is undefined! A Player might been disconnected");
+        }
     }
 
     /**
