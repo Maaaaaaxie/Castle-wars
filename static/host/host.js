@@ -12,6 +12,7 @@ socket.on('init', ip => {
 });
 
 socket.on('clientUpdate', oInfo => {
+    this.started = oInfo.started;
     const handleClientUpdate = function(oInfo) {
         const aPlayer = document.getElementsByClassName('player');
         const aButtons = document.getElementsByClassName('kick');
@@ -51,22 +52,22 @@ socket.on('clientUpdate', oInfo => {
             toast(oInfo.message);
         }
 
-        if (oInfo.player1 && oInfo.player2) {
-            if (this.started) {
-                toggleButton(oPauseButton, true);
-            }
+        if (oInfo.started) {
             toggleButton(oStartButton, true);
-        } else {
-            toggleButton(oPauseButton, false);
-            toggleButton(oStartButton, false);
+            toggleButton(oPauseButton, true);
+        } else if (oInfo.player1 && oInfo.player2) {
+            toggleButton(oStartButton, true);
         }
 
         if (oInfo.started) {
-            _start();
+            _showStats();
+            const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
             if (oInfo.paused) {
                 document.getElementById("pause").classList.add("paused");
+                oButton.innerText = "Fortsetzen";
             } else {
                 document.getElementById("pause").classList.remove("paused");
+                oButton.innerText = "Pause";
             }
         } else {
             document.getElementById("pause").classList.remove("paused");
@@ -74,7 +75,7 @@ socket.on('clientUpdate', oInfo => {
     };
 
     if (!that._iModifier) {
-        setTimeout(() => handleClientUpdate(oInfo), 300);
+        setTimeout(() => handleClientUpdate(oInfo), 600);
     } else {
         handleClientUpdate(oInfo);
     }
@@ -100,38 +101,45 @@ socket.on('playerUpdate', oInfo => {
     fnTranslateToFrontend(this._oPlayer2, oInfo.player2);
 });
 
-socket.on('start', _start);
+socket.on('start', _showStats);
 
-function _start() {
+function _togglePlayer(iNumber, b) {
+    const oDeck = document.getElementById("deck-" + iNumber);
+    const oStat = document.getElementById("stats-" + iNumber);
+    const oInfo = document.getElementById("info-" + iNumber);
+
+    const toggleElement = (oElement, bEnabled) => {
+        if (bEnabled) {
+            oElement.classList.add("fadeIn");
+        } else {
+            oElement.classList.remove("fadeIn");
+        }
+    };
+
+    toggleElement(oDeck, b);
+    toggleElement(oStat, b);
+    toggleElement(oInfo, b);
+}
+
+function _showStats() {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
 
-    const togglePlayer = function(iNumber, b) {
-        const oDeck = document.getElementById("deck-" + iNumber);
-        const oStat = document.getElementById("stats-" + iNumber);
-        const oInfo = document.getElementById("info-" + iNumber);
-
-        const toggleElement = (oElement, bEnabled) => {
-            if (bEnabled) {
-                oElement.classList.add("fadeIn");
-            } else {
-                oElement.classList.remove("fadeIn");
-            }
-        };
-
-        toggleElement(oDeck, b);
-        toggleElement(oStat, b);
-        toggleElement(oInfo, b);
-    };
-
-    togglePlayer(1, true);
-    togglePlayer(2, true);
+    _togglePlayer(1, true);
+    _togglePlayer(2, true);
 }
 
 socket.on('pause', paused => {
+    const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+    if (paused) {
+        oButton.innerText = "Fortsetzen";
+    } else {
+        oButton.innerText = "Pause";
+    }
+
     if (paused) {
         toast("Spiel pausiert");
         document.getElementById("pause").classList.add("paused");
@@ -148,8 +156,10 @@ socket.on('quit', () => {
     oPauseButton.disabled = true;
     oPauseButton.classList.add("disabled");
 
-    togglePlayer(1, false);
-    togglePlayer(2, false);
+    document.getElementById("pause").classList.remove("paused");
+
+    _togglePlayer(1, false);
+    _togglePlayer(2, false);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -349,15 +359,7 @@ function toggleGame() {
 }
 
 function pause() {
-    this.paused = !this.paused;
-    socket.emit('pause', this.paused);
-    if (this.paused) {
-        const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-        oButton.innerText = "Fortsetzen";
-    } else {
-        const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-        oButton.innerText = "Pause";
-    }
+    socket.emit('pause');
 }
 
 /**

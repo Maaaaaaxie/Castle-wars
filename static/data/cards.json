@@ -832,7 +832,7 @@
       "crystals": 0,
       "health": 0,
       "castle": 0,
-      "fence": -35
+      "fence": 0
     },
     "enemy": {
       "builders": 0,
@@ -843,7 +843,7 @@
       "crystals": 0,
       "health": 0,
       "castle": 0,
-      "fence": 0
+      "fence": -35
     },
     "costs": {
       "builders": 0,

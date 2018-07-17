@@ -53,13 +53,20 @@ module.exports = class GameEngine {
     quit() {
         if (this.started) {
             this.started = false;
+            this.paused = false;
             console.log("Quited game");
             this.io.to("host").emit("toast", "Das Spiel wurde beendet");
             this.io.emit("quit");
-            this.player1.reset();
-            this.player2.reset();
-            this.player1.timer.stop();
-            this.player2.timer.stop();
+
+            if (this.player1) {
+                this.player1.reset();
+                this.player1.timer.stop();
+            }
+
+            if(this.player2) {
+                this.player2.reset();
+                this.player2.timer.stop();
+            }
         }
     }
 
@@ -153,6 +160,7 @@ module.exports = class GameEngine {
 
         aSelf.forEach(e => player[e] += card.self[e]);
         aCosts.forEach(e => player[e] += card.costs[e]);
+
         aEnemy.forEach(e => {
             if (e === "health") {
                 if (enemy.fence + card.enemy.health < 0) {
@@ -164,6 +172,10 @@ module.exports = class GameEngine {
                 }
             } else {
                 enemy[e] += card.enemy[e];
+            }
+
+            if (enemy[e] < 0) {
+                enemy[e] = 0;
             }
         });
     }

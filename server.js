@@ -90,8 +90,8 @@ io.on('connection', function (socket) {
         game.start();
     });
 
-    socket.on('pause', function(bPaused) {
-        if (bPaused) {
+    socket.on('pause', () => {
+        if (!game.paused) {
             game.pause();
         } else {
             game.resume();
