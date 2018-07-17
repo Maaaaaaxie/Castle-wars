@@ -20,9 +20,16 @@ article.card {
     width: 8rem;
     display: inline-block;
     margin-left: calc(1rem - 3px);
+    cursor: pointer;
 }
 article.card:first-child {
     margin-left: 0;
+}
+
+article.card.disabled {
+    cursor: default;
+    /*background-color: grey;*/
+    /*border-radius: 0.25rem;*/
 }
 
 .scene {
@@ -48,17 +55,24 @@ article.card:first-child {
     opacity: 0;
 }
 
-.scene_inner.defend {
-    border: 2px solid #ff0800;
-    background-color: rgba(255, 8, 0, 0.3);
-}
 .scene_inner.attack {
     border: 2px solid #35ef0b;
     background-color: rgba(53, 239, 11, 0.3);
 }
+.scene_inner.defense {
+    border: 2px solid #ff0800;
+    background-color: rgba(255, 8, 0, 0.3);
+}
+.scene_inner.magic {
+    border: 2px solid #4039af;
+    background-color: rgba(46, 57, 175, 0.3);
+}
 .scene_inner * {
     background-color: transparent;
     color: inherit;
+}
+article.card.disabled .scene_inner {
+    background-color: grey;
 }
 
 .card_face {

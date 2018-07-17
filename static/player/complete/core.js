@@ -7,37 +7,35 @@ window.socket = socket;
 
 /**
  * socket.on
- * - join ("Spieler [1/2]")
+ * - join ({ numbre[1/2], Player[{}] })
  * - start ()
+ * - turn (iTime)
+ * - done ()
  * - leave ()
- * - clientUpdate ({Player)
- * - playerUpdate ({Player})
+ * - playerUpdate ({Player1, Player2})
  */
 
 // fired when the player has joined the game
-socket.on("join", sPlayerId => {
-	console.log("Joined game, player has id", sPlayerId);
-	startGame(sPlayerId);
-	// debugger;
-	// const imgStatus = document.getElementById("infotext").getElementsByTagName("img")[0];
-	// const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[0];
-	// if (sPlayerId) {
-	// 	imgStatus.src = "/images/basic/wifi.png";
-	// 	txtPlayer.innerText = sPlayerId;
-	// 	document.getElementById("information").classList.add("joined");
-	// } else {
-	// 	txtPlayer.innerText = "";
-	// 	imgStatus.src = "/images/basic/no-wifi.png";
-	// 	document.getElementById("information").classList.remove("joined");
-	// }
+socket.on("join", (oPlayer) => {
+	console.log("Joined game", oPlayer);
+	startGame(oPlayer);
 });
 
-socket.on("clientUpdate", o => {
-	//
+// fired when the game starts
+socket.on("start", () => {
+	console.log("The game has started");
+
+	for (const scene of document.getElementsByClassName("scene_inner")) {
+		scene.classList.toggle("is-flipped")
+	}
 });
 
-socket.on("playerUpdate", i => {
+socket.on("turn", iTime => {
+	Information.start(iTime);
+});
 
+socket.on("done", () => {
+	Information.stop();
 });
 
 // fired when the connection is lost
@@ -49,23 +47,10 @@ socket.on("leave", () => {
 	// document.getElementById("information").classList.remove("joined");
 });
 
-// fired when the game starts
-socket.on("start", oInfo => {
-	console.log("The game has started");
-
-	for (const scene of document.getElementsByClassName("scene_inner")) {
-		scene.classList.toggle("is-flipped")
-	}
-
-	// debugger;
-	//TODO show cards on start
-	// const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[1].innerText = "Spiel gestartet"; //TODO remove
-});
-
 // try to connect to the server and start the websocket
 socket.emit("clientConnect", {});
 
-function startGame(nPlayerId) {
+function startGame(oPlayer) {
 	// hide loading canvas animation of the castle
 	window.setTimeout(() => {
 		// fade out the canvas
@@ -77,13 +62,28 @@ function startGame(nPlayerId) {
 			document.body.removeChild(document.getElementById("canvas")); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
-			document.body.appendChild(Information.render(nPlayerId)); // the information part on the top
+			document.body.appendChild(Information.render(oPlayer.number)); // the information part on the top
 			document.body.appendChild(Resources.render()); // the resources in the middle
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
-			// render some placeholder cards
-			[ "001", "002", "003", "004", "005", "006", "007", "008" ].forEach(e => Cards.renderCard(e, false)); // TODO: false to hide at start
+			// set the resources
+			Resources.setHealth(oPlayer.castle);
+			Resources.setHealth(oPlayer.fence, false);
+			Resources.setWeapon(oPlayer.soldiers);
+			Resources.setWeapon(oPlayer.weapons, false);
+			Resources.setStone(oPlayer.builders);
+			Resources.setStone(oPlayer.stones, false);
+			Resources.setCrystal(oPlayer.mages);
+			Resources.setCrystal(oPlayer.crystals, false);
 
+
+			// render the deck
+			oPlayer.cards.forEach(e => Cards.renderCard(e, true, true));
+
+			// render some placeholder cards
+			// [ "001", "002", "003", "004", "005", "006", "007", "008" ].forEach(e => Cards.renderCard(e, Math.random() >= 0.5, true)); // TODO: false to hide at start
+			// [ "001", "017", "025" ].forEach(e => Cards.renderCard(e/*, Math.random() >= 0.5, true*/)); // TODO: false to hide at start
+			// Cards._renderAllCards();
 
 		}, 475);
 	}, 250);

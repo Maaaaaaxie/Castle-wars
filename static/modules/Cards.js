@@ -66,13 +66,13 @@ export default class Cards {
 	}
 
 	// TODO: cards flipped at start
-	static renderCard(sCardId, bFlipped = false) {
+	static renderCard(sCardId, bPlayable = true, bFlipped = false) {
 		oCardPromise.then(aCards => {
 			const oCard = aCards.find(e => e.id === sCardId);
 
 			if (oCard) {
 				const oArticle = document.createElement("article");
-				oArticle.setAttribute("class", "card");
+				oArticle.setAttribute("class", "card" + (!bPlayable ? " disabled" : ""));
 				oArticle.setAttribute("data-id", sCardId);
 
 				const oScene = document.createElement("div");
@@ -94,6 +94,22 @@ export default class Cards {
 				throw new Error("Could not find card with id " + sCardId + ". Rendering not possible");
 			}
 		});
+	}
+
+	static _renderAllCards() {
+		for (let i = 0; i <= 25; i++) {
+			let s = i.toString();
+			if (s.length === 1) {
+				s = "00" + s;
+			} else if (s.length === 2) {
+				s = "0" + s;
+			}
+			// try {
+				this.renderCard(s);
+			// } catch(e) {
+			// 	console.error(e);
+			// }
+		}
 	}
 
 	static _createFront(oCard) {

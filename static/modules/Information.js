@@ -6,7 +6,7 @@ CSSLoader.loadStyleSheet("/player/information", "information");
 /**
  * @define class Information
  */
-export default class Information /*extends Timer */{
+export default class Information /*extends Timer */ {
 	static render(sPlayerId) {
 		/* oSection:
 			<section id="information">
@@ -26,7 +26,7 @@ export default class Information /*extends Timer */{
 
 		const oInfo = document.createElement("span");
 		oInfo.setAttribute("id", "currentPlayer");
-		oInfo.innerText = sPlayerId;
+		oInfo.innerText = "Spieler " + sPlayerId;
 		oInfoText.appendChild(oInfo);
 
 		const oTimer = document.createElement("article");
@@ -36,12 +36,39 @@ export default class Information /*extends Timer */{
 
 		return oSection;
 	}
+
 	static setTurn(bCurrentPlayer = true) {
 		const oActivePlayer = document.getElementById("currentPlayer");
 		if (bCurrentPlayer) {
 			oActivePlayer.innerText = "Du bist dran!";
 		} else {
 			oActivePlayer.innerText = "Dein Gegner ist dran!";
+		}
+	}
+
+	static start(iTimeLeft = 10) {
+		const oTimer = document.getElementById("timer");
+		if (!oTimer) {
+			throw new Error("Unable to start timer: timer element not found");
+		}
+
+		oTimer.innerText = iTimeLeft.toString();
+		window.countdown = window.setInterval(() => {
+			if (iTimeLeft > 0) {
+				iTimeLeft--;
+				oTimer.innerText = iTimeLeft.toString();
+			} else {
+				console.log("Timer finished");
+				window.clearInterval(window.countdown);
+				delete window.countdown;
+			}
+		}, 1000);
+	}
+
+	static stop() {
+		if (window.countdown) {
+			window.clearInterval(window.countdown);
+			delete window.countdown;
 		}
 	}
 }
