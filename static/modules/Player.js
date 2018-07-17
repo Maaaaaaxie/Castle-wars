@@ -1,7 +1,6 @@
 const decks = require('../data/decks.json');
-
+const that = this;
 function getRandomCard() {
-    const that = this;
     if (!that.cards || that.cards.length === 0) {
         that.cards = decks[0].cards.slice(0);
     }
