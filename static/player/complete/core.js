@@ -2,6 +2,8 @@ import Information from "/modules/Information.js";
 import Resources from "/modules/Resources.js";
 import Cards from "/modules/Cards.js";
 
+// TODO: discard cards
+
 const socket = io();
 window.socket = socket;
 window.nPlayer = 0;

@@ -58,7 +58,10 @@ export default class Cards {
 			if (oSceneInner && !oSceneInner.classList.contains("vanished") && !oCard.classList.contains("disabled")) {
 				const sCardId = oCard.getAttribute("data-id");
 				console.log("Played card", sCardId);
-				window.socket.emit("card", sCardId);
+				window.socket.emit("card", {
+					id: sCardId,
+					discard: false
+				});
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
 				window.setTimeout(() => {
@@ -67,6 +70,45 @@ export default class Cards {
 				}, 500);
 			}
 		};
+
+		oSection.oncontextmenu = e => {
+			if (!bMoveAllowed) {
+				return false;
+			}
+
+			const
+				oSceneInner = e.target.closest(".scene_inner"),
+				oCard = e.target.closest(".card");
+
+			if (oSceneInner && !oSceneInner.classList.contains("vanished") && oCard.classList.contains("disabled")) {
+				const sCardId = oCard.getAttribute("data-id");
+				const bDiscard = confirm("Discard this card?");
+				if (bDiscard) {
+					console.log("Discarding card", sCardId);
+					bMoveAllowed = false;
+					oSceneInner.classList.add("vanished");
+					window.socket.emit("card", {
+						id: sCardId,
+						discard: true
+					});
+					window.setTimeout(() => {
+						this.removeCard(oSceneInner);
+						bMoveAllowed = true;
+					}, 500);
+				}
+
+
+				// window.socket.emit("card", sCardId);
+				// bMoveAllowed = false;
+				// oSceneInner.classList.add("vanished");
+				// window.setTimeout(() => {
+				// 	this.removeCard(oSceneInner);
+				// 	bMoveAllowed = true;
+				// }, 500);
+			}
+
+			return false;
+		}
 	}
 
 	static removeCard(oSceneInner) {
