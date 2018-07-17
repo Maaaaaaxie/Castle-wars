@@ -6,8 +6,10 @@ const cards = require('../data/cards.json');
 module.exports = class GameEngine {
     constructor(io) {
         this.io = io;
+        this.started = false;
+        this.paused = false;
 
-        this.turnLength = 30 * 1000;
+        this.turnLength = 40;
     }
 
     start() {
@@ -25,6 +27,7 @@ module.exports = class GameEngine {
     resume() {
         if (this.started) {
             console.log("Resumed");
+            this.paused = false;
             this.io.to('host').emit("pause", false);
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.resume();
@@ -35,6 +38,7 @@ module.exports = class GameEngine {
     pause() {
         if (this.started) {
             console.log("Paused");
+            this.paused = true;
             this.io.to('host').emit("pause", true);
             if(this.getActivePlayer()) {
                 this.getActivePlayer().timer.pause();
@@ -74,7 +78,7 @@ module.exports = class GameEngine {
             }
         };
 
-        player.timer = new Timer(callback.bind(this), this.turnLength);
+        player.timer = new Timer(callback.bind(this), this.turnLength * 1000);
 
         player.socket.on('card', id => {
             if (player.active) {
@@ -91,10 +95,10 @@ module.exports = class GameEngine {
 
     nextRound() {
         let player;
-        if (this.player1.active) {
+        if (this.player1 && this.player1.active) {
             player = this.player2;
             this.player1.active = false;
-        } else {
+        } else if (this.player2 && this.player2.active) {
             player = this.player1;
             this.player2.active = false;
         }

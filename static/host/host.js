@@ -60,6 +60,17 @@ socket.on('clientUpdate', oInfo => {
             toggleButton(oPauseButton, false);
             toggleButton(oStartButton, false);
         }
+
+        if (oInfo.started) {
+            _start();
+            if (oInfo.paused) {
+                document.getElementById("pause").classList.add("paused");
+            } else {
+                document.getElementById("pause").classList.remove("paused");
+            }
+        } else {
+            document.getElementById("pause").classList.remove("paused");
+        }
     };
 
     if (!that._iModifier) {
@@ -70,10 +81,17 @@ socket.on('clientUpdate', oInfo => {
 });
 
 socket.on('playerUpdate', oInfo => {
+    const aIgnoredProperties = [
+        "id",
+        "cards"
+    ];
+
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
         for (let property in oBackend) {
-            if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
-                oFrontend.set(property, oBackend[property]);
+            if (aIgnoredProperties.indexOf(property) === -1) {
+                if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
+                    oFrontend.set(property, oBackend[property]);
+                }
             }
         }
     };
@@ -82,7 +100,9 @@ socket.on('playerUpdate', oInfo => {
     fnTranslateToFrontend(this._oPlayer2, oInfo.player2);
 });
 
-socket.on('start', () => {
+socket.on('start', _start);
+
+function _start() {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
@@ -109,7 +129,7 @@ socket.on('start', () => {
 
     togglePlayer(1, true);
     togglePlayer(2, true);
-});
+}
 
 socket.on('pause', paused => {
     if (paused) {

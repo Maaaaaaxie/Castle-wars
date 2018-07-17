@@ -64,7 +64,9 @@ module.exports = class ConnectionHelper {
         this.io.to("host").emit("clientUpdate", {
             player1: this.game.player1 && new Player(this.game.player1),
             player2: this.game.player2 && new Player(this.game.player2),
-            message: sMessage
+            message: sMessage,
+            started: this.game.started,
+            paused: this.game.paused
         });
     }
 
