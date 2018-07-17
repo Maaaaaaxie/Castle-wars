@@ -5,6 +5,7 @@ module.exports = class ConnectionHelper {
     constructor(game) {
         this.game = game;
         this.io = game.io;
+        this.players = [];
     }
 
     handleClientConnected(socket) {
@@ -21,9 +22,14 @@ module.exports = class ConnectionHelper {
             return;
         }
 
-        const oPlayer = new Player({id, number, socket}, true, true);
-        socket.emit("join", new Player(oPlayer));
-        this.game["player"+number] = oPlayer;
+        let oPlayer = this.players.find(e => e.id === id);
+        if (oPlayer) {
+            socket.emit("join", new Player(oPlayer));
+            this.game["player"+number] = oPlayer;
+        } else {
+            oPlayer = new Player({id, number, socket}, true, true);
+            this.players.push(oPlayer);
+        }
 
         console.log("Player " + number + " joined the game");
         this.updateClient("Spieler " + number + " ist dem Spiel beigetreten");

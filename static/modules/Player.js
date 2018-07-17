@@ -1,12 +1,13 @@
 const decks = require('../data/decks.json');
 
 function getRandomCard() {
-    if (!this.cards || this.cards.length === 0) {
-        this.cards = decks[0].cards.slice(0);
+    const that = this;
+    if (!that.cards || that.cards.length === 0) {
+        that.cards = decks[0].cards.slice(0);
     }
-    const i = Math.round(Math.random() * (this.cards.length-1));
-    const card = this.cards[i];
-    this.cards.splice(i, 1);
+    const i = Math.round(Math.random() * (that.cards.length-1));
+    const card = that.cards[i];
+    that.cards.splice(i, 1);
     return card;
 }
 
@@ -57,6 +58,8 @@ module.exports = class Player {
         this.crystals = 8;
         this.mages = 2;
         this.cards = [];
+
+        that.cards = decks[0].cards.slice(0);
 
         for (let i = 0; i < 8; i++) {
             this.cards.push(getRandomCard());
