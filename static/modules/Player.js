@@ -64,4 +64,10 @@ module.exports = class Player {
             this.cards.push(getRandomCard());
         }
     }
+
+    addResources() {
+        this.stones += this.builders;
+        this.weapons += this.soldiers;
+        this.crystals += this.mages;
+    }
 };

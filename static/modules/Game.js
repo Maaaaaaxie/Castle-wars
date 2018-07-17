@@ -92,37 +92,38 @@ module.exports = class GameEngine {
                 this.activateCard(id, player);
                 player.done = true;
                 player.timer.finish();
-                this.io.emit('playerUpdate', {
-                    player1: new Player(this.player1),
-                    player2: new Player(this.player2)
-                });
+                this.sendPlayerInfo([this.io.sockets]);
             }
         });
     }
 
     nextRound() {
-        if (!this.player1 || !this.player2) {
-            console.error("The player object is undefined! A Player might been disconnected");
-            this.pause();
-            return;
-        }
+        setTimeout(() => {
+            if (!this.player1 || !this.player2) {
+                console.error("The player object is undefined! A Player might been disconnected");
+                this.pause();
+                return;
+            }
 
-        let player;
-        if (this.player1.active) {
-            player = this.player2;
-            this.player1.active = false;
-        } else {
-            player = this.player1;
-            this.player2.active = false;
-        }
+            let player;
+            if (this.player1.active) {
+                player = this.player2;
+                this.player1.active = false;
+            } else {
+                player = this.player1;
+                this.player2.active = false;
+            }
 
-        if (player) {
-            player.active = true;
-            player.done = false;
-            player.socket.emit('turn', this.turnLength);
-            player.timer.start();
-            console.log("Player " + player.number + " turn");
-        }
+            if (player) {
+                player.addResources();
+                this.sendPlayerInfo([player.socket, this.io.to("host")]);
+                player.active = true;
+                player.done = false;
+                player.socket.emit('turn', this.turnLength);
+                player.timer.start();
+                console.log("Player " + player.number + " turn");
+            }
+        }, 300);
     }
 
     /**
@@ -178,6 +179,15 @@ module.exports = class GameEngine {
                 enemy[e] = 0;
             }
         });
+    }
+
+    sendPlayerInfo(aSockets) {
+        aSockets.forEach(socket => {
+            socket.emit('playerUpdate', {
+                player1: new Player(this.player1),
+                player2: new Player(this.player2)
+            });
+        })
     }
 };
 
