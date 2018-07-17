@@ -1,11 +1,11 @@
-const cards = require('../static/data/cards.json');
+const decks = require('../static/data/decks.json');
 
 function getRandomCard() {
     if (!this.cards || this.cards.length === 0) {
-        this.cards = cards.slice(0);
+        this.cards = decks[0].cards.slice(0);
     }
     const i = Math.round(Math.random() * (this.cards.length-1));
-    const card = this.cards[i].id;
+    const card = this.cards[i];
     this.cards.splice(i, 1);
     return card;
 }
