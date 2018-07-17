@@ -38,7 +38,7 @@ module.exports = class Player {
     switchCard(id) {
         let index;
         for (let i = 0; i < this.cards.length; i++) {
-            if (this.cards[i].id === id) {
+            if (this.cards[i] === id) {
                 index = i;
                 break;
             }
