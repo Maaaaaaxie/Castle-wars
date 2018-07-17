@@ -6,6 +6,8 @@ const cards = require('../data/cards.json');
 module.exports = class GameEngine {
     constructor(io) {
         this.io = io;
+
+        this.turnLength = 30 * 1000;
     }
 
     start() {
@@ -60,6 +62,7 @@ module.exports = class GameEngine {
     initializePlayer(player) {
         const callback = function() {
             player.done = true;
+            player.socket.emit('done');
             if (this.getWinner()) {
                 this.finish(this.getWinner());
             } else {
@@ -67,7 +70,7 @@ module.exports = class GameEngine {
             }
         };
 
-        player.timer = new Timer(callback.bind(this), 1000);
+        player.timer = new Timer(callback.bind(this), this.turnLength);
 
         player.socket.on('card', id => {
             if (player.active) {
@@ -94,7 +97,7 @@ module.exports = class GameEngine {
 
         player.active = true;
         player.done = false;
-        player.socket.emit('turn');
+        player.socket.emit('turn', this.turnLength);
         player.timer.start();
         console.log("Player " + player.number + " turn");
     }
