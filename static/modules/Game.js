@@ -87,9 +87,13 @@ module.exports = class GameEngine {
 
         player.timer = new Timer(callback.bind(this), this.turnLength * 1000);
 
-        player.socket.on('card', id => {
+        player.socket.on('card', o => {
             if (player.active) {
-                this.activateCard(id, player);
+                if (!o.discard) {
+                    this.activateCard(o.id, player);
+                } else {
+                    player.switchCard(o.id);
+                }
                 player.done = true;
                 player.timer.finish();
                 this.sendPlayerInfo([this.io.sockets]);
@@ -172,6 +176,9 @@ module.exports = class GameEngine {
                     enemy.fence += card.enemy.health;
                 }
             } else {
+                if (!card.enemy) {
+                    console.warn(card);
+                }
                 enemy[e] += card.enemy[e];
             }
 
