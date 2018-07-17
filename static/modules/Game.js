@@ -94,11 +94,17 @@ module.exports = class GameEngine {
     }
 
     nextRound() {
+        if (!this.player1 || !this.player2) {
+            console.error("The player object is undefined! A Player might been disconnected");
+            this.pause();
+            return;
+        }
+
         let player;
-        if (this.player1 && this.player1.active) {
+        if (this.player1.active) {
             player = this.player2;
             this.player1.active = false;
-        } else if (this.player2 && this.player2.active) {
+        } else {
             player = this.player1;
             this.player2.active = false;
         }
@@ -109,8 +115,6 @@ module.exports = class GameEngine {
             player.socket.emit('turn', this.turnLength);
             player.timer.start();
             console.log("Player " + player.number + " turn");
-        } else {
-            console.error("The player object is undefined! A Player might been disconnected");
         }
     }
 
