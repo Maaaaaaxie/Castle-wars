@@ -39,11 +39,11 @@ const
 const io = require('socket.io')(app);
 
 // Initialize game
-const GameEngine = require('./GameEngine.js');
+const GameEngine = require('./static/modules/Game.js');
 const game = new GameEngine(io);
 
 // Initialize connection helper
-const ConnectionHelper = require('./ConnectionHelper.js');
+const ConnectionHelper = require('./static/modules/ConnectionHelper.js');
 const connection = new ConnectionHelper(game);
 
 // Initiatlize SocketIO

@@ -1,4 +1,4 @@
-import CSSLoader from "/modules/cssLoader.js";
+import CSSLoader from "/modules/CSSLoader.js";
 
 // import stylesheet necessary for this section
 CSSLoader.loadStyleSheet("/player/information", "information");

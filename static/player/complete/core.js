@@ -1,6 +1,6 @@
-import Information from "/modules/information.js";
-import Resources from "/modules/resources.js";
-import Cards from "/modules/cards.js";
+import Information from "/modules/Information.js";
+import Resources from "/modules/Resources.js";
+import Cards from "/modules/Cards.js";
 
 const socket = io();
 window.socket = socket;

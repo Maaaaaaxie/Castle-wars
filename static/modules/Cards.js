@@ -1,5 +1,5 @@
-import CSSLoader from "/modules/cssLoader.js";
-import AJAX from "/modules/ajax.js";
+import CSSLoader from "/modules/CSSLoader.js";
+import AJAX from "/modules/Ajax.js";
 
 // import stylesheet necessary for this section
 CSSLoader.loadStyleSheet("/player/cards", "cards");

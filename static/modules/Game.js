@@ -1,6 +1,7 @@
 const Player = require('./Player.js');
 const Timer = require('./Timer.js');
-const cards = require('../static/data/cards.json');
+
+const cards = require('../data/cards.json');
 
 module.exports = class GameEngine {
     constructor(io) {

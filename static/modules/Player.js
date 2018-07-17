@@ -1,4 +1,4 @@
-const decks = require('../static/data/decks.json');
+const decks = require('../data/decks.json');
 
 function getRandomCard() {
     if (!this.cards || this.cards.length === 0) {
