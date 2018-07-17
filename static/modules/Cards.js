@@ -30,6 +30,9 @@ const oTexts = {
 
 export default class Cards {
 	static render() {
+		// remove element in case it has been rendered already
+		document.getElementById("cards") && document.getElementById("cards").parentNode.removeChild(document.getElementById("cards"));
+
 		const oSection = document.createElement("section");
 		oSection.setAttribute("id", "cards");
 
@@ -50,7 +53,9 @@ export default class Cards {
 
 			const oSceneInner = e.target.closest(".scene_inner");
 			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
-				window.socket.emit("card", e.target.closest(".card").getAttribute("data-id"));
+				const sCardId = e.target.closest(".card").getAttribute("data-id");
+				console.log("Played card", sCardId);
+				window.socket.emit("card", sCardId);
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
 				window.setTimeout(() => {

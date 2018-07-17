@@ -66,9 +66,15 @@ export default class Information /*extends Timer */ {
 	}
 
 	static stop() {
+		const oTimer = document.getElementById("timer");
+		if (!oTimer) {
+			throw new Error("Unable to start timer: timer element not found");
+		}
+
 		if (window.countdown) {
 			window.clearInterval(window.countdown);
 			delete window.countdown;
+			oTimer.innerText = "-";
 		}
 	}
 }

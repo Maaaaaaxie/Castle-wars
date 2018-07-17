@@ -4,6 +4,7 @@ import Cards from "/modules/Cards.js";
 
 const socket = io();
 window.socket = socket;
+window.nPlayer = 0;
 
 /**
  * socket.on
@@ -18,6 +19,7 @@ window.socket = socket;
 // fired when the player has joined the game
 socket.on("join", (oPlayer) => {
 	console.log("Joined game", oPlayer);
+	window.nPlayer = oPlayer.number;
 	startGame(oPlayer);
 });
 
@@ -26,7 +28,7 @@ socket.on("start", () => {
 	console.log("The game has started");
 
 	for (const scene of document.getElementsByClassName("scene_inner")) {
-		scene.classList.toggle("is-flipped")
+		scene.classList.remove("is-flipped");
 	}
 });
 
@@ -36,6 +38,18 @@ socket.on("turn", iTime => {
 
 socket.on("done", () => {
 	Information.stop();
+});
+
+socket.on("playerUpdate", o => {
+	// console.log("playerUpdate", o);
+
+	console.log(o["player" + window.nPlayer].cards);
+	window.setTimeout(() => {
+		document.body.appendChild(Cards.render());
+		o["player" + window.nPlayer].cards.forEach(e => Cards.renderCard(e));
+	}, 500);
+
+	// debugger;
 });
 
 // fired when the connection is lost
@@ -62,7 +76,7 @@ function startGame(oPlayer) {
 			document.body.removeChild(document.getElementById("canvas")); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
-			document.body.appendChild(Information.render(oPlayer.number)); // the information part on the top
+			document.body.appendChild(Information.render(window.nPlayer)); // the information part on the top
 			document.body.appendChild(Resources.render()); // the resources in the middle
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
@@ -76,7 +90,6 @@ function startGame(oPlayer) {
 			Resources.setCrystal(oPlayer.mages);
 			Resources.setCrystal(oPlayer.crystals, false);
 
-
 			// render the deck
 			oPlayer.cards.forEach(e => Cards.renderCard(e, true, true));
 
@@ -84,7 +97,6 @@ function startGame(oPlayer) {
 			// [ "001", "002", "003", "004", "005", "006", "007", "008" ].forEach(e => Cards.renderCard(e, Math.random() >= 0.5, true)); // TODO: false to hide at start
 			// [ "001", "017", "025" ].forEach(e => Cards.renderCard(e/*, Math.random() >= 0.5, true*/)); // TODO: false to hide at start
 			// Cards._renderAllCards();
-
 		}, 475);
 	}, 250);
 }
