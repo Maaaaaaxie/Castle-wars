@@ -74,10 +74,10 @@ module.exports = class GameEngine {
                 this.activateCard(id, player);
                 player.done = true;
                 player.timer.finish();
-                this.io.emit('playerUpdate', [
-                    new Player(this.player1),
-                    new Player(this.player2)
-                ]);
+                this.io.emit('playerUpdate', {
+                    player1: new Player(this.player1),
+                    player2: new Player(this.player2)
+                });
             }
         });
     }

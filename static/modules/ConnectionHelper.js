@@ -21,8 +21,13 @@ module.exports = class ConnectionHelper {
             return;
         }
 
-        this.game["player"+number] = new Player({id, number, socket}, true, true);
-        socket.emit("join", "Spieler " + number);
+        const oPlayer = new Player({id, number, socket}, true, true);
+        socket.emit("join", {
+            number,
+            player: new Player(oPlayer)
+        });
+        this.game["player"+number] = oPlayer;
+
         console.log("Player " + number + " joined the game");
         this.updateClient("Spieler " + number + " ist dem Spiel beigetreten");
     }
@@ -47,7 +52,7 @@ module.exports = class ConnectionHelper {
     }
 
     updateClient(sMessage) {
-        this.io.emit("clientUpdate", {
+        this.io.to("host").emit("clientUpdate", {
             player1: this.game.player1 && new Player(this.game.player1),
             player2: this.game.player2 && new Player(this.game.player2),
             message: sMessage

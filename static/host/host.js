@@ -68,7 +68,7 @@ function _handleClientUpdate(oInfo) {
     }
 }
 
-socket.on('playerUpdate', aPlayers => {
+socket.on('playerUpdate', oInfo => {
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
         for (let property in oBackend) {
             if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
@@ -77,8 +77,8 @@ socket.on('playerUpdate', aPlayers => {
         }
     };
 
-    fnTranslateToFrontend(this._oPlayer1, aPlayers[0]);
-    fnTranslateToFrontend(this._oPlayer2, aPlayers[1]);
+    fnTranslateToFrontend(this._oPlayer1, oInfo.player1);
+    fnTranslateToFrontend(this._oPlayer2, oInfo.player2);
 });
 
 function togglePlayer(iNumber, b) {
