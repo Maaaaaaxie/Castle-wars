@@ -7,13 +7,11 @@ const ip = require('my-local-ip')();
 // Configuration
 const PORT = process.env.PORT || 3000;
 
-const _directory = __dirname.replace("\\server", "");
-
-const INDEX = path.join(_directory, 'index.html');
-const GAME = path.join(_directory, '/static/host/host.html');
-const CONTROL = path.join(_directory, '/static/player/player.html');
-const CHAT = path.join(_directory, '/static/chat/login.html');
-const CARDS = path.join(_directory, '/static/data/cards.json');
+const INDEX = path.join(__dirname, 'index.html');
+const GAME = path.join(__dirname, '/static/host/host.html');
+const CONTROL = path.join(__dirname, '/static/player/complete/index.html');
+const CHAT = path.join(__dirname, '/static/chat/login.html');
+const CARDS = path.join(__dirname, '/static/data/cards.json');
 
 // let game = {};
 

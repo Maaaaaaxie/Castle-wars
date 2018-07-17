@@ -70,12 +70,12 @@
         const socket = io();
         socket.emit("clientConnect", {});
 
-        socket.on("join", sText => {
+        socket.on("join", oPlayer => {
             const imgStatus = document.getElementById("infotext").getElementsByTagName("img")[0];
             const txtPlayer = document.getElementById("infotext").getElementsByTagName("span")[0];
-            if (sText) {
+            if (oPlayer) {
                 imgStatus.src = "/images/basic/wifi.png";
-                txtPlayer.innerText = sText;
+                txtPlayer.innerText = "Spieler " + oPlayer.number;
                 document.getElementById("information").classList.add("joined");
             } else {
                 txtPlayer.innerText = "";

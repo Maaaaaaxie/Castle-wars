@@ -23,14 +23,12 @@ module.exports = class ConnectionHelper {
         }
 
         let oPlayer = this.players.find(e => e.id === id);
-        if (oPlayer) {
-            socket.emit("join", new Player(oPlayer));
-            this.game["player"+number] = oPlayer;
-        } else {
+        if (!oPlayer) {
             oPlayer = new Player({id, number, socket}, true, true);
             this.players.push(oPlayer);
         }
-
+        socket.emit("join", new Player(oPlayer));
+        this.game["player"+number] = oPlayer;
         console.log("Player " + number + " joined the game");
         this.updateClient("Spieler " + number + " ist dem Spiel beigetreten");
     }
@@ -41,11 +39,17 @@ module.exports = class ConnectionHelper {
             socket.emit('leave');
             this.game.player1 = undefined;
             this.updateClient("Spieler 1 hat das Spiel verlassen");
+            // if (this.game.started) {
+            //     this.startTimeoutCounter();
+            // }
         } else if (this.game.player2 && this.game.player2.id === id) {
             console.log("Player 2 left the game");
             socket.emit('leave');
             this.game.player2 = undefined;
             this.updateClient("Spieler 2 hat das Spiel verlassen");
+            // if (this.game.started) {
+            //     this.startTimeoutCounter();
+            // }
         }
     }
 
@@ -60,5 +64,10 @@ module.exports = class ConnectionHelper {
             player2: this.game.player2 && new Player(this.game.player2),
             message: sMessage
         });
+    }
+
+    startTimeoutCounter() {
+        const iRemaining = 40000;
+        this.io.emit("timeout", iRemaining);
     }
 };
