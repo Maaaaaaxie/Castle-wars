@@ -37,8 +37,8 @@ class Player {
             case "color":
                 this.setColor(value);
                 break;
-            case "castle":
-                this.setCastle(value);
+            case "health":
+                this.setHealth(value);
                 break;
             case "fence":
                 this.setFence(value);
@@ -49,7 +49,7 @@ class Player {
             case "stones":
                 this.setStones(value);
                 break;
-            case "soldier":
+            case "soldiers":
                 this.setSoldiers(value);
                 break;
             case "weapons":
@@ -100,7 +100,7 @@ class Player {
         this._set("crystals", i);
     }
 
-    setCastle(i) {
+    setHealth(i) {
         if (i < 0) {
             i = 0;
         } else if (i >= 100) {

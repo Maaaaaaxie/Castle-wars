@@ -856,5 +856,122 @@
       "castle": 0,
       "fence": 0
     }
+  },
+  {
+    "id": "031",
+    "name": "Maurer",
+    "category": "Defense",
+    "image": "",
+    "self": {
+      "builders": 1,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -8,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "032",
+    "name": "Rekurt",
+    "category": "Attack",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 1,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -8,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "033",
+    "name": "Lehrling",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 1,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "enemy": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": 0,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -8,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
   }
 ]
