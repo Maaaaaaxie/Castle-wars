@@ -25,7 +25,8 @@ const oTexts = {
 	"soldiers": "Soldaten",
 	"weapons": "Waffen",
 	"mages": "Magier",
-	"crystals": "Kristalle"
+	"crystals": "Kristalle",
+	"health": "Attacke"
 };
 
 export default class Cards {
@@ -185,12 +186,16 @@ export default class Cards {
 		let aProperties = [];
 		/** @property {Number} oCard.enemy */
 		for (const p in oCard.enemy) {
-			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(p);
+			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(oTexts[p] + " " + oCard.enemy[p]);
+		}
+		for (const p in oCard.self) { // todo: other style, todo: plus on positive values
+			oCard.self.hasOwnProperty(p) && oCard.self[p] !== 0 && aProperties.push(oTexts[p] + " +" + oCard.self[p]);
 		}
 		if (aProperties.length > 0) {
 			aProperties.forEach(e => {
 				const oText = document.createElement("div");
-				oText.innerText = (oTexts[e] ? oTexts[e] : "Attacke") + " " + oCard.enemy[e];
+				// oText.innerText = oTexts[e] + " " + oCard.enemy[e];
+				oText.innerText = e;
 				oFooter.appendChild(oText);
 			});
 		}
