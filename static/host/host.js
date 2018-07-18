@@ -84,10 +84,12 @@ socket.on('clientUpdate', oInfo => {
 socket.on('playerUpdate', oInfo => {
     const aIgnoredProperties = [
         "id",
-        "cards"
+        "cards",
+        "castle"
     ];
 
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
+        oBackend.health = oBackend.castle;
         for (let property in oBackend) {
             if (aIgnoredProperties.indexOf(property) === -1) {
                 if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
