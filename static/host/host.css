@@ -13,7 +13,7 @@ html, body {
 }
 
 .paused {
-    border: 5px solid #ff3536;
+    border: 5px solid #ff8079;
     box-sizing: border-box;
 }
 
@@ -29,6 +29,34 @@ html, body {
     color: #f4bc7d;
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
+
+.centerWrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#launchButton {
+    font-size: 24pt;
+    padding: 1.5rem;
+    border-radius: 20%;
+    opacity: 0;
+}
+
+.wiggle {
+    animation: wiggle;
+    animation-duration: 650ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes wiggle {
+    from { transform: rotateZ(10deg); opacity: 1; }
+    to { transform: rotateZ(-10deg); opacity: 1; }
+}
+
 
 /* --- toolbar -------------------------------------------------------------------------------------------------------*/
 
@@ -107,7 +135,7 @@ canvas {
     color: #f4bc7d;
 }
 
-#options button {
+button {
     outline: none;
     background: #733910;
     -webkit-transition-duration: 0.3s;
@@ -118,12 +146,12 @@ canvas {
     border: 2px solid #49240a;
 }
 
-#options button:hover {
+button:hover {
     background: #f4bc7d;
     color: #733910;
 }
 
-#options button:active {
+button:active {
     background: #c08a4e;
     color: #733910;
 }
