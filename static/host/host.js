@@ -18,6 +18,7 @@ socket.on('clientUpdate', oInfo => {
         const aButtons = document.getElementsByClassName('kick');
         const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+        const oLaunchButton = document.getElementById("launchButton");
 
         const toggleButton = (oButton, bEnabled) => {
             if (bEnabled) {
@@ -57,6 +58,11 @@ socket.on('clientUpdate', oInfo => {
             toggleButton(oPauseButton, true);
         } else if (oInfo.player1 && oInfo.player2) {
             toggleButton(oStartButton, true);
+            oLaunchButton.classList.add("wiggle");
+        }
+
+        if (!oInfo.player1 || !oInfo.player2) {
+            oLaunchButton.classList.remove("wiggle");
         }
 
         if (oInfo.started) {
@@ -127,6 +133,8 @@ function _showStats() {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+    const oLaunchButton = document.getElementById("launchButton");
+    oLaunchButton.classList.remove("wiggle");
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
 
