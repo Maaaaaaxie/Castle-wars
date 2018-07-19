@@ -10,6 +10,12 @@ class Canvas {
         ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
     }
 
+    static _drawSea() {
+        const ctx = this._getCtx();
+        ctx.fillStyle = "#5293c5";
+        ctx.fillRect(0,window.innerHeight/1.7,window.innerWidth,window.innerHeight);
+    }
+
     static _drawHills() {
         const ctx = this._getCtx();
         const sLight = "#7fcccd";
@@ -19,25 +25,45 @@ class Canvas {
         let x = window.innerWidth;
         let y = window._iFloor;
 
-
-
         ctx.beginPath();
         ctx.fillStyle = sLight;
         ctx.moveTo(-200, y);
-        ctx.bezierCurveTo(0,window.innerHeight/4,x/2,window.innerHeight/2,x,y);
+        ctx.bezierCurveTo(0,window.innerHeight/4,x/3,window.innerHeight/2,x/1.4,y);
         ctx.fill();
 
         ctx.beginPath();
         ctx.fillStyle = sMid;
-        ctx.moveTo(x/3, y);
-        ctx.bezierCurveTo(x/1.5,window.innerHeight/4,x/1.1,window.innerHeight/1.8,x+200,y);
+        ctx.moveTo(x/1.8, y);
+        ctx.bezierCurveTo(x/1.3,window.innerHeight/3,x+200,window.innerHeight/1.8,x+400,y);
         ctx.fill();
-
 
         ctx.beginPath();
         ctx.fillStyle = sDark;
         ctx.moveTo(0,y);
-        ctx.bezierCurveTo(x/4,window.innerHeight/2,x/2,window.innerHeight/2,x/1.2,y);
+        ctx.bezierCurveTo(x/4,window.innerHeight/2,x/2.5,window.innerHeight/2.2,x/1.2,y);
+        ctx.fill();
+    }
+
+    static _drawShip(o) {
+        const ctx = this._getCtx();
+        const x = o.x;
+        const y = o.y;
+
+        ctx.fillStyle = "#734d2d";
+        ctx.fillRect(x,y,40,4);
+        ctx.fillRect(x+1,y+4,38,1);
+        ctx.fillRect(x+2,y+5,36,1);
+        ctx.fillRect(x+3,y+6,34,1);
+        ctx.fillRect(x+4,y+7,32,1);
+        ctx.fillRect(x+5,y+8,30,1);
+
+        ctx.fillRect(x+19,y-26,2,26);
+
+        ctx.beginPath();
+        ctx.fillStyle = "#FFF";
+        ctx.moveTo(x+2,y-20);
+        ctx.bezierCurveTo(x+2,y-20,x+33,y-20,x+33,y-20);
+        ctx.bezierCurveTo(x+36,y-20,x+40,y-2,x+33,y-4);
         ctx.fill();
     }
 
@@ -237,7 +263,9 @@ class Canvas {
 
     static _drawCanvas() {
         this._drawSky();
+        this._drawSea();
         this._drawHills();
+        this._drawShip(window._oShip);
         if (window._oPlayer1) {
             this._drawCastle(Math.round(window.innerWidth * 0.2), window._iFloor, window._oPlayer1.castleDef);
             this._drawFence(Math.round(window.innerWidth * 0.35), window._iFloor, window._oPlayer1.castleDef);

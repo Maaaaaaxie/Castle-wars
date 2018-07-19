@@ -279,6 +279,36 @@ function _spawnDeadBird(id) {
     }, 5);
 }
 
+function _initShip() {
+    const x = Math.round(window.innerWidth/1.7);
+    const y = Math.round(window.innerHeight/1.67);
+    const diff = x - Math.round(window.innerWidth/1.75);
+    window._oShip = { x, y };
+
+    function moveShip(i) {
+        let j = Math.abs(i);
+        const iInterval = setInterval(() => {
+            if (j > 0) {
+                window._oShip.x += i > 0 ? 1 : -1;
+                j--;
+            } else {
+                clearInterval(iInterval);
+            }
+        }, 80);
+    }
+
+    if (!window._oShip.interval) {
+        window._oShip.interval = setInterval(() => {
+            moveShip(Math.random() > 0.7 ? 4 : Math.random() < 0.3 ? -4 : 0);
+            if (window._oShip.x > x + diff) {
+                window._oShip.x = x + diff;
+            } else if (window._oShip.x < x - diff) {
+                window._oShip.x = x - diff;
+            }
+        }, 2000);
+    }
+}
+
 function _initializeClouds() {
     window._iCloudTimeout = 15000;
     window._sCloudColor = "rgba(255, 255, 255, 0.90)";
@@ -347,6 +377,8 @@ function _initCanvas() {
 
     document.getElementById("canvas").width = window.innerWidth;
     document.getElementById("canvas").height = window.innerHeight;
+
+    _initShip();
 }
 
 function _onLoad() {
