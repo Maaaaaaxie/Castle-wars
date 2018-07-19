@@ -26,6 +26,8 @@ module.exports = class ConnectionHelper {
         if (!oPlayer) {
             oPlayer = new Player({id, number, socket}, true, true);
             this.players.push(oPlayer);
+        } else if (!this.game.started) {
+            oPlayer.number = number;
         }
         socket.emit("join", new Player(oPlayer));
         this.game["player"+number] = oPlayer;

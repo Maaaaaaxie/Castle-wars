@@ -127,7 +127,7 @@ module.exports = class GameEngine {
                 player.timer.start();
                 console.log("Player " + player.number + " turn");
             }
-        }, 300);
+        }, 800);
     }
 
     /**
