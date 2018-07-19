@@ -122,11 +122,10 @@ socket.on('playerUpdate', oInfo => {
     const aIgnoredProperties = [
         "id",
         "cards",
-        "castle"
+        "castleDef"
     ];
 
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
-        oBackend.health = oBackend.castle;
         for (let property in oBackend) {
             if (aIgnoredProperties.indexOf(property) === -1) {
                 if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
@@ -308,7 +307,7 @@ function _initializeBirds() {
 }
 
 function _getCastle(id) {
-    return window["_oPlayer" + id].castle;
+    return window["_oPlayer" + id].castleDef;
 }
 
 function _setCastleHeight(id, iHeight) {

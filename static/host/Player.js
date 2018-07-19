@@ -40,8 +40,8 @@ class Player {
             case "color":
                 this.setColor(value);
                 break;
-            case "health":
-                this.setHealth(value);
+            case "castle":
+                this.setCastle(value);
                 break;
             case "fence":
                 this.setFence(value);
@@ -109,7 +109,7 @@ class Player {
         this._set("crystals", i);
     }
 
-    setHealth(i) {
+    setCastle(i) {
         if (i < 0) {
             i = 0;
         } else if (i >= 100) {
@@ -117,7 +117,7 @@ class Player {
         }
 
         this._showDiff("castle", i);
-        this.health = i;
+        this.castle = i;
         this._set("castle", i);
         _setCastleHeight(this.number, i * window._iModifier);
     }
@@ -135,8 +135,9 @@ class Player {
     }
 
     _showDiff(property, i) {
-        const diff = i - this[property];
-        if (diff !== 0 && this.initialized) {
+        const sSign = i < this[property] ? "-" : "+";
+        const iDiff = Math.abs(i - this[property]);
+        if (iDiff !== 0 && this.initialized) {
             const aDivs = document.getElementById("stats-"+this.number).getElementsByClassName("change");
             let oElement ;
             for (let i = 0; i < aDivs.length; i++) {
@@ -146,7 +147,7 @@ class Player {
                     break;
                 }
             }
-            oElement.innerText = diff > 0 ? "+" + diff : diff;
+            oElement.innerText = sSign + iDiff;
             setTimeout(() => oElement.innerText = "", 3000);
         }
     }
