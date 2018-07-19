@@ -495,11 +495,11 @@ dialog::backdrop, #backdrop {
 }
 
 .card.left {
-    left: 1.5rem;
+    left: 1.25rem;
 }
 
 .card.right {
-    right: 1.5rem;
+    right: 1.25rem;
 }
 
 .card {

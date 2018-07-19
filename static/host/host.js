@@ -439,15 +439,15 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
 
 /**
  * Animates the card deck
- * @param iPlayerId
+ * @param number
  */
-function animateCard(number, url) {
+function animateCard(number, sUrl) {
     if (window._placingCard) {
         return;
     }
 
     window._placingCard = true;
-    const oCard = document.getElementById("card-" + iPlayerId);
+    const oCard = document.getElementById("card-" + number);
 
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
@@ -458,9 +458,9 @@ function animateCard(number, url) {
         }
     }
     const iIndex = styleSheet.cssRules.length;
-    url = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
-    const sSide = iPlayerId === 1 ? "left" : "right";
-    const sSidePercentage = iPlayerId === 1 ? "50%" : "-50%";
+    sUrl = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
+    const sSide = number === 1 ? "left" : "right";
+    const sSidePercentage = number === 1 ? "50%" : "-50%";
 
     const sRule1 =
         "@keyframes cardAnimation {" +

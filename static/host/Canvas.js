@@ -10,6 +10,37 @@ class Canvas {
         ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
     }
 
+    static _drawHills() {
+        const ctx = this._getCtx();
+        const sLight = "#7fcccd";
+        const sMid = "#74babb";
+        const sDark = "#68a7a8";
+
+        let x = window.innerWidth;
+        let y = window._iFloor;
+
+
+
+        ctx.beginPath();
+        ctx.fillStyle = sLight;
+        ctx.moveTo(-200, y);
+        ctx.bezierCurveTo(0,window.innerHeight/4,x/2,window.innerHeight/2,x,y);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle = sMid;
+        ctx.moveTo(x/3, y);
+        ctx.bezierCurveTo(x/1.5,window.innerHeight/4,x/1.1,window.innerHeight/1.8,x+200,y);
+        ctx.fill();
+
+
+        ctx.beginPath();
+        ctx.fillStyle = sDark;
+        ctx.moveTo(0,y);
+        ctx.bezierCurveTo(x/4,window.innerHeight/2,x/2,window.innerHeight/2,x/1.2,y);
+        ctx.fill();
+    }
+
     static _drawGrass() {
         const ctx = this._getCtx();
 
@@ -206,6 +237,7 @@ class Canvas {
 
     static _drawCanvas() {
         this._drawSky();
+        this._drawHills();
         if (window._oPlayer1) {
             this._drawCastle(Math.round(window.innerWidth * 0.2), window._iFloor, window._oPlayer1.castleDef);
             this._drawFence(Math.round(window.innerWidth * 0.35), window._iFloor, window._oPlayer1.castleDef);
