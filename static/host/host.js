@@ -1,5 +1,36 @@
-const that = this;
 const socket = io();
+const cards = [];
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ----- ||| EVENT LISTENERS ||| ---------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+function _initEventListeners() {
+    document.getElementById("launchButton").addEventListener("click", toggleGame);
+    document.getElementById("canvas").addEventListener("click", onCanvasClick);
+
+    document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame);
+    document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[1].addEventListener("click", pause);
+
+    document.getElementById("volume").addEventListener("oninput", (event) => changeVolume(null, event));
+
+    document.getElementById("kick1").addEventListener("click", () => kickPlayer(1));
+    document.getElementById("kick2").addEventListener("click", () => kickPlayer(2));
+
+    document.getElementById("join").getElementsByTagName("button")[1].addEventListener("click", toggleQR);
+    document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
+    document.getElementById("qrCode").getElementsByTagName("img")[0].addEventListener("click", toggleQR);
+
+    document.getElementById("toggleMusic").addEventListener("click", toggleMusic);
+    document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
+    document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ----- ||| SOCKETS ||| -----------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
 socket.emit("hostConnect", {});
 
 //TODO
@@ -12,7 +43,7 @@ socket.on('init', ip => {
 });
 
 socket.on('clientUpdate', oInfo => {
-    this.started = oInfo.started;
+    window.started = oInfo.started;
     const handleClientUpdate = function(oInfo) {
         const aPlayer = document.getElementsByClassName('player');
         const aButtons = document.getElementsByClassName('kick');
@@ -80,7 +111,7 @@ socket.on('clientUpdate', oInfo => {
         }
     };
 
-    if (!that._iModifier) {
+    if (!window._iModifier) {
         setTimeout(() => handleClientUpdate(oInfo), 600);
     } else {
         handleClientUpdate(oInfo);
@@ -91,11 +122,10 @@ socket.on('playerUpdate', oInfo => {
     const aIgnoredProperties = [
         "id",
         "cards",
-        "castle"
+        "castleDef"
     ];
 
     const fnTranslateToFrontend = function(oFrontend, oBackend) {
-        oBackend.health = oBackend.castle;
         for (let property in oBackend) {
             if (aIgnoredProperties.indexOf(property) === -1) {
                 if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
@@ -105,8 +135,8 @@ socket.on('playerUpdate', oInfo => {
         }
     };
 
-    fnTranslateToFrontend(this._oPlayer1, oInfo.player1);
-    fnTranslateToFrontend(this._oPlayer2, oInfo.player2);
+    fnTranslateToFrontend(window._oPlayer1, oInfo.player1);
+    fnTranslateToFrontend(window._oPlayer2, oInfo.player2);
 });
 
 socket.on('start', _showStats);
@@ -172,21 +202,28 @@ socket.on('quit', () => {
     _togglePlayer(2, false);
 });
 
+socket.on('card', o => {
+    const card = cards.then().find(e => e.id === o.id);
+    animateCard(o.player.number);
+});
+
+socket.on('toast', msg => toast(msg));
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PRIVATE ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 function _deleteBird(id) {
-    this._aActiveBirds.forEach((e, i) => {
+    window._aActiveBirds.forEach((e, i) => {
         if (e.id === id) {
-            this._aActiveBirds.splice(i, 1);
+            window._aActiveBirds.splice(i, 1);
         }
     })
 }
 
 function _deleteDeadBird(id) {
-    this._aDeadBirds.forEach((e, i) => {
+    window._aDeadBirds.forEach((e, i) => {
         if (e.id === id) {
-            this._aDeadBirds.splice(i, 1);
+            window._aDeadBirds.splice(i, 1);
         }
     })
 }
@@ -200,28 +237,8 @@ function _getRandomColor() {
     return color;
 }
 
-function _drawActiveClouds() {
-    this._aActiveClouds.forEach(oCloud => {
-        _drawCloud(oCloud.x, oCloud.y, oCloud.size, oCloud.color);
-    });
-}
-
-function _drawActiveBirds() {
-    this._aActiveBirds.forEach(oBird => {
-        _drawBird(oBird.x, oBird.y, oBird.id);
-    });
-}
-
-function _drawDeadBirds() {
-    if (this._aDeadBirds) {
-        this._aDeadBirds.forEach(oBird => {
-            _drawDeadBird(oBird.x, oBird.y);
-        });
-    }
-}
-
 function _spawnDeadBird(id) {
-    const oBird = this._aActiveBirds.filter(e => e.id === id)[0];
+    const oBird = window._aActiveBirds.filter(e => e.id === id)[0];
 
     const oDeadBird = {
         id: oBird.id,
@@ -229,15 +246,15 @@ function _spawnDeadBird(id) {
         y: oBird.y
     };
 
-    if (!this._aDeadBirds) {
-        this._aDeadBirds = [];
+    if (!window._aDeadBirds) {
+        window._aDeadBirds = [];
     }
 
-    this._aDeadBirds.push(oDeadBird);
+    window._aDeadBirds.push(oDeadBird);
 
     let i = 1;
     const iIntervalY = setInterval(() => {
-        if (oDeadBird.y < this._iFloor) {
+        if (oDeadBird.y < window._iFloor) {
             oDeadBird.y += i;
         } else {
             clearInterval(iIntervalY);
@@ -246,7 +263,7 @@ function _spawnDeadBird(id) {
     });
 
     const iIntervalI = setInterval(() => {
-        if (oDeadBird.y < this._iFloor) {
+        if (oDeadBird.y < window._iFloor) {
             i++;
         } else {
             clearInterval(iIntervalI);
@@ -254,7 +271,7 @@ function _spawnDeadBird(id) {
     }, 100);
 
     const iIntervalX = setInterval(() => {
-        if (oDeadBird.y < this._iFloor) {
+        if (oDeadBird.y < window._iFloor) {
             oDeadBird.x++;
         } else {
             clearInterval(iIntervalX);
@@ -262,35 +279,65 @@ function _spawnDeadBird(id) {
     }, 5);
 }
 
+function _initShip() {
+    const x = Math.round(window.innerWidth/1.7);
+    const y = Math.round(window.innerHeight/1.67);
+    const diff = x - Math.round(window.innerWidth/1.75);
+    window._oShip = { x, y };
+
+    function moveShip(i) {
+        let j = Math.abs(i);
+        const iInterval = setInterval(() => {
+            if (j > 0) {
+                window._oShip.x += i > 0 ? 1 : -1;
+                j--;
+            } else {
+                clearInterval(iInterval);
+            }
+        }, 80);
+    }
+
+    if (!window._oShip.interval) {
+        window._oShip.interval = setInterval(() => {
+            moveShip(Math.random() > 0.7 ? 4 : Math.random() < 0.3 ? -4 : 0);
+            if (window._oShip.x > x + diff) {
+                window._oShip.x = x + diff;
+            } else if (window._oShip.x < x - diff) {
+                window._oShip.x = x - diff;
+            }
+        }, 2000);
+    }
+}
+
 function _initializeClouds() {
-    this._iCloudTimeout = 15000;
-    this._sCloudColor = "rgba(255, 255, 255, 0.90)";
-    this._sCloudSpeed = undefined;
+    window._iCloudTimeout = 15000;
+    window._sCloudColor = "rgba(255, 255, 255, 0.90)";
+    window._sCloudSpeed = undefined;
 
     spawnCloud(3);
     spawnCloud(4);
     spawnCloud(3, -100);
 
-    this.__cloudSpawningInterval = setInterval(() => {
+    window.__cloudSpawningInterval = setInterval(() => {
         spawnCloud(Math.round(Math.random() * 2 + 2), -200);
-    }, this._iCloudTimeout);
+    }, window._iCloudTimeout);
 }
 
 function _initializeBirds() {
     spawnBird();
 
-    this.__birdSpawningInterval1 = setInterval(() => {
+    window.__birdSpawningInterval1 = setInterval(() => {
         spawnBird();
     }, 21000);
 
-    this.__birdSpawningInterval2 = setInterval(() => {
+    window.__birdSpawningInterval2 = setInterval(() => {
         spawnBird();
         setTimeout(() => spawnBird(), Math.random() * 1000 + 400);
     }, 50000);
 }
 
 function _getCastle(id) {
-    return window["_oPlayer" + id].castle;
+    return window["_oPlayer" + id].castleDef;
 }
 
 function _setCastleHeight(id, iHeight) {
@@ -325,23 +372,24 @@ function _setFenceHeight(id, iHeight) {
     }, iTimeout);
 }
 
-function _initializeCanvas() {
-    this._iWidth = window.innerWidth;
-    this._iHeight = window.innerHeight;
-    this._iModifier = Math.round(that._iHeight / 150);
+function _initCanvas() {
+    window._iModifier = Math.round(window.innerHeight / 150);
 
-    document.getElementById("canvas").width = this._iWidth;
-    document.getElementById("canvas").height = this._iHeight;
+    document.getElementById("canvas").width = window.innerWidth;
+    document.getElementById("canvas").height = window.innerHeight;
+
+    _initShip();
 }
 
 function _onLoad() {
-    _initializeCanvas();
-    init();
+    _initEventListeners();
+    _initCanvas();
+    _initGame();
 }
 
 window.onload = () => _onLoad();
 
-window.onresize = () => _initializeCanvas();
+window.onresize = () => _initCanvas();
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
@@ -350,18 +398,18 @@ window.onresize = () => _initializeCanvas();
  * Initializes the game
  * Initializes music, gameInterval, clouds and birds
  */
-function init() {
-    this._music = new Sound("/sounds/music.mp3", 0.5, true);
-    this._music.play();
-    this._music.mute();
-    this.__gameInterval = setInterval(() => _drawCanvas());
+function _initGame() {
+    window._music = new Sound("/sounds/music.mp3", 0.5, true);
+    window._music.play();
+    window._music.mute();
+    window.__gameInterval = setInterval(() => Canvas._drawCanvas(this));
     _initializeClouds();
     _initializeBirds();
 }
 
 function toggleGame() {
-    this.started = !this.started;
-    if (this.started) {
+    window.started = !window.started;
+    if (window.started) {
         socket.emit('start');
     } else {
         socket.emit('quit');
@@ -376,11 +424,11 @@ function pause() {
  * Stops all intervals and stops the music
  */
 function quit() {
-    this._music.stop();
-    clearInterval(this.__gameInterval);
-    clearInterval(this.__cloudSpawningInterval);
-    clearInterval(this.__birdSpawningInterval1);
-    clearInterval(this.__birdSpawningInterval2);
+    window._music.stop();
+    clearInterval(window.__gameInterval);
+    clearInterval(window.__cloudSpawningInterval);
+    clearInterval(window.__birdSpawningInterval1);
+    clearInterval(window.__birdSpawningInterval2);
 }
 
 /**
@@ -389,50 +437,49 @@ function quit() {
  * @param [x] - x position of cloud (e.g. 0, 200, 400)
  */
 function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
-    if (!this._aActiveClouds) {
-        this._aActiveClouds = [];
+    if (!window._aActiveClouds) {
+        window._aActiveClouds = [];
     }
 
-    if (!this._iCloudCount) {
-        this._iCloudCount = 0;
+    if (!window._iCloudCount) {
+        window._iCloudCount = 0;
     }
 
     const oCloud = {
-        id: "__cloud_" + this._iCloudCount++,
+        id: "__cloud_" + window._iCloudCount++,
         x: x,
         y: Math.round(Math.random() * 200 + 50),
         size: iSize,
-        color: this._sCloudColor || _getRandomColor()
+        color: window._sCloudColor || _getRandomColor()
     };
 
     let i = oCloud.x;
-    let iSpeed = this._sCloudSpeed || Math.round(Math.random() * 50) + 50;
+    let iSpeed = window._sCloudSpeed || Math.round(Math.random() * 50) + 50;
 
     const iInterval = setInterval(() => {
-        if (i < this._iWidth + 100) {
+        if (i < window.innerWidth + 100) {
             oCloud.x = i;
             i++;
         } else {
-            this._aActiveClouds.splice(0, 1);
+            window._aActiveClouds.splice(0, 1);
             clearInterval(iInterval);
         }
     }, iSpeed);
 
-    this._aActiveClouds.push(oCloud);
+    window._aActiveClouds.push(oCloud);
 }
 
 /**
  * Animates the card deck
- * @param iPlayerId
+ * @param number
  */
-function animateCard(event, iPlayerId, iCardId) {
-    if (this._placingCard) {
+function animateCard(number, sUrl) {
+    if (window._placingCard) {
         return;
     }
 
-    iPlayerId = parseInt(event.currentTarget.id.slice(5));
-    this._placingCard = true;
-    const oCard = document.getElementById("card-" + iPlayerId);
+    window._placingCard = true;
+    const oCard = document.getElementById("card-" + number);
 
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
@@ -443,9 +490,9 @@ function animateCard(event, iPlayerId, iCardId) {
         }
     }
     const iIndex = styleSheet.cssRules.length;
-    const sUrl = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
-    const sSide = iPlayerId === 1 ? "left" : "right";
-    const sSidePercentage = iPlayerId === 1 ? "50%" : "-50%";
+    sUrl = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
+    const sSide = number === 1 ? "left" : "right";
+    const sSidePercentage = number === 1 ? "50%" : "-50%";
 
     const sRule1 =
         "@keyframes cardAnimation {" +
@@ -475,7 +522,7 @@ function animateCard(event, iPlayerId, iCardId) {
         oCard.classList.remove("cardAnimation");
         styleSheet.deleteRule(iIndex);
         styleSheet.deleteRule(iIndex);
-        this._placingCard = false;
+        window._placingCard = false;
     }, 3000);
 }
 
@@ -495,20 +542,20 @@ function onCanvasClick(event) {
  * @param y - coordinate
  */
 function spawnBird(x, y) {
-    if (y >= this._iFloor) {
+    if (y >= window._iFloor) {
         return;
     }
 
-    if (!this._aActiveBirds) {
-        this._aActiveBirds = [];
+    if (!window._aActiveBirds) {
+        window._aActiveBirds = [];
     }
 
-    if (!this._iBirdCount) {
-        this._iBirdCount = 0;
+    if (!window._iBirdCount) {
+        window._iBirdCount = 0;
     }
 
     const oBird = {
-        id: "__bird_" + this._iBirdCount++,
+        id: "__bird_" + window._iBirdCount++,
         x: x || -20,
         y: y || Math.round(Math.random() * 200 + 50),
     };
@@ -516,7 +563,7 @@ function spawnBird(x, y) {
     let i = oBird.x;
 
     const iInterval = setInterval(() => {
-        if (i < this._iWidth + 100) {
+        if (i < window.innerWidth + 100) {
             oBird.x = i;
             i++;
 
@@ -532,7 +579,7 @@ function spawnBird(x, y) {
         }
     }, 10);
 
-    this._aActiveBirds.push(oBird);
+    window._aActiveBirds.push(oBird);
 }
 
 /**
@@ -571,7 +618,7 @@ function toggleFullscreen() {
  * Toggles the music
  */
 function toggleMusic() {
-    this._music.mute();
+    window._music.mute();
 }
 
 
@@ -604,35 +651,33 @@ function toggleOptions() {
  */
 function changeVolume(volume, event) {
     if (event) {
-        this._music.volume(event.srcElement.value / 100);
+        window._music.volume(event.srcElement.value / 100);
     }
 
     if (volume) {
-        this._music.volume(volume);
+        window._music.volume(volume);
     }
 }
-
-socket.on('toast', msg => toast(msg));
 
 /**
  * Displays a notification message on the bottom of the screen
  * @param sText
  */
 function toast(sText) {
-    if (!this._aToasts) {
-        this._aToasts = [];
+    if (!window._aToasts) {
+        window._aToasts = [];
     }
-    this._aToasts.push(sText);
+    window._aToasts.push(sText);
 
-    if (!this._toasting) {
+    if (!window._toasting) {
         _displayToast();
     }
 
     function _displayToast() {
-        if (that._aToasts.length > 0) {
-            that._toasting = true;
-            const sText = that._aToasts[0];
-            that._aToasts = that._aToasts.slice(1);
+        if (window._aToasts.length > 0) {
+            window._toasting = true;
+            const sText = window._aToasts[0];
+            window._aToasts = window._aToasts.slice(1);
             const oToast = document.getElementById("toast");
             oToast.innerText = sText;
             oToast.classList.add("toastAnimation");
@@ -641,7 +686,7 @@ function toast(sText) {
                 setTimeout(() => _displayToast(), 100);
             }, 3000);
         } else {
-            that._toasting = false;
+            window._toasting = false;
         }
     }
 }

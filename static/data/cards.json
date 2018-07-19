@@ -786,7 +786,7 @@
     "image": "",
     "self": {
       "builders": 0,
-      "stones": 8,
+      "stones": 0,
       "soldiers": 0,
       "weapons": 0,
       "mages": 0,
@@ -886,11 +886,11 @@
     },
     "costs": {
       "builders": 0,
-      "stones": 0,
+      "stones": -8,
       "soldiers": 0,
       "weapons": 0,
       "mages": 0,
-      "crystals": -8,
+      "crystals": 0,
       "health": 0,
       "castle": 0,
       "fence": 0
@@ -898,7 +898,7 @@
   },
   {
     "id": "032",
-    "name": "Rekurt",
+    "name": "Rekrut",
     "category": "Attack",
     "image": "",
     "self": {
@@ -927,9 +927,9 @@
       "builders": 0,
       "stones": 0,
       "soldiers": 0,
-      "weapons": 0,
+      "weapons": -8,
       "mages": 0,
-      "crystals": -8,
+      "crystals": 0,
       "health": 0,
       "castle": 0,
       "fence": 0
@@ -969,6 +969,45 @@
       "weapons": 0,
       "mages": 0,
       "crystals": -8,
+      "health": 0,
+      "castle": 0,
+      "fence": 0
+    }
+  },
+  {
+    "id": "034",
+    "name": "Seelenfalle",
+    "category": "Magic",
+    "image": "",
+    "self": {
+      "builders": 1,
+      "stones": 1,
+      "soldiers": 1,
+      "weapons": 1,
+      "mages": 1,
+      "crystals": 1,
+      "health": 1,
+      "castle": 1,
+      "fence": 1
+    },
+    "enemy": {
+      "builders": -1,
+      "stones": -1,
+      "soldiers": -1,
+      "weapons": -1,
+      "mages": -1,
+      "crystals": -1,
+      "health": -1,
+      "castle": -1,
+      "fence": -1
+    },
+    "costs": {
+      "builders": 0,
+      "stones": 0,
+      "soldiers": 0,
+      "weapons": 0,
+      "mages": 0,
+      "crystals": -45,
       "health": 0,
       "castle": 0,
       "fence": 0

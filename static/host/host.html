@@ -7,10 +7,10 @@
 </head>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/host/host.js"></script>
-<script src="/host/canvas.js"></script>
+<script src="/host/Canvas.js"></script>
 <script src="/host/Player.js"></script>
 <script src="/host/Sound.js"></script>
+<script src="/host/host.js"></script>
 
 <link href='https://fonts.googleapis.com/css?family=MedievalSharp' rel='stylesheet'>
 <link rel="stylesheet" type="text/css" href="/host/host.css">
@@ -24,42 +24,41 @@
 <div id="toolbar" class="breakOn750">
     <div class="title showOn1020">Castle Wars</div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/500px-Speaker_Icon.svg.png"/>
-    <img onclick="toggleMusic()"
-         src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
-    <img onclick="toggleOptions()" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
-    <img onclick="toggleFullscreen()" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
+    <img id="toggleMusic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
+    <img id="toggleOptions" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
+    <img id="toggleFullscreen" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
 </div>
 <dialog id="options">
     <div class="option">
         <div class="description">Spiel</div>
         <div class="game">
-            <button class="disabled" onclick="toggleGame()">Start</button>
-            <button class="disabled" onclick="pause()">Pause</button>
+            <button class="disabled">Start</button>
+            <button class="disabled">Pause</button>
         </div>
     </div>
     <div class="spacer"></div>
     <div class="option">
         <div class="description">Lautstärke</div>
-        <input type="range" min="1" max="100" value="50" class="slider" oninput="changeVolume(null, event)">
+        <input id="volume" type="range" min="1" max="100" value="50" class="slider">
     </div>
     <div class="spacer"></div>
     <div class="option">
         <div class="description">Spieler</div>
         <div class="player">Spieler 1: Nicht verbunden</div>
-        <button class="kick disabled" onclick="kickPlayer(1)">Kicken</button>
+        <button id="kick1" class="kick disabled">Kicken</button>
         <div class="player">Spieler 2: Nicht verbunden</div>
-        <button class="kick disabled" onclick="kickPlayer(2)">Kicken</button>
+        <button id="kick2" class="kick disabled">Kicken</button>
     </div>
     <div class="spacer"></div>
     <div class="option">
         <div class="description">Mitspielen</div>
         <div id="join">
             <div id="qrCode">
-                <button onclick="toggleQR()">Schließen</button>
-                <img onclick="toggleQR()">
+                <button>Schließen</button>
+                <img>
             </div>
             <div id="ip"></div>
-            <button onclick="toggleQR()">QR Code anzeigen</button>
+            <button>QR Code anzeigen</button>
         </div>
     </div>
     <button id="close">Schließen</button>
@@ -172,6 +171,10 @@
                     </div>
                 </div>
             </div>
+            <div class="change">
+                <div class="builders value"></div>
+                <div class="stones value"></div>
+            </div>
         </div>
 
         <div class="stat">
@@ -197,6 +200,10 @@
                         <div class="value weapons"></div>
                     </div>
                 </div>
+            </div>
+            <div class="change">
+                <div class="soldiers value"></div>
+                <div class="weapons value"></div>
             </div>
         </div>
 
@@ -224,6 +231,10 @@
                     </div>
                 </div>
             </div>
+            <div class="change">
+                <div class="mages value"></div>
+                <div class="crystals value"></div>
+            </div>
         </div>
 
         <div class="stat marginTop">
@@ -250,13 +261,20 @@
                     </div>
                 </div>
             </div>
+            <div class="change">
+                <div class="castle value"></div>
+                <div class="fence value"></div>
+            </div>
         </div>
     </div>
 </div>
-
 <div id="stats-2" class="statsVisibility">
     <div class="stats-container">
         <div class="stat">
+            <div class="change">
+                <div class="builders value"></div>
+                <div class="stones value"></div>
+            </div>
             <div class="outer stone">
                 <div class="inner">
                     <div class="property">
@@ -283,6 +301,10 @@
         </div>
 
         <div class="stat">
+            <div class="change">
+                <div class="soldiers value"></div>
+                <div class="weapons value"></div>
+            </div>
             <div class="outer weapon">
                 <div class="inner">
                     <div class="property">
@@ -309,6 +331,10 @@
         </div>
 
         <div class="stat">
+            <div class="change">
+                <div class="mages value"></div>
+                <div class="crystals value"></div>
+            </div>
             <div class="outer crystal">
                 <div class="inner">
                     <div class="property">
@@ -335,6 +361,10 @@
         </div>
 
         <div class="stat marginTop">
+            <div class="change">
+                <div class="castle value"></div>
+                <div class="fence value"></div>
+            </div>
             <div class="outer health">
                 <div class="inner">
                     <div class="property">
@@ -361,6 +391,7 @@
         </div>
     </div>
 </div>
+
 <div id="deck-1">
     <div class="deck-bot card left hideOn725">
         <div class="inner">
@@ -382,7 +413,7 @@
                  src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png"/>
         </div>
     </div>
-    <div id="card-1" class="card left hideOn725" onclick="animateCard(event)">
+    <div id="card-1" class="card left hideOn725">
         <div class="inner">
             <img class="left-top"
                  src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png"/>
@@ -395,7 +426,6 @@
         </div>
     </div>
 </div>
-
 <div id="deck-2">
     <div class="deck-bot card right hideOn725">
         <div class="inner">
@@ -417,7 +447,7 @@
                  src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png"/>
         </div>
     </div>
-    <div id="card-2" class="card right hideOn725" onclick="animateCard(event)">
+    <div id="card-2" class="card right hideOn725">
         <div class="inner">
             <img class="left-top"
                  src="http://www.linkcrafter.com/wp-content/uploads/2016/06/medieval-border-designs-clipartsco-borders-design-images-borders-design-for-graduation-1024x964.png"/>
@@ -432,12 +462,12 @@
 </div>
 
 <div class="centerWrapper">
-    <button id="launchButton" onclick="toggleGame()">Start</button>
+    <button id="launchButton">Start</button>
 </div>
 
 <div id="toast"></div>
 
-<canvas id="canvas" onclick="onCanvasClick(event)"></canvas>
+<canvas id="canvas"></canvas>
 
 </body>
 </html>

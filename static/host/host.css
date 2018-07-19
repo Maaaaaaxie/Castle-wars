@@ -41,10 +41,12 @@ html, body {
     font-size: 24pt;
     padding: 1.5rem;
     border-radius: 20%;
+    display: none;
     opacity: 0;
 }
 
 .wiggle {
+    display: block !important;
     animation: wiggle;
     animation-duration: 650ms;
     animation-iteration-count: infinite;
@@ -342,11 +344,19 @@ dialog::backdrop, #backdrop {
     opacity: 0;
 }
 
+#stats-1 .stat {
+    justify-content: flex-start;
+}
+
 #stats-2 {
     position: absolute;
-    right: 2rem;
+    right: 1rem;
     top: 3rem;
     opacity: 0;
+}
+
+#stats-2 .stat {
+    justify-content: flex-end;
 }
 
 .stats-container {
@@ -357,11 +367,23 @@ dialog::backdrop, #backdrop {
 .stat {
     margin-top: 1rem;
     user-select: none;
+    display: flex;
+
+}
+
+.stat .change {
+    margin: 1rem;
+}
+
+.stat .change .value {
+    height: 50%;
+    display: flex;
+    align-items: center;
 }
 
 .outer {
     height: 100%;
-    width: 100%;
+    width: 6rem;
     border-radius: 0.5rem;
 }
 
@@ -408,22 +430,22 @@ dialog::backdrop, #backdrop {
     border-bottom: 4px dotted rgba(0, 0, 0, 0.7);
 }
 
-.stone {
+.outer.stone {
     border: 0.5rem solid #6e3232;
     background: indianred;
 }
 
-.weapon {
+.outer.weapon {
     border: 0.5rem solid #186218;
     background: limegreen;
 }
 
-.crystal {
+.outer.crystal {
     border: 0.5rem solid dodgerblue;
     background: #a5d9ff;
 }
 
-.health {
+.outer.health {
     border: 0.5rem solid #343434;
     background: #969696;
 }
@@ -473,11 +495,11 @@ dialog::backdrop, #backdrop {
 }
 
 .card.left {
-    left: 1.5rem;
+    left: 1.25rem;
 }
 
 .card.right {
-    right: 1.5rem;
+    right: 1.25rem;
 }
 
 .card {
