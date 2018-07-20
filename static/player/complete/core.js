@@ -10,7 +10,7 @@ window.nPlayer = 0;
 
 /**
  * socket.on
- * - join ({ numbre[1/2], Player[{}] })
+ * - join ({ number[1/2], Player[{}] })
  * - start ()
  * - turn (iTime)
  * - done ()
@@ -29,9 +29,19 @@ socket.on("join", (oPlayer) => {
 socket.on("start", () => {
 	console.log("The game has started");
 
+	const aCards = [];
 	for (const scene of document.getElementsByClassName("scene_inner")) {
-		scene.classList.remove("is-flipped");
+		aCards.push(scene);
 	}
+
+	let i = -1;
+	const iInterval = window.setInterval(() => {
+		if (i > 5) {
+			window.clearInterval(iInterval); // suizide
+		}
+
+		aCards[++i].classList.remove("is-flipped");
+	}, 100);
 });
 
 socket.on("turn", iTime => {
