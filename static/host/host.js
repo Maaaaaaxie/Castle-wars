@@ -287,6 +287,11 @@ function _initShip() {
 
     function moveShip(i) {
         let j = Math.abs(i);
+        if (window._oShip.x + j > x + diff) {
+            j = x + diff - window._oShip.x;
+        } else if (window._oShip.x - j < x - diff) {
+            j = window._oShip.x - x + diff;
+        }
         const iInterval = setInterval(() => {
             if (j > 0) {
                 window._oShip.x += i > 0 ? 1 : -1;
@@ -300,11 +305,6 @@ function _initShip() {
     if (!window._oShip.interval) {
         window._oShip.interval = setInterval(() => {
             moveShip(Math.random() > 0.7 ? 4 : Math.random() < 0.3 ? -4 : 0);
-            if (window._oShip.x > x + diff) {
-                window._oShip.x = x + diff;
-            } else if (window._oShip.x < x - diff) {
-                window._oShip.x = x - diff;
-            }
         }, 2000);
     }
 }
