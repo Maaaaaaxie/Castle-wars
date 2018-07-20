@@ -45,6 +45,7 @@ socket.on("start", () => {
 });
 
 socket.on("turn", iTime => {
+	window.navigator.vibrate && window.navigator.vibrate(140);
 	Information.start(iTime);
 });
 
