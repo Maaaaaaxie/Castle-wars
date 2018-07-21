@@ -5,127 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Player view: Resources</title>
     <link rel="stylesheet" type="text/css" href="./../reset.css">
-    <script data-main="./Resources.js" src="/require.js"></script>
+    <script type="module">
+        import("/modules/Resources.js").then(Resources => document.body.appendChild(Resources.default.render()));
+    </script>
 </head>
 <body>
 <!--<nav id="stats_resources">-->
-    <!--<section id="stats">-->
-        <!--<article class="stat health">-->
-           <!--<aside class="property">-->
-               <!--<div class="description">-->
-                   <!--<div>-->
-                       <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                   <!--</div>-->
-                   <!--<div class="noMarginTop">-->
-                       <!--<span>Baumeister</span>-->
-                   <!--</div>-->
-               <!--</div>-->
-               <!--<div class="propertyValue">-->
-                   <!--2-->
-               <!--</div>-->
-           <!--</aside>-->
-            <!--<aside class="property">-->
-                <!--<div class="description">-->
-                    <!--<div>-->
-                        <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                    <!--</div>-->
-                    <!--<div class="noMarginTop">-->
-                        <!--<span>Baumeister</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="propertyValue">-->
-                    <!--2-->
-                <!--</div>-->
-            <!--</aside>-->
+    <!--<section id="stats" class="health">-->
+        <!--<article class="stat">-->
+            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
+            <!--<span id="propCastle">20</span>-->
         <!--</article>-->
-    <!--</section>-->
-    <!--<section id="resources">-->
-        <!--<div class="resources_inner">-->
-            <!--<article class="stat stone">-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-            <!--</article>-->
-            <!--<article class="stat weapon">-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-            <!--</article>-->
-            <!--<article class="stat crystal">-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-                <!--<aside class="property">-->
-                    <!--<div class="description">-->
-                        <!--<div>-->
-                            <!--<img src="https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png">-->
-                        <!--</div>-->
-                        <!--<div class="noMarginTop">-->
-                            <!--<span>Baumeister</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="propertyValue">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</aside>-->
-            <!--</article>-->
-        <!--</div>-->
+        <!--<article class="stat">-->
+            <!--<img src="https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png">-->
+            <!--<span id="propFence">8</span>-->
+        <!--</article>-->
     <!--</section>-->
 <!--</nav>-->
 </body>
