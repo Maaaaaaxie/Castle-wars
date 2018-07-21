@@ -48,7 +48,7 @@ export default class Cards {
 
 	static _registerPressHandler(oSection) {
 		oSection.onclick = e => {
-			if (!bMoveAllowed) {
+			if (!bMoveAllowed || !window._moveAllowed) {
 				return;
 			}
 
@@ -73,7 +73,7 @@ export default class Cards {
 		};
 
 		oSection.oncontextmenu = e => {
-			if (!bMoveAllowed) {
+			if (!bMoveAllowed || !window._moveAllowed) {
 				return false;
 			}
 
@@ -97,15 +97,6 @@ export default class Cards {
 						bMoveAllowed = true;
 					}, 500);
 				}
-
-
-				// window.socket.emit("card", sCardId);
-				// bMoveAllowed = false;
-				// oSceneInner.classList.add("vanished");
-				// window.setTimeout(() => {
-				// 	this.removeCard(oSceneInner);
-				// 	bMoveAllowed = true;
-				// }, 500);
 			}
 
 			return false;

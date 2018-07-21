@@ -4,9 +4,9 @@ import Cards from "/modules/Cards.js";
 
 // TODO: discard cards
 
-const socket = io();
-window.socket = socket;
+const socket = window.socket = io();
 window.nPlayer = 0;
+window._moveAllowed = false;
 
 /**
  * socket.on
@@ -19,7 +19,7 @@ window.nPlayer = 0;
  */
 
 // fired when the player has joined the game
-socket.on("join", (oPlayer) => {
+socket.on("join", oPlayer => {
 	console.log("Joined game", oPlayer);
 	window.nPlayer = oPlayer.number;
 	startGame(oPlayer);
@@ -29,17 +29,16 @@ socket.on("join", (oPlayer) => {
 socket.on("start", () => {
 	console.log("The game has started");
 
+	// unfold cards on game start
 	const aCards = [];
+	let i = -1;
+
 	for (const scene of document.getElementsByClassName("scene_inner")) {
 		aCards.push(scene);
 	}
 
-	let i = -1;
 	const iInterval = window.setInterval(() => {
-		if (i > 5) {
-			window.clearInterval(iInterval); // suizide
-		}
-
+		i > 5 && window.clearInterval(iInterval); // suizide
 		aCards[++i].classList.remove("is-flipped");
 	}, 100);
 });
@@ -47,10 +46,12 @@ socket.on("start", () => {
 socket.on("turn", iTime => {
 	window.navigator.vibrate && window.navigator.vibrate(140);
 	Information.start(iTime);
+	window._moveAllowed = true;
 });
 
 socket.on("done", () => {
 	Information.stop();
+	window._moveAllowed = false;
 });
 
 socket.on("playerUpdate", o => {

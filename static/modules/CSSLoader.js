@@ -1,5 +1,7 @@
 const sBase = window.location.origin;
 
+console.warn("Using deprecated CSSLoader");
+
 export default class CSSLoader {
 	static loadStyleSheet(sPath, sName) {
 		const oStyleSheet = document.createElement("link");
