@@ -64,66 +64,35 @@ export default class Resources {
 		const oNav = document.createElement("nav");
 		oNav.setAttribute("id", "stats_resources");
 
-		// stats
-		const oStats = document.createElement("section");
-		oStats.setAttribute("id", "stats");
-		oNav.appendChild(oStats);
+		aStats.forEach(e => {
+			const oElement = document.createElement("section");
+			oElement.setAttribute("class", e.class);
+			oNav.appendChild(oElement);
 
-		oStats.appendChild(this.renderStat(aStats[0]));
-
-		// resources
-		const oResources = document.createElement("section");
-		oResources.setAttribute("id", "resources");
-		oNav.appendChild(oResources);
-
-		oResources.appendChild(this.renderStat(aStats[1]));
-		oResources.appendChild(this.renderStat(aStats[2]));
-		oResources.appendChild(this.renderStat(aStats[3]));
+			oElement.appendChild(this.renderStat(e));
+		});
 
 		return oNav;
 	}
 
 	static renderStat(oStat) {
-		const oArticle = document.createElement("article");
-		oArticle.setAttribute("class", `stat ${oStat.class}`);
+		const oWrap = document.createElement("div");
 
-		oArticle.appendChild(this.renderProperty(oStat.properties[0]));
-		oArticle.appendChild(this.renderProperty(oStat.properties[1]));
+		oStat.properties.forEach(e => {
+			const oArticle = document.createElement("article");
+			const oImg = document.createElement("img");
+			oImg.setAttribute("src", e.image);
+			oArticle.appendChild(oImg);
 
-		return oArticle;
-	}
+			const oSpan = document.createElement("span");
+			oSpan.setAttribute("id", e.id);
+			oSpan.innerText = e.value.toString();
+			oArticle.appendChild(oSpan);
 
-	static renderProperty(oProperty) {
-		const oAside = document.createElement("aside");
-		oAside.setAttribute("class", "property");
+			oWrap.appendChild(oArticle);
+		});
 
-		// description
-		const oDescription = document.createElement("div");
-		oDescription.setAttribute("class", "description");
-
-		const oImgParent = document.createElement("div");
-		const oImg = document.createElement("img");
-		oImg.setAttribute("src", oProperty.image);
-		oImgParent.appendChild(oImg);
-
-		const oNameParent = document.createElement("div");
-		oNameParent.setAttribute("class", "noMarginTop");
-		const oSpan = document.createElement("span");
-		oSpan.innerText = oProperty.name;
-		oNameParent.appendChild(oSpan);
-
-		oDescription.appendChild(oImgParent);
-		oDescription.appendChild(oNameParent);
-
-		// value
-		const oValue = document.createElement("div");
-		oValue.setAttribute("id", oProperty.id);
-		oValue.setAttribute("class", "propertyValue");
-		oValue.innerText = oProperty.value;
-
-		oAside.appendChild(oDescription);
-		oAside.appendChild(oValue);
-		return oAside;
+		return oWrap;
 	}
 
 	static setHealth(iNewHealth, bCastle = true) {
