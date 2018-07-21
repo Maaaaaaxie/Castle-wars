@@ -31,7 +31,7 @@ export default class Information /*extends Timer */ {
 
 		const oTimer = document.createElement("article");
 		oTimer.setAttribute("id", "timer");
-		oTimer.innerText = "" + 30;
+		oTimer.innerText = "-";
 		oSection.appendChild(oTimer);
 
 		return oSection;
