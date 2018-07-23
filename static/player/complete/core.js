@@ -78,7 +78,7 @@ socket.on("leave", () => {
 });
 
 // try to connect to the server and start the websocket
-socket.emit("clientConnect", {});
+// socket.emit("clientConnect", {});
 
 function setResources(oPlayer) {
 	Resources.setHealth(oPlayer.castle);
@@ -96,10 +96,11 @@ function startGame(oPlayer) {
 	window.setTimeout(() => {
 		// fade out the canvas
 		document.getElementById("canvas").classList.add("hidden");
+		document.body.removeChild(document.getElementById("centerWrapper"));
 
 		// after the fade out animation has finished, we...
 		window.setTimeout(() => {
-			window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
+			// window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
 			document.body.removeChild(document.getElementById("canvas")); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
@@ -115,3 +116,24 @@ function startGame(oPlayer) {
 		}, 475);
 	}, 250);
 }
+
+// loaded, show join button
+window.clearInterval(window.loadingInterval);
+
+const iInterval = window.setInterval(() => {
+	const iMaxHeight = window.innerHeight - Math.floor(window.innerHeight / 3);
+	if (window.iHeight >= iMaxHeight) {
+		window.iHeight = iMaxHeight;
+		window.clearInterval(iInterval);
+
+		const oJoinButton = document.getElementById("launchButton");
+		oJoinButton.addEventListener("click", e => {
+			socket.emit("clientConnect", {});
+			oJoinButton.disabled = true;
+		});
+	} else {
+		window.iHeight += 4;
+	}
+
+	window.draw();
+}, (1000 / 60));

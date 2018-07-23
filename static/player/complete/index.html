@@ -20,15 +20,67 @@
             opacity: 0;
             transition: visibility 0s 0.5s, opacity 0.5s linear;
         }
+
+        #centerWrapper {
+            background-color: transparent;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #launchButton {
+            font-size: 24pt;
+            padding: 1.5rem;
+            border-radius: 20%;
+            opacity: 0;
+        }
+
+        .wiggle {
+            animation: wiggle;
+            animation-duration: 650ms;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+        }
+
+        @keyframes wiggle {
+            from { transform: rotateZ(10deg); opacity: 1; }
+            to { transform: rotateZ(-10deg); opacity: 1; }
+        }
+
+        button {
+            outline: none;
+            background: #733910;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            color: #f4bc7d;
+            font-family: "MedievalSharp";
+            cursor: pointer;
+            border: 2px solid #49240a;
+        }
+
+        button:hover {
+            background: #f4bc7d;
+            color: #733910;
+        }
+
+        button:active {
+            background: #c08a4e;
+            color: #733910;
+        }
     </style>
     <script type="module" src="/player/complete/core.js"></script>
 </head>
 <body>
 <canvas id="canvas"></canvas>
+<div id="centerWrapper">
+    <button id="launchButton" class="wiggle">Join</button>
+</div>
 </body>
 </html>
 <script>
-    let iHeight = 0;
+    window.iHeight = 0;
     let iAdder = 4;
 
 	function getCtx() {
@@ -63,12 +115,12 @@
             ctx = getCtx(),
             x = window.innerWidth / 2;
 
-		let y = window.innerHeight - Math.round(window.innerHeight / 5) - iHeight;
+		let y = window.innerHeight - Math.round(window.innerHeight / 5) - window.iHeight;
 
 		ctx.fillStyle = "rgba(156, 128, 78, 0.8)";
 
 		// base
-		ctx.fillRect(x - 50, y, 100, iHeight);
+		ctx.fillRect(x - 50, y, 100, window.iHeight);
 		ctx.fillRect(x - 50, y - 10, 20, 10); // left
 		ctx.fillRect(x + 30, y - 10, 20, 10); // right
         ctx.fillRect(x - 10, y - 10, 20, 10);
@@ -77,25 +129,29 @@
 
 		// towers
         y -= 20;
-        let height = iHeight + 20;
+        let height = window.iHeight + 20;
         ctx.fillRect(x - 80, y, 30, height);
 
         ctx.fillRect(x + 50, y, 30, height);
     }
 
     function setHeight() {
-		if (iHeight > window.innerHeight - Math.floor(window.innerHeight / 3)) {
+		if (window.iHeight > window.innerHeight - Math.floor(window.innerHeight / 3)) {
 			iAdder *= -1;
-        } else if (iHeight < 0) {
+        } else if (window.iHeight < 0) {
 			iAdder *= -1;
         }
-        iHeight += iAdder;
+        window.iHeight += iAdder;
     }
 
-    window.loadingInterval = setInterval(() => {
-    	setHeight();
+    function draw() {
 		drawSky();
 		drawGrass();
 		drawCastle();
+    }
+
+    window.loadingInterval = window.setInterval(() => {
+    	setHeight();
+    	draw();
     }, (1000 / 60));
 </script>
