@@ -44,6 +44,8 @@ socket.on("start", () => {
 });
 
 socket.on("turn", iTime => {
+	document.getElementById("information").classList.add("notify");
+	window.setTimeout(() => document.getElementById("information").classList.remove("notify"), 1000);
 	window.navigator.vibrate && window.navigator.vibrate(140);
 	Information.start(iTime);
 	window._moveAllowed = true;

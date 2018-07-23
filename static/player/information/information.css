@@ -12,13 +12,27 @@
     flex-direction: row;
     justify-content: space-between;
     font-size: 1.25rem;
+    background-color: transparent;
 }
 
 #information * {
     font-size: inherit;
+    background-color: transparent;
 }
 
 #information article {
     user-select: none;
-    /*display: inline-block;*/
+}
+
+.notify {
+    animation: 1s lightup 1 ease-out;
+}
+
+@keyframes lightup {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: #18ff00;;
+    }
 }
