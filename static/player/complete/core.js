@@ -118,6 +118,17 @@ function startGame(oPlayer) {
 }
 
 // loaded, show join button
+function enterFullscreen(oElement) {
+	if(oElement.requestFullscreen) {
+		oElement.requestFullscreen();
+	} else if(oElement.mozRequestFullScreen) {
+		oElement.mozRequestFullScreen();
+	} else if(oElement.msRequestFullscreen) {
+		oElement.msRequestFullscreen();
+	} else if(oElement.webkitRequestFullscreen) {
+		oElement.webkitRequestFullscreen();
+	}
+}
 window.clearInterval(window.loadingInterval);
 
 const iInterval = window.setInterval(() => {
@@ -128,6 +139,7 @@ const iInterval = window.setInterval(() => {
 
 		const oJoinButton = document.getElementById("launchButton");
 		oJoinButton.addEventListener("click", e => {
+			enterFullscreen(document.documentElement);
 			socket.emit("clientConnect", {});
 			oJoinButton.disabled = true;
 		});
