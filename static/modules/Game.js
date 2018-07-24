@@ -149,8 +149,10 @@ module.exports = class GameEngine {
     }
 
     finish(winner) {
-        const sNumber = winner === this.player1 ? "1" : "2";
+        const sNumber = winner.number;
         this.io.to('host').emit('toast', "Spieler " + sNumber + " hat das Spiel gewonnen");
+        this.io.emit('finish', winner.number);
+        this.quit();
     }
 
     activateCard(id, player) {

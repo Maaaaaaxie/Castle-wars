@@ -264,8 +264,8 @@ class Canvas {
     static _drawCanvas() {
         this._drawSky();
         this._drawSea();
-        this._drawHills();
         this._drawShip(window._oShip);
+        this._drawHills();
         if (window._oPlayer1) {
             this._drawCastle(Math.round(window.innerWidth * 0.2), window._iFloor, window._oPlayer1.castleDef);
             this._drawFence(Math.round(window.innerWidth * 0.35), window._iFloor, window._oPlayer1.castleDef);
