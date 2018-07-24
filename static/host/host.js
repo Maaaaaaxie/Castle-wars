@@ -202,6 +202,10 @@ socket.on('quit', () => {
     _togglePlayer(2, false);
 });
 
+socket.on('finish', number => {
+
+});
+
 socket.on('card', o => {
     const card = cards.then().find(e => e.id === o.id);
     animateCard(o.player.number);
@@ -282,20 +286,23 @@ function _spawnDeadBird(id) {
 function _initShip() {
     const x = Math.round(window.innerWidth/1.7);
     const y = Math.round(window.innerHeight/1.67);
-    const diff = x - Math.round(window.innerWidth/1.75);
+    const diff = x - Math.round(window.innerWidth/2.2);
     window._oShip = { x, y };
 
     function moveShip(i) {
-        let j = Math.abs(i);
-        if (window._oShip.x + j > x + diff) {
-            j = x + diff - window._oShip.x;
-        } else if (window._oShip.x - j < x - diff) {
-            j = window._oShip.x - x + diff;
+        if (window._oShip.x + i > x + diff) {
+            i = x + diff - window._oShip.x;
+        } else if (window._oShip.x + i < x - diff) {
+            i = x - diff - window._oShip.x;
         }
+
         const iInterval = setInterval(() => {
-            if (j > 0) {
-                window._oShip.x += i > 0 ? 1 : -1;
-                j--;
+            if (i < 0) {
+                window._oShip.x--;
+                i++;
+            } else if (i > 0) {
+                window._oShip.x++;
+                i--;
             } else {
                 clearInterval(iInterval);
             }
@@ -304,8 +311,8 @@ function _initShip() {
 
     if (!window._oShip.interval) {
         window._oShip.interval = setInterval(() => {
-            moveShip(Math.random() > 0.7 ? 4 : Math.random() < 0.3 ? -4 : 0);
-        }, 2000);
+            moveShip(Math.random() > 0.7 ? 14 : Math.random() < 0.3 ? -14 : 0);
+        }, 700);
     }
 }
 
