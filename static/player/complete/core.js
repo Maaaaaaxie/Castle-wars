@@ -2,11 +2,10 @@ import Information from "/modules/Information.js";
 import Resources from "/modules/Resources.js";
 import Cards from "/modules/Cards.js";
 
-// TODO: discard cards
-
 const socket = window.socket = io();
 window.nPlayer = 0;
 window._moveAllowed = false;
+window._cards = [];
 
 /**
  * socket.on
@@ -30,8 +29,7 @@ socket.on("start", () => {
 	console.log("The game has started");
 
 	// unfold cards on game start
-	const aCards = [];
-	let i = -1;
+	let aCards = [], i = -1;
 
 	for (const scene of document.getElementsByClassName("scene_inner")) {
 		aCards.push(scene);
@@ -63,8 +61,17 @@ socket.on("playerUpdate", o => {
 
 	window.setTimeout(() => {
 		setResources(oPlayer);
-		document.body.appendChild(Cards.render());
-		o["player" + window.nPlayer].cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer }));
+		const
+			aCurrentCards = Cards.getCurrentCards(),
+			aNewCards = oPlayer.cards;
+
+		if (aCurrentCards.length < 8) {
+			aCurrentCards.forEach(e => aNewCards.splice(aNewCards.indexOf(e), 1));
+
+			Cards.renderCard({ sCardId: aNewCards[0], oPlayer });
+		}
+
+		aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
 	}, 500);
 });
 
@@ -138,8 +145,9 @@ const iInterval = window.setInterval(() => {
 		window.clearInterval(iInterval);
 
 		const oJoinButton = document.getElementById("launchButton");
+		oJoinButton.style.display = "block";
 		oJoinButton.addEventListener("click", e => {
-			enterFullscreen(document.documentElement);
+			// enterFullscreen(document.documentElement); // TODO: uncomment
 			socket.emit("clientConnect", {});
 			oJoinButton.disabled = true;
 		});

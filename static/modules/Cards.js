@@ -47,6 +47,7 @@ export default class Cards {
 	}
 
 	static _registerPressHandler(oSection) {
+		// TODO: clean up lol
 		oSection.onclick = e => {
 			if (!bMoveAllowed || !window._moveAllowed) {
 				return;
@@ -83,7 +84,7 @@ export default class Cards {
 
 			if (oSceneInner && !oSceneInner.classList.contains("vanished") && oCard.classList.contains("disabled")) {
 				const sCardId = oCard.getAttribute("data-id");
-				const bDiscard = confirm("Discard this card?");
+				const bDiscard = confirm("Diese Karte ablegen?");
 				if (bDiscard) {
 					console.log("Discarding card", sCardId);
 					bMoveAllowed = false;
@@ -176,7 +177,7 @@ export default class Cards {
 		const oFooter = document.createElement("footer");
 		let aProperties = [];
 		/** @property {Number} oCard.enemy */
-		for (const p in oCard.enemy) {
+		for (const p in oCard.enemy) { // TODO: for of?
 			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(oTexts[p] + " " + oCard.enemy[p]);
 		}
 		for (const p in oCard.self) { // todo: other style, todo: plus on positive values
@@ -202,5 +203,32 @@ export default class Cards {
 
 	static getCostProperty(oCard) {
 		return Object.keys(oCard.costs).find(e => oCard.costs[e] !== 0);
+	}
+
+	static getCurrentCards() {
+		const
+			oCards = document.getElementsByClassName("card"),
+			aCards = [];
+
+		for (const card of oCards) {
+			aCards.push(card.getAttribute("data-id"));
+		}
+
+		return aCards;
+	}
+
+	static updateStatus(nCard, oPlayer) {
+		const
+			that = this,
+			aAllCards = document.getElementsByClassName("card"),
+			aCards = [];
+
+		for (const card of aAllCards) {
+			card.getAttribute("data-id") === nCard && aCards.push(card);
+		}
+
+		aCards.forEach(e => {
+			oCardPromise.then(aCards => that._getPlayable(aCards.find(e => e.id === nCard), oPlayer) && e.classList.remove("disabled"));
+		});
 	}
 }
