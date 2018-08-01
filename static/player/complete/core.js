@@ -44,7 +44,7 @@ socket.on("start", () => {
 socket.on("turn", iTime => {
 	document.getElementById("information").classList.add("notify");
 	window.setTimeout(() => document.getElementById("information").classList.remove("notify"), 1000);
-	window.navigator.vibrate && window.navigator.vibrate(140);
+	window.bVibrate && window.navigator.vibrate && window.navigator.vibrate(140);
 	Information.start(iTime);
 	window._moveAllowed = true;
 });
@@ -102,13 +102,13 @@ function startGame(oPlayer) {
 	// hide loading canvas animation of the castle
 	window.setTimeout(() => {
 		// fade out the canvas
-		document.getElementById("canvas").classList.add("hidden");
+		document.getElementById("canvas").parentElement.classList.add("hidden");
 		document.body.removeChild(document.getElementById("centerWrapper"));
 
 		// after the fade out animation has finished, we...
 		window.setTimeout(() => {
 			// window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
-			document.body.removeChild(document.getElementById("canvas")); // ... and remove the canvas element from the document
+			document.body.removeChild(document.getElementById("canvas").parentElement); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
 			document.body.appendChild(Information.render(window.nPlayer)); // the information part on the top

@@ -47,6 +47,32 @@ export default class Cards {
 	}
 
 	static _registerPressHandler(oSection) {
+		document.getElementById("dismissNo").addEventListener("click", () => {
+			document.getElementById("dismissCard").close();
+		});
+		document.getElementById("dismissYes").addEventListener("click", () => {
+			const
+				oDialog = document.getElementById("dismissCard"),
+				iCard = parseInt(oDialog.getAttribute("data-id"), 10),
+				oSceneInner = document.getElementById("cards").firstChild.children[iCard].firstChild.firstChild; // uff
+
+			oDialog.close();
+
+			if (iCard) {
+				console.log("Discarding card", iCard);
+				bMoveAllowed = false;
+				oSceneInner.classList.add("vanished");
+				window.socket.emit("card", {
+					id: iCard,
+					discard: true
+				});
+				window.setTimeout(() => {
+					this.removeCard(oSceneInner);
+					bMoveAllowed = true;
+				}, 500);
+			}
+		});
+
 		// TODO: clean up lol
 		oSection.onclick = e => {
 			if (!bMoveAllowed || !window._moveAllowed) {
@@ -82,22 +108,13 @@ export default class Cards {
 				oSceneInner = e.target.closest(".scene_inner"),
 				oCard = e.target.closest(".card");
 
+			// TODO: are only disabled cards dismissable?
 			if (oSceneInner && !oSceneInner.classList.contains("vanished") && oCard.classList.contains("disabled")) {
-				const sCardId = oCard.getAttribute("data-id");
-				const bDiscard = confirm("Diese Karte ablegen?");
-				if (bDiscard) {
-					console.log("Discarding card", sCardId);
-					bMoveAllowed = false;
-					oSceneInner.classList.add("vanished");
-					window.socket.emit("card", {
-						id: sCardId,
-						discard: true
-					});
-					window.setTimeout(() => {
-						this.removeCard(oSceneInner);
-						bMoveAllowed = true;
-					}, 500);
-				}
+				const iCard = Array.from(oCard.parentElement.children).indexOf(oCard);
+
+				document.getElementById("dismissCard").setAttribute("data-id", iCard.toString());
+				document.getElementById("dismissCard").showModal();
+				// TODO: on time out, remove dialog if no choice has been made by user
 			}
 
 			return false;
@@ -108,9 +125,7 @@ export default class Cards {
 		oSceneInner.closest(".card").parentElement.removeChild(oSceneInner.closest(".card"));
 	}
 
-	// TODO: cards flipped at start
 	static renderCard({ sCardId, bFlipped = false, oPlayer } = {}) {
-	// static renderCard(sCardId, bPlayable = true, bFlipped = false) {
 		oCardPromise.then(aCards => {
 			const oCard = aCards.find(e => e.id === sCardId);
 			const bPlayable = this._getPlayable(oCard, oPlayer);
