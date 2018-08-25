@@ -1,7 +1,7 @@
-const Player = require('./Player.js');
-const Timer = require('./Timer.js');
+const Player = require("./Player.js");
+const Timer = require("./Timer.js");
 
-const cards = require('../data/cards.json');
+const cards = require("../data/cards.json");
 
 module.exports = class GameEngine {
     constructor(io) {
@@ -28,7 +28,7 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
-            this.io.to('host').emit("pause", false);
+            this.io.to("host").emit("pause", false);
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.resume();
             }
@@ -39,7 +39,7 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Paused");
             this.paused = true;
-            this.io.to('host').emit("pause", true);
+            this.io.to("host").emit("pause", true);
             if(this.getActivePlayer()) {
                 this.getActivePlayer().timer.pause();
             }
@@ -77,7 +77,7 @@ module.exports = class GameEngine {
     initializePlayer(player) {
         const callback = function() {
             player.done = true;
-            player.socket.emit('done');
+            player.socket.emit("done");
             if (this.getWinner()) {
                 this.finish(this.getWinner());
             } else {
@@ -87,7 +87,7 @@ module.exports = class GameEngine {
 
         player.timer = new Timer(callback.bind(this), this.turnLength * 1000);
 
-        player.socket.on('card', o => {
+        player.socket.on("card", o => {
             if (player.active) {
                 if (!o.discard) {
                     this.activateCard(o.id, player);
@@ -123,7 +123,7 @@ module.exports = class GameEngine {
                 this.sendPlayerInfo([player.socket, this.io.to("host")]);
                 player.active = true;
                 player.done = false;
-                player.socket.emit('turn', this.turnLength);
+                player.socket.emit("turn", this.turnLength);
                 player.timer.start();
                 console.log("Player " + player.number + " turn");
             }
@@ -150,8 +150,8 @@ module.exports = class GameEngine {
 
     finish(winner) {
         const sNumber = winner.number;
-        this.io.to('host').emit('toast', "Spieler " + sNumber + " hat das Spiel gewonnen");
-        this.io.emit('finish', winner.number);
+        this.io.to("host").emit("toast", "Spieler " + sNumber + " hat das Spiel gewonnen");
+        this.io.emit("finish", winner.number);
         this.quit();
     }
 
@@ -192,7 +192,7 @@ module.exports = class GameEngine {
 
     sendPlayerInfo(aSockets) {
         aSockets.forEach(socket => {
-            socket.emit('playerUpdate', {
+            socket.emit("playerUpdate", {
                 player1: new Player(this.player1),
                 player2: new Player(this.player2)
             });

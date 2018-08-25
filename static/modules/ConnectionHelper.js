@@ -1,5 +1,5 @@
-const crypto = require('crypto');
-const Player = require('./Player.js');
+const crypto = require("crypto");
+const Player = require("./Player.js");
 
 module.exports = class ConnectionHelper {
     constructor(game) {
@@ -10,7 +10,7 @@ module.exports = class ConnectionHelper {
 
     handleClientConnected(socket) {
         const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-        console.log('Client connected');
+        console.log("Client connected");
 
         let number;
         if (!this.game.player1) {
@@ -38,7 +38,7 @@ module.exports = class ConnectionHelper {
     handleClientDisconnected(socket, id) {
         if (this.game.player1 && this.game.player1.id === id) {
             console.log("Player 1 left the game");
-            socket.emit('leave');
+            socket.emit("leave");
             this.game.player1 = undefined;
             this.updateClient("Spieler 1 hat das Spiel verlassen");
             if (this.game.started) {
@@ -47,7 +47,7 @@ module.exports = class ConnectionHelper {
             }
         } else if (this.game.player2 && this.game.player2.id === id) {
             console.log("Player 2 left the game");
-            socket.emit('leave');
+            socket.emit("leave");
             this.game.player2 = undefined;
             this.updateClient("Spieler 2 hat das Spiel verlassen");
             if (this.game.started) {
@@ -58,7 +58,7 @@ module.exports = class ConnectionHelper {
     }
 
     handleHostDisconnected(socket) {
-        socket.leave('host');
+        socket.leave("host");
         console.log("Host disconnected");
     }
 

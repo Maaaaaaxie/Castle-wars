@@ -42,6 +42,8 @@ socket.on("start", () => {
 });
 
 socket.on("turn", iTime => {
+	console.log("turn");
+
 	document.getElementById("information").classList.add("notify");
 	window.setTimeout(() => document.getElementById("information").classList.remove("notify"), 1000);
 	window.bVibrate && window.navigator.vibrate && window.navigator.vibrate(140);
@@ -83,9 +85,6 @@ socket.on("leave", () => {
 	// document.getElementById("infotext").getElementsByTagName("span")[0].innerText = "";
 	// document.getElementById("information").classList.remove("joined");
 });
-
-// try to connect to the server and start the websocket
-// socket.emit("clientConnect", {});
 
 function setResources(oPlayer) {
 	Resources.setHealth(oPlayer.castle);

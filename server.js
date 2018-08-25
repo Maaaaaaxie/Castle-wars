@@ -1,26 +1,26 @@
 // Import packages
-const express = require('express');
-const path = require('path');
-const crypto = require('crypto');
-const ip = require('my-local-ip')();
+const express = require("express");
+const path = require("path");
+const crypto = require("crypto");
+const ip = require("my-local-ip")();
 
 // Configuration
 const PORT = process.env.PORT || 3000;
 
-const INDEX = path.join(__dirname, 'index.html');
-const GAME = path.join(__dirname, '/static/host/host.html');
-const CONTROL = path.join(__dirname, '/static/player/complete/index.html');
-const CHAT = path.join(__dirname, '/static/chat/login.html');
-const CARDS = path.join(__dirname, '/static/data/cards.json');
+const INDEX = path.join(__dirname, "index.html");
+const GAME = path.join(__dirname, "/static/host/host.html");
+const CONTROL = path.join(__dirname, "/static/player/complete/index.html");
+const CHAT = path.join(__dirname, "/static/chat/login.html");
+const CARDS = path.join(__dirname, "/static/data/cards.json");
 
 // let game = {};
 
 function fnRouting(req, res) {
-    if (req.url === '/control') {
+    if (req.url === "/control") {
         res.sendFile(CONTROL);
-    } else if (req.url === '/chatroom') {
+    } else if (req.url === "/chatroom") {
         res.sendFile(CHAT);
-    } else if (req.url === '/cards') {
+    } else if (req.url === "/cards") {
         res.sendFile(CARDS)
     } else {
         res.sendFile(GAME);
@@ -30,55 +30,55 @@ function fnRouting(req, res) {
 // Start server
 const
     app = express()
-        .use(express.static('static'))
+        .use(express.static("static"))
         .use(fnRouting)
-        .listen(PORT, () => console.log('Listening on localhost:' + PORT));
+        .listen(PORT, () => console.log("Listening on localhost:" + PORT));
 
-const io = require('socket.io')(app);
+const io = require("socket.io")(app);
 
 // Initialize game
-const GameEngine = require('./static/modules/Game.js');
+const GameEngine = require("./static/modules/Game.js");
 const game = new GameEngine(io);
 
 // Initialize connection helper
-const ConnectionHelper = require('./static/modules/ConnectionHelper.js');
+const ConnectionHelper = require("./static/modules/ConnectionHelper.js");
 const connection = new ConnectionHelper(game);
 
-// Initiatlize SocketIO
-io.on('connection', function (socket) {
+// initialize SocketIO
+io.on("connection", function(socket) {
     // -------- general ------------------------------------------------------------------------------------------------
     const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-    console.log('User connected: ' + id);
+    console.log("User connected: " + id);
 
-    socket.on('disconnect', function () {
+    socket.on("disconnect", () => {
         const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
         connection.handleClientDisconnected(socket, id);
         connection.handleHostDisconnected(socket);
-        console.log('User disconnected: ' + id);
+        console.log("User disconnected: " + id);
     });
 
     // -------- chat ---------------------------------------------------------------------------------------------------
-    socket.on('chatIn', function (oMessage) {
-        console.log(oMessage.username + ': ' + oMessage.text);
-        io.emit('chatOut', oMessage)
+    socket.on("chatIn", oMessage => {
+        console.log(oMessage.username + ": " + oMessage.text);
+        io.emit("chatOut", oMessage);
     });
 
     // -------- game ---------------------------------------------------------------------------------------------------
-    socket.on('hostConnect', function() {
-        socket.join('host');
-        socket.emit('init', ip + ":" + PORT);
+    socket.on("hostConnect", () => {
+        socket.join("host");
+        socket.emit("init", ip + ":" + PORT);
         connection.updateClient();
-        console.log('Host connected');
+        console.log("Host connected");
     });
 
-    socket.on('clientConnect', function(username) {
+    socket.on("clientConnect", username => {
         connection.handleClientConnected(socket, username);
     });
 
-    socket.on('clientKick', function(number) {
+    socket.on("clientKick", number => {
         if(game.started) {
             console.log("Players can't be kicked while a game is runninng");
-            io.to('host').emit("toast", "Spieler können während einem Spiel nicht gekickt werden");
+            io.to("host").emit("toast", "Spieler können während einem Spiel nicht gekickt werden");
             return;
         }
         const oPlayer = number === 1 ? game.player1 : game.player2;
@@ -86,11 +86,11 @@ io.on('connection', function (socket) {
         console.log("Player " + number + " was kicked");
     });
 
-    socket.on('start', function() {
+    socket.on("start", () => {
         game.start();
     });
 
-    socket.on('pause', () => {
+    socket.on("pause", () => {
         if (!game.paused) {
             game.pause();
         } else {
@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('quit', function() {
+    socket.on("quit", () => {
         game.quit();
     });
 });
