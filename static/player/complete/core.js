@@ -93,7 +93,7 @@ function startGame(oPlayer) {
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
 			// set the resources
-			Resources.set(oPlayer);
+			Resources.update(oPlayer);
 
 			// render the deck
 			oPlayer.cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer, bFlipped: true }));
