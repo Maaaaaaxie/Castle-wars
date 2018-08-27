@@ -202,5 +202,10 @@
 
 
 ***
-# Icons used in this project
+# Icons / Images
 
+* Icons made by https://www.flaticon.com/authors/freepik from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/prosymbols from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/nikita-golubev from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/vectors-market from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/roundicons from www.flaticon.com 
