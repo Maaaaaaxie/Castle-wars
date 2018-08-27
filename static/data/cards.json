@@ -3,7 +3,7 @@
     "id": "001",
     "name": "Knecht",
     "category": "Attack",
-    "image": "",
+    "image": "servant.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -42,7 +42,7 @@
     "id": "002",
     "name": "Bogenschützen",
     "category": "Attack",
-    "image": "",
+    "image": "target.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -81,7 +81,7 @@
     "id": "003",
     "name": "Ritter",
     "category": "Attack",
-    "image": "",
+    "image": "knight.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -159,7 +159,7 @@
     "id": "005",
     "name": "Katapult",
     "category": "Attack",
-    "image": "",
+    "image": "catapult.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -198,7 +198,7 @@
     "id": "006",
     "name": "Infiltrator",
     "category": "Attack",
-    "image": "",
+    "image": "infiltrator.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -237,7 +237,7 @@
     "id": "007",
     "name": "Assasine",
     "category": "Attack",
-    "image": "",
+    "image": "assasin.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -276,7 +276,7 @@
     "id": "008",
     "name": "Raubritter",
     "category": "Attack",
-    "image": "",
+    "image": "robber.png",
     "self": {
       "builders": 0,
       "stones": 5,
@@ -315,7 +315,7 @@
     "id": "010",
     "name": "Wehrgang",
     "category": "Defense",
-    "image": "",
+    "image": "military-hallway.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -354,7 +354,7 @@
     "id": "011",
     "name": "Nachtwache",
     "category": "Defense",
-    "image": "",
+    "image": "night-watch.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -393,7 +393,7 @@
     "id": "012",
     "name": "Burggraben",
     "category": "Defense",
-    "image": "",
+    "image": "castle-mount.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -432,7 +432,7 @@
     "id": "013",
     "name": "Festung",
     "category": "Defense",
-    "image": "",
+    "image": "fortress.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -471,7 +471,7 @@
     "id": "014",
     "name": "Bergfried",
     "category": "Defense",
-    "image": "",
+    "image": "castle-tower.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -510,7 +510,7 @@
     "id": "015",
     "name": "Stolperfalle",
     "category": "Defense",
-    "image": "",
+    "image": "trap.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -549,7 +549,7 @@
     "id": "016",
     "name": "Barrikade",
     "category": "Defense",
-    "image": "",
+    "image": "barricade.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -588,7 +588,7 @@
     "id": "017",
     "name": "Burgwall",
     "category": "Defense",
-    "image": "",
+    "image": "castle-mound.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -627,7 +627,7 @@
     "id": "020",
     "name": "Beschwörung",
     "category": "Magic",
-    "image": "",
+    "image": "summoning.png",
     "self": {
       "builders": 0,
       "stones": 8,
@@ -666,7 +666,7 @@
     "id": "021",
     "name": "Beschwörung",
     "category": "Magic",
-    "image": "",
+    "image": "summoning.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -705,7 +705,7 @@
     "id": "022",
     "name": "Beschwörung",
     "category": "Magic",
-    "image": "",
+    "image": "summoning.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -744,7 +744,7 @@
     "id": "023",
     "name": "Moench",
     "category": "Magic",
-    "image": "",
+    "image": "monk.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -783,7 +783,7 @@
     "id": "024",
     "name": "Dunkler Magier",
     "category": "Magic",
-    "image": "",
+    "image": "dark-mage.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -822,7 +822,7 @@
     "id": "025",
     "name": "Drachenfeuer",
     "category": "Magic",
-    "image": "",
+    "image": "dragon.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -861,7 +861,7 @@
     "id": "031",
     "name": "Maurer",
     "category": "Defense",
-    "image": "",
+    "image": "builder.school.png",
     "self": {
       "builders": 1,
       "stones": 0,
@@ -900,7 +900,7 @@
     "id": "032",
     "name": "Rekrut",
     "category": "Attack",
-    "image": "",
+    "image": "recruitment.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -939,7 +939,7 @@
     "id": "033",
     "name": "Lehrling",
     "category": "Magic",
-    "image": "",
+    "image": "apprentice.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -978,7 +978,7 @@
     "id": "034",
     "name": "Seelenfalle",
     "category": "Magic",
-    "image": "",
+    "image": "soul-trap.png",
     "self": {
       "builders": 1,
       "stones": 1,
