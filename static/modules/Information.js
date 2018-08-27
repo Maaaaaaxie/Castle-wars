@@ -1,8 +1,3 @@
-import CSSLoader from "/modules/CSSLoader.js";
-
-// import stylesheet necessary for this section
-CSSLoader.loadStyleSheet("/player/information", "information");
-
 /**
  * @define class Information
  */
@@ -37,15 +32,32 @@ export default class Information /*extends Timer */ {
 		return oSection;
 	}
 
-	static setTurn(bCurrentPlayer = true) {
-		const oActivePlayer = document.getElementById("currentPlayer");
-		if (bCurrentPlayer) {
-			oActivePlayer.innerText = "Du bist dran!";
-		} else {
-			oActivePlayer.innerText = "Dein Gegner ist dran!";
-		}
+	// TODO: deprecated
+	// static setTurn(bCurrentPlayer = true) {
+	// 	const oActivePlayer = document.getElementById("currentPlayer");
+	// 	if (bCurrentPlayer) {
+	// 		oActivePlayer.innerText = "Du bist dran!";
+	// 	} else {
+	// 		oActivePlayer.innerText = "Dein Gegner ist dran!";
+	// 	}
+	// }
+
+	static turn(iTime) {
+		this.notify();
+		this.start(iTime);
+		window._moveAllowed = true;
 	}
 
+	// flashes the top area of the player screen
+	static notify() {
+		const oInfo = document.getElementById("information");
+
+		oInfo.classList.add("notify");
+		window.bVibrate && window.navigator.vibrate && window.navigator.vibrate(140);
+		window.setTimeout(() => oInfo.classList.remove("notify"), 1000);
+	}
+
+	// starts the timer in the upper right corner
 	static start(iTimeLeft = 10) {
 		const oTimer = document.getElementById("timer");
 		if (!oTimer) {

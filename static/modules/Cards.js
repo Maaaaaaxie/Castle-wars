@@ -1,8 +1,4 @@
-import CSSLoader from "/modules/CSSLoader.js";
 import AJAX from "/modules/Ajax.js";
-
-// import stylesheet necessary for this section
-CSSLoader.loadStyleSheet("/player/cards", "cards");
 
 const oCardPromise = AJAX.getCards();
 const oImages = {
@@ -119,6 +115,21 @@ export default class Cards {
 
 			return false;
 		}
+	}
+
+	static unfoldAll() {
+		let
+			aCards = [],
+			i = -1;
+
+		for (const scene of document.getElementsByClassName("scene_inner")) {
+			aCards.push(scene);
+		}
+
+		const iInterval = window.setInterval(() => {
+			i > 5 && window.clearInterval(iInterval); // suizide
+			aCards[++i].classList.remove("is-flipped");
+		}, 100);
 	}
 
 	static removeCard(oSceneInner) {
