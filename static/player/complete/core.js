@@ -20,6 +20,7 @@ window._cards = [];
 // fired when the player has joined the game
 socket.on("join", oPlayer => {
 	console.log("Joined game", oPlayer);
+	
 	window.nPlayer = oPlayer.number;
 	startGame(oPlayer);
 });
@@ -28,30 +29,18 @@ socket.on("join", oPlayer => {
 socket.on("start", () => {
 	console.log("The game has started");
 
-	// unfold cards on game start
-	let aCards = [], i = -1;
-
-	for (const scene of document.getElementsByClassName("scene_inner")) {
-		aCards.push(scene);
-	}
-
-	const iInterval = window.setInterval(() => {
-		i > 5 && window.clearInterval(iInterval); // suizide
-		aCards[++i].classList.remove("is-flipped");
-	}, 100);
+	Cards.unfoldAll();
 });
 
 socket.on("turn", iTime => {
 	console.log("turn");
 
-	document.getElementById("information").classList.add("notify");
-	window.setTimeout(() => document.getElementById("information").classList.remove("notify"), 1000);
-	window.bVibrate && window.navigator.vibrate && window.navigator.vibrate(140);
-	Information.start(iTime);
-	window._moveAllowed = true;
+	Information.turn(iTime);
 });
 
 socket.on("done", () => {
+	console.log("Move finished");
+
 	Information.stop();
 	window._moveAllowed = false;
 });
@@ -62,7 +51,7 @@ socket.on("playerUpdate", o => {
 	const oPlayer = o["player" + window.nPlayer];
 
 	window.setTimeout(() => {
-		setResources(oPlayer);
+		Resources.update(oPlayer);
 		const
 			aCurrentCards = Cards.getCurrentCards(),
 			aNewCards = oPlayer.cards;
@@ -86,17 +75,6 @@ socket.on("leave", () => {
 	// document.getElementById("information").classList.remove("joined");
 });
 
-function setResources(oPlayer) {
-	Resources.setHealth(oPlayer.castle);
-	Resources.setHealth(oPlayer.fence, false);
-	Resources.setWeapon(oPlayer.soldiers);
-	Resources.setWeapon(oPlayer.weapons, false);
-	Resources.setStone(oPlayer.builders);
-	Resources.setStone(oPlayer.stones, false);
-	Resources.setCrystal(oPlayer.mages);
-	Resources.setCrystal(oPlayer.crystals, false);
-}
-
 function startGame(oPlayer) {
 	// hide loading canvas animation of the castle
 	window.setTimeout(() => {
@@ -115,7 +93,7 @@ function startGame(oPlayer) {
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
 			// set the resources
-			setResources(oPlayer);
+			Resources.set(oPlayer);
 
 			// render the deck
 			oPlayer.cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer, bFlipped: true }));

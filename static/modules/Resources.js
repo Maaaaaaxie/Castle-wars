@@ -1,8 +1,3 @@
-import CSSLoader from "/modules/CSSLoader.js";
-
-// import stylesheet necessary for this section
-CSSLoader.loadStyleSheet("/player/resources", "resources");
-
 const aStats = [
 	{
 		class: "health",
@@ -95,19 +90,14 @@ export default class Resources {
 		return oWrap;
 	}
 
-	static setHealth(iNewHealth, bCastle = true) {
-		document.getElementById(bCastle ? "propCastle" : "propFence").innerText = iNewHealth.toString();
-	}
-
-	static setStone(iNewHealth, bBuilder = true) {
-		document.getElementById(bBuilder ? "propBuilder" : "propStones").innerText = iNewHealth.toString();
-	}
-
-	static setWeapon(iNewHealth, bSoldiers = true) {
-		document.getElementById(bSoldiers ? "propSoldiers" : "propWeapons").innerText = iNewHealth.toString();
-	}
-
-	static setCrystal(iNewHealth, bMages = true) {
-		document.getElementById(bMages ? "propMages" : "propCrystals").innerText = iNewHealth.toString();
+	static update(oPlayer) {
+		document.getElementById("propCastle").innerText = oPlayer.castle.toString();
+		document.getElementById("propFence").innerText = oPlayer.fence.toString();
+		document.getElementById("propSoldiers").innerText = oPlayer.soldiers.toString();
+		document.getElementById("propWeapons").innerText = oPlayer.weapons.toString();
+		document.getElementById("propBuilder").innerText = oPlayer.builders.toString();
+		document.getElementById("propStones").innerText = oPlayer.stones.toString();
+		document.getElementById("propMages").innerText = oPlayer.mages.toString();
+		document.getElementById("propCrystals").innerText = oPlayer.crystals.toString();
 	}
 }
