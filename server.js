@@ -56,7 +56,6 @@ io.on("connection", function(socket) {
             connection.handleClientConnect(socket, id);
         } else if (sType === "host") {
             console.log("Host connected: " + id);
-            socket.join("host")
         } else {
             throw new Error("User type '" + sType + "' unknown.");
         }
@@ -70,10 +69,13 @@ io.on("connection", function(socket) {
     });
 
     socket.on("disconnect", () => {
-        const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-        connection.handleClientDisconnected(socket, id);
-        connection.handleHostDisconnected(socket);
-        console.log("User disconnected: " + id);
+        const oPlayer = game.getPlayers().find(e => e.id === id);
+
+        if (oPlayer) {
+            connection.handleClientDisconnected(socket, id);
+        } else {
+            console.log("User disconnected: " + id);
+        }
     });
 
     // -------- chat ---------------------------------------------------------------------------------------------------

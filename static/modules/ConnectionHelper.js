@@ -34,45 +34,15 @@ module.exports = class ConnectionHelper {
         this.io.emit("toast", "Spieler " + number + " ist dem Spiel beigetreten");
     }
 
-    handleClientDisconnected(socket, id) {
-        if (this.game.player1 && this.game.player1.id === id) {
-            console.log("Player 1 left the game");
-            socket.emit("leave");
-            this.game.player1 = undefined;
-            this.updateClient("Spieler 1 hat das Spiel verlassen");
-            if (this.game.started) {
-                this.game.pause();
-                this.startTimeoutCounter();
-            }
-        } else if (this.game.player2 && this.game.player2.id === id) {
-            console.log("Player 2 left the game");
-            socket.emit("leave");
-            this.game.player2 = undefined;
-            this.updateClient("Spieler 2 hat das Spiel verlassen");
-            if (this.game.started) {
-                this.game.pause();
-                this.startTimeoutCounter();
-            }
+    handleClientDisconnected(socket, number) {
+        this.game.removePlayer(number);
+        socket.emit("leave");
+
+        if (this.game.started) {
+            this.game.pause();
         }
-    }
 
-    handleHostDisconnected(socket) {
-        socket.leave("host");
-        console.log("Host disconnected");
-    }
-
-    updateClient(sMessage) {
-        this.io.to("host").emit("clientUpdate", {
-            player1: this.game.player1 && new Player(this.game.player1),
-            player2: this.game.player2 && new Player(this.game.player2),
-            message: sMessage,
-            started: this.game.started,
-            paused: this.game.paused
-        });
-    }
-
-    startTimeoutCounter() {
-        const iRemaining = 40000;
-        this.io.emit("timeout", iRemaining);
+        console.log("Player " + number + " left the game");
+        this.io.emit("toast", "Spieler " + number + " hat das Spiel verlassen");
     }
 };

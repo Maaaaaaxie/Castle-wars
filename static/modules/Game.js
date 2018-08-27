@@ -232,6 +232,10 @@ module.exports = class GameEngine {
         this["player" + o.number] = o;
     }
 
+    removePlayer(number) {
+        this["player" + number] = undefined;
+    }
+
     sendPlayerInfo(aSockets) {
         aSockets.forEach(socket => {
             socket.emit("playerUpdate", {
