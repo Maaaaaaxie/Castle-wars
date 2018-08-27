@@ -209,3 +209,4 @@
 * Icons made by https://www.flaticon.com/authors/nikita-golubev from www.flaticon.com 
 * Icons made by https://www.flaticon.com/authors/vectors-market from www.flaticon.com 
 * Icons made by https://www.flaticon.com/authors/roundicons from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/becris from www.flaticon.com 
