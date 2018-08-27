@@ -431,23 +431,23 @@ dialog::backdrop, #backdrop {
 }
 
 .outer.stone {
-    border: 0.5rem solid #6e3232;
-    background: indianred;
+    border: 0.5rem solid hsl(350, 60%, 30%);
+    background: hsl(350, 60%, 60%);
 }
 
 .outer.weapon {
-    border: 0.5rem solid #186218;
-    background: limegreen;
+    border: 0.5rem solid hsl(120, 61%, 25%);
+    background: hsl(120, 61%, 50%);
 }
 
 .outer.crystal {
-    border: 0.5rem solid dodgerblue;
-    background: #a5d9ff;
+    border: 0.5rem solid hsl(200, 60%, 30%);
+    background: hsl(200, 60%, 65%);
 }
 
 .outer.health {
-    border: 0.5rem solid #343434;
-    background: #969696;
+    border: 0.5rem solid hsl(0, 0%, 20%);
+    background: hsl(0, 0%, 55%);
 }
 
 .marginTop {

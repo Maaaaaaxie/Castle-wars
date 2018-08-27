@@ -1,7 +1,7 @@
 [
   {
     "id": "001",
-    "name": "Schwertkämpfer",
+    "name": "Knecht",
     "category": "Attack",
     "image": "",
     "self": {
@@ -79,7 +79,7 @@
   },
   {
     "id": "003",
-    "name": "Balliste",
+    "name": "Ritter",
     "category": "Attack",
     "image": "",
     "self": {

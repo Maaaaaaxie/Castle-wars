@@ -104,7 +104,7 @@ module.exports = class GameEngine {
     nextRound() {
         setTimeout(() => {
             if (!this.player1 || !this.player2) {
-                console.error("The player object is undefined! A Player might been disconnected");
+                console.error("The player object is undefined! A Player might has been disconnected");
                 this.pause();
                 return;
             }
