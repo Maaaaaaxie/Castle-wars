@@ -12,6 +12,25 @@ module.exports = class GameEngine {
         this.turnLength = 40;
     }
 
+    toFrontendStructure() {
+        return {
+            active: this.getActive(),
+            state: this.getState()
+        }
+    }
+
+    getState() {
+        if (this.paused) {
+            return "paused";
+        } else if (this.started) {
+            return "started";
+        } else if (this.player1 && this.player2) {
+            return "ready";
+        } else {
+            return "blocked";
+        }
+    }
+
     start() {
         if (!this.started) {
             this.started = true;
@@ -71,7 +90,15 @@ module.exports = class GameEngine {
     }
 
     getActivePlayer() {
-        return [this.player1, this.player2].filter(e => e && e.active)[0];
+        if (this.started()) {
+            return [this.player1, this.player2].filter(e => e && e.active)[0];
+        }
+    }
+
+    getActive() {
+        if (this.getActivePlayer()) {
+            return this.getActivePlayer().number;
+        }
     }
 
     initializePlayer(player) {
@@ -188,6 +215,21 @@ module.exports = class GameEngine {
                 enemy[e] = 0;
             }
         });
+    }
+
+    getPlayers() {
+        const arr = [];
+        if (this.player1) {
+            arr.push(new Player(this.player1));
+        }
+        if (this.player2) {
+            arr.push(new Player(this.player2));
+        }
+        return arr;
+    }
+
+    addPlayer(o) {
+        this["player" + o.number] = o;
     }
 
     sendPlayerInfo(aSockets) {

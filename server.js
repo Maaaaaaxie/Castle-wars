@@ -48,7 +48,26 @@ const connection = new ConnectionHelper(game);
 io.on("connection", function(socket) {
     // -------- general ------------------------------------------------------------------------------------------------
     const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-    console.log("User connected: " + id);
+    // console.log("User connected: " + id);
+
+    socket.on("connect", sType => {
+        if (sType === "client") {
+            console.log("Client connected: " + id);
+            connection.handleClientConnect(socket, id);
+        } else if (sType === "host") {
+            console.log("Host connected: " + id);
+            socket.join("host")
+        } else {
+            throw new Error("User type '" + sType + "' unknown.");
+        }
+
+        io.emit("init", {
+            id: id,
+            game: game.toFrontendStructure(),
+            players: game.getPlayers(),
+            ip: ip + ":" + PORT
+        });
+    });
 
     socket.on("disconnect", () => {
         const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
@@ -64,15 +83,8 @@ io.on("connection", function(socket) {
     });
 
     // -------- game ---------------------------------------------------------------------------------------------------
-    socket.on("hostConnect", () => {
-        socket.join("host");
-        socket.emit("init", ip + ":" + PORT);
-        connection.updateClient();
-        console.log("Host connected");
-    });
-
     socket.on("clientConnect", username => {
-        connection.handleClientConnected(socket, username);
+        connection.handleClientConnect(socket, username);
     });
 
     socket.on("clientKick", number => {

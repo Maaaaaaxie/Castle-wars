@@ -8,10 +8,7 @@ module.exports = class ConnectionHelper {
         this.players = [];
     }
 
-    handleClientConnected(socket) {
-        const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-        console.log("Client connected");
-
+    handleClientConnect(socket, id) {
         let number;
         if (!this.game.player1) {
             number = 1;
@@ -23,16 +20,18 @@ module.exports = class ConnectionHelper {
         }
 
         let oPlayer = this.players.find(e => e.id === id);
+
         if (!oPlayer) {
             oPlayer = new Player({id, number, socket}, true, true);
             this.players.push(oPlayer);
         } else if (!this.game.started) {
             oPlayer.number = number;
         }
-        socket.emit("join", new Player(oPlayer));
-        this.game["player"+number] = oPlayer;
+
+        this.game.addPlayer(oPlayer);
+
         console.log("Player " + number + " joined the game");
-        this.updateClient("Spieler " + number + " ist dem Spiel beigetreten");
+        this.io.emit("toast", "Spieler " + number + " ist dem Spiel beigetreten");
     }
 
     handleClientDisconnected(socket, id) {
