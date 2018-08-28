@@ -1,5 +1,13 @@
 const socket = io();
-const cards = [];
+let aCards;
+const _xhr = new XMLHttpRequest();
+_xhr.open("GET", "/cards");
+_xhr.onload = () => {
+    if (_xhr.status === 200) {
+        aCards = JSON.parse(_xhr.responseText);
+    }
+};
+_xhr.send();
 
 const oStates = {
     READY: "ready",
@@ -106,8 +114,12 @@ socket.on('init', o => {
         }
 
         function handlePaused() {
+            if (oInfo.players.length < 2) {
+                toggleButton(oPauseButton, false);
+            }
             document.getElementById("pause").classList.add("paused");
             oPauseButton.innerText = "Fortsetzen";
+            _showStats();
         }
 
         function handleRunning() {
@@ -127,7 +139,7 @@ socket.on('init', o => {
 });
 
 
-socket.on('playerUpdate', oInfo => {
+socket.on('playerUpdate', aPlayers => {
     const aIgnoredProperties = [
         "id",
         "cards",
@@ -144,8 +156,8 @@ socket.on('playerUpdate', oInfo => {
         }
     };
 
-    fnTranslateToFrontend(window._oPlayer1, oInfo.player1);
-    fnTranslateToFrontend(window._oPlayer2, oInfo.player2);
+    fnTranslateToFrontend(window._oPlayer1, aPlayers.find(e => e.number === 1));
+    fnTranslateToFrontend(window._oPlayer2, aPlayers.find(e => e.number === 2));
 });
 
 socket.on('start', _showStats);
@@ -215,9 +227,9 @@ socket.on('finish', o => {
     toast(o.message);
 });
 
-socket.on('card', o => {
-    const card = cards.then().find(e => e.id === o.id);
-    animateCard(o.player.number, card.image);
+socket.on('cardAnimation', o => {
+    const card = aCards.find(e => e.id === o.id);
+    animateCard(o.number, card.image, o.discard);
 });
 
 socket.on('toast', msg => toast(msg));
@@ -487,15 +499,15 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
 
 /**
  * Animates the card deck
- * @param number
+ * @param iNumber
  */
-function animateCard(number, sUrl) {
+function animateCard(iNumber, sPath, bDiscard) {
     if (window._placingCard) {
         return;
     }
 
     window._placingCard = true;
-    const oCard = document.getElementById("card-" + number);
+    const oCard = document.getElementById("card-" + iNumber);
 
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
@@ -506,20 +518,19 @@ function animateCard(number, sUrl) {
         }
     }
     const iIndex = styleSheet.cssRules.length;
-    sUrl = "https://classroomclipart.com/images/gallery/Clipart/Castles/TN_medieval-castle-with-flags-clipart.jpg";
-    const sSide = number === 1 ? "left" : "right";
-    const sSidePercentage = number === 1 ? "50%" : "-50%";
+    const sUrl = "../images/card/" + sPath;
+    const sSide = iNumber === 1 ? "left" : "right";
+    const sSidePercentage = iNumber === 1 ? "50%" : "-50%";
 
     const sRule1 =
         "@keyframes cardAnimation {" +
         "to {" +
         sSide + ": 50%;" +
+        "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
         "bottom: 70%;" +
         "width: 12rem;" +
         "height: 14rem;" +
         "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
-        "background-size: 100px 100px;" +
-        "background: url('" + sUrl + "');" +
         "}" +
         "}";
 

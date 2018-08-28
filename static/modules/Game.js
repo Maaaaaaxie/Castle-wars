@@ -123,6 +123,12 @@ module.exports = class GameEngine {
 
         player.socket.on("card", o => {
             if (player.active) {
+                this.io.to("host").emit("cardAnimation", {
+                   discard: o.discard,
+                   id: o.id,
+                   number: player.number
+                });
+
                 if (!o.discard) {
                     this.activateCard(o.id, player);
                 } else {

@@ -77,7 +77,7 @@ io.on("connection", function (socket) {
         const oPlayer = game.getPlayers().find(e => e.id === id);
 
         if (oPlayer) {
-            connection.handleClientDisconnected(socket, oPlayer.number, () => sendInfoTo(io.to("host")));
+            // connection.handleClientDisconnected(socket, oPlayer.number, () => sendInfoTo(io.to("host")));
         } else {
             socket.leave("host"); // could happen that socket never joined 'host' but shouldn't be a problem
         }

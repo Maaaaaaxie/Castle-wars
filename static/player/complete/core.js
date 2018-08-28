@@ -18,7 +18,7 @@ window._cards = [];
  * - playerUpdate ([ player1, player2 ])
  */
 
-socket.emit("connected", "client")
+socket.emit("connected", "client");
 
 socket.on("id", id => window._id = id);
 
