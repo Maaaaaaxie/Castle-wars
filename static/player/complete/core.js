@@ -3,26 +3,25 @@ import Resources from "/modules/Resources.js";
 import Cards from "/modules/Cards.js";
 
 const socket = window.socket = io();
-window.nPlayer = 0;
+window.player = {};
 window._moveAllowed = false;
 window._cards = [];
 
 /**
  * socket.on
- * - join ({ number[1/2], Player[{}] })
+ * - init ({ id, game{ active, state }, players[] })
  * - start ()
- * - turn (iTime)
+ * - turn (iTime, iActive)
  * - done ()
  * - leave ()
- * - playerUpdate ({Player1, Player2})
+ * - playerUpdate ([ player1, player2 ])
  */
 
-// fired when the player has joined the game
-socket.on("join", oPlayer => {
-	console.log("Joined game", oPlayer);
-	
-	window.nPlayer = oPlayer.number;
-	startGame(oPlayer);
+socket.on("init", o => {
+    console.log("Joined game", o);
+	window.player = o.players.find(e => e.id === o.id);
+
+	startGame(window.player);
 });
 
 // fired when the game starts
@@ -33,6 +32,7 @@ socket.on("start", () => {
 });
 
 socket.on("turn", iTime => {
+	//TODO check if you are active
 	console.log("turn");
 
 	Information.turn(iTime);
@@ -45,10 +45,10 @@ socket.on("done", () => {
 	window._moveAllowed = false;
 });
 
-socket.on("playerUpdate", o => {
-	console.log("playerUpdate", o);
+socket.on("playerUpdate", a => {
+	console.log("playerUpdate", a);
 
-	const oPlayer = o["player" + window.nPlayer];
+	const oPlayer = a.find(e => e.number === window.player.number);
 
 	window.setTimeout(() => {
 		Resources.update(oPlayer);
@@ -88,7 +88,7 @@ function startGame(oPlayer) {
 			document.body.removeChild(document.getElementById("canvas").parentElement); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
-			document.body.appendChild(Information.render(window.nPlayer)); // the information part on the top
+			document.body.appendChild(Information.render(window.player.number)); // the information part on the top
 			document.body.appendChild(Resources.render()); // the resources in the middle
 			document.body.appendChild(Cards.render()); // and the card area on the bottom
 
@@ -125,7 +125,7 @@ const iInterval = window.setInterval(() => {
 		oJoinButton.style.display = "block";
 		oJoinButton.addEventListener("click", e => {
 			// enterFullscreen(document.documentElement); // TODO: uncomment
-			socket.emit("clientConnect", {});
+			socket.emit("join");
 			oJoinButton.disabled = true;
 		});
 	} else {

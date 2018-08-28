@@ -182,8 +182,10 @@ module.exports = class GameEngine {
 
     finish(winner) {
         const sNumber = winner.number;
-        this.io.to("host").emit("toast", "Spieler " + sNumber + " hat das Spiel gewonnen");
-        this.io.emit("finish", winner.number);
+        this.io.emit("finish", {
+            number: winner.number,
+            message: "Spieler " + sNumber + " hat das Spiel gewonnen"
+        });
         this.quit();
     }
 
