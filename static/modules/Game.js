@@ -10,6 +10,13 @@ module.exports = class GameEngine {
         this.paused = false;
 
         this.turnLength = 40;
+
+        this.states = {
+            READY: "ready",
+            RUNNING: "running",
+            BLOCKED: "blocked",
+            PAUSED: "paused"
+        }
     }
 
     toFrontendStructure() {
@@ -21,13 +28,13 @@ module.exports = class GameEngine {
 
     getState() {
         if (this.paused) {
-            return "paused";
+            return this.states.PAUSED;
         } else if (this.started) {
-            return "started";
+            return this.states.RUNNING;
         } else if (this.player1 && this.player2) {
-            return "ready";
+            return this.states.READY;
         } else {
-            return "blocked";
+            return this.states.BLOCKED;
         }
     }
 
@@ -90,7 +97,7 @@ module.exports = class GameEngine {
     }
 
     getActivePlayer() {
-        if (this.started()) {
+        if (this.started) {
             return [this.player1, this.player2].filter(e => e && e.active)[0];
         }
     }

@@ -1,6 +1,13 @@
 const socket = io();
 const cards = [];
 
+const oStates = {
+    READY: "ready",
+    RUNNING: "running",
+    BLOCKED: "blocked",
+    PAUSED: "paused"
+};
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| EVENT LISTENERS ||| ---------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -31,25 +38,23 @@ function _initEventListeners() {
 // ----- ||| SOCKETS ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-socket.emit("hostConnect", {});
+socket.emit("hosting");
 
-//TODO
-// bird sounds
-
-socket.on('init', ip => {
+socket.on('init', o => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =
-        "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + ip + "/control";
-    document.getElementById("ip").innerText = "http://" + ip + "/control";
-});
+        "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
+    document.getElementById("ip").innerText = "http://" + o.ip + "/control";
 
-socket.on('clientUpdate', oInfo => {
-    window.started = oInfo.started;
-    const handleClientUpdate = function(oInfo) {
+    window.started = o.game.state === oStates.RUNNING;
+    const handleClientUpdate = function (oInfo) {
         const aPlayer = document.getElementsByClassName('player');
         const aButtons = document.getElementsByClassName('kick');
         const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
         const oLaunchButton = document.getElementById("launchButton");
+
+        const oPlayer1 = oInfo.players.find(e => e.number === 1);
+        const oPlayer2 = oInfo.players.find(e => e.number === 2);
 
         const toggleButton = (oButton, bEnabled) => {
             if (bEnabled) {
@@ -60,8 +65,8 @@ socket.on('clientUpdate', oInfo => {
             oButton.disabled = !bEnabled;
         };
 
-        if (oInfo.player1) {
-            window._oPlayer1 = new Player(oInfo.player1);
+        if (oPlayer1) {
+            window._oPlayer1 = new Player(oPlayer1);
             aPlayer[0].innerHTML = "Spieler 1: Verbunden";
             toggleButton(aButtons[0], true);
         } else {
@@ -70,8 +75,8 @@ socket.on('clientUpdate', oInfo => {
             toggleButton(aButtons[0], false);
         }
 
-        if (oInfo.player2) {
-            window._oPlayer2 = new Player(oInfo.player2);
+        if (oPlayer2) {
+            window._oPlayer2 = new Player(oPlayer2);
             aPlayer[1].innerHTML = "Spieler 2: Verbunden";
             toggleButton(aButtons[1], true);
         } else {
@@ -80,43 +85,47 @@ socket.on('clientUpdate', oInfo => {
             toggleButton(aButtons[1], false);
         }
 
-        if (oInfo.message) {
-            toast(oInfo.message);
+
+        if (o.game.state === oStates.READY) {
+            handleReady();
+        } else if (o.game.state === oStates.BLOCKED) {
+            handleBlocked()
+        } else if (o.game.state === oStates.RUNNING) {
+            handleRunning()
+        } else if (o.game.state === oStates.PAUSED) {
+            handlePaused()
         }
 
-        if (oInfo.started) {
-            toggleButton(oStartButton, true);
-            toggleButton(oPauseButton, true);
-        } else if (oInfo.player1 && oInfo.player2) {
+        function handleReady() {
             toggleButton(oStartButton, true);
             oLaunchButton.classList.add("wiggle");
         }
 
-        if (!oInfo.player1 || !oInfo.player2) {
+        function handleBlocked() {
             oLaunchButton.classList.remove("wiggle");
         }
 
-        if (oInfo.started) {
+        function handlePaused() {
+            document.getElementById("pause").classList.add("paused");
+            oPauseButton.innerText = "Fortsetzen";
+        }
+
+        function handleRunning() {
+            toggleButton(oStartButton, true);
+            toggleButton(oPauseButton, true);
             _showStats();
-            const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-            if (oInfo.paused) {
-                document.getElementById("pause").classList.add("paused");
-                oButton.innerText = "Fortsetzen";
-            } else {
-                document.getElementById("pause").classList.remove("paused");
-                oButton.innerText = "Pause";
-            }
-        } else {
-            document.getElementById("pause").classList.remove("paused");
+            oPauseButton.innerText = "Pause";
         }
     };
 
     if (!window._iModifier) {
-        setTimeout(() => handleClientUpdate(oInfo), 600);
+        setTimeout(() => handleClientUpdate(o), 600);
     } else {
-        handleClientUpdate(oInfo);
+        handleClientUpdate(o);
     }
+
 });
+
 
 socket.on('playerUpdate', oInfo => {
     const aIgnoredProperties = [
@@ -125,7 +134,7 @@ socket.on('playerUpdate', oInfo => {
         "castleDef"
     ];
 
-    const fnTranslateToFrontend = function(oFrontend, oBackend) {
+    const fnTranslateToFrontend = function (oFrontend, oBackend) {
         for (let property in oBackend) {
             if (aIgnoredProperties.indexOf(property) === -1) {
                 if (oBackend.hasOwnProperty(property) && oFrontend[property] !== oBackend[property]) {
@@ -173,11 +182,11 @@ function _showStats() {
 }
 
 socket.on('pause', paused => {
-    const oButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
+    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (paused) {
-        oButton.innerText = "Fortsetzen";
+        oPauseButton.innerText = "Fortsetzen";
     } else {
-        oButton.innerText = "Pause";
+        oPauseButton.innerText = "Pause";
     }
 
     if (paused) {
@@ -191,7 +200,7 @@ socket.on('pause', paused => {
 
 socket.on('quit', () => {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
-    oGameToggleButton.innerText = "Neustarten";
+    oGameToggleButton.innerText = "Starten";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     oPauseButton.disabled = true;
     oPauseButton.classList.add("disabled");
@@ -202,13 +211,13 @@ socket.on('quit', () => {
     _togglePlayer(2, false);
 });
 
-socket.on('finish', number => {
-
+socket.on('finish', o => {
+    toast(o.message);
 });
 
 socket.on('card', o => {
     const card = cards.then().find(e => e.id === o.id);
-    animateCard(o.player.number);
+    animateCard(o.player.number, card.image);
 });
 
 socket.on('toast', msg => toast(msg));
@@ -284,10 +293,10 @@ function _spawnDeadBird(id) {
 }
 
 function _initShip() {
-    const x = Math.round(window.innerWidth/1.7);
-    const y = Math.round(window.innerHeight/1.67);
-    const diff = x - Math.round(window.innerWidth/2.2);
-    window._oShip = { x, y };
+    const x = Math.round(window.innerWidth / 1.7);
+    const y = Math.round(window.innerHeight / 1.67);
+    const diff = x - Math.round(window.innerWidth / 2.2);
+    window._oShip = {x, y};
 
     function moveShip(i) {
         if (window._oShip.x + i > x + diff) {

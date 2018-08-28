@@ -14,6 +14,7 @@ window._cards = [];
  * - turn (iTime, iActive)
  * - done ()
  * - leave ()
+ * - pause ()
  * - playerUpdate ([ player1, player2 ])
  */
 
@@ -31,11 +32,12 @@ socket.on("start", () => {
 	Cards.unfoldAll();
 });
 
-socket.on("turn", iTime => {
-	//TODO check if you are active
-	console.log("turn");
-
-	Information.turn(iTime);
+socket.on("turn", o => {
+	if (o.active === window.player.number) {
+        console.log("turn");
+        Information.turn(o.duration);
+        window._moveAllowed = true;
+    }
 });
 
 socket.on("done", () => {

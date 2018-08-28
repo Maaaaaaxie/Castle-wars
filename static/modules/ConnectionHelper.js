@@ -7,7 +7,7 @@ module.exports = class ConnectionHelper {
         this.players = [];
     }
 
-    handleClientJoin(socket, id, io, fnCallback) {
+    handleClientJoin(socket, id, fnCallback) {
         let number;
         if (!this.game.player1) {
             number = 1;
@@ -32,7 +32,9 @@ module.exports = class ConnectionHelper {
         console.log("Player " + number + " joined the game");
         this.io.to("host").emit("toast", "Spieler " + number + " ist dem Spiel beigetreten");
 
-        fnCallback(number);
+        if (fnCallback) {
+            fnCallback(number);
+        }
     }
 
     handleClientDisconnected(socket, number, io, fnCallback) {

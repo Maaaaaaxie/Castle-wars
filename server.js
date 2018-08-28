@@ -49,7 +49,7 @@ const connection = new ConnectionHelper(game);
 io.on("connection", function (socket) {
     const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
 
-    function sendInfo(context) {
+    function sendInfoTo(context) {
         context.emit("init", {
             id: id,
             game: game.toFrontendStructure(),
@@ -58,30 +58,23 @@ io.on("connection", function (socket) {
         });
     }
 
-    socket.on("connect", sType => {
-        console.log("User connected: " + id);
-
-        if (sType === "host") {
-            socket.join("host");
-        }
-
-        sendInfo(socket);
+    socket.on("hosting", () => {
+        console.log("Host connected: " + id);
+        sendInfoTo(socket);
     });
 
     socket.on("join", () => {
-        connection.handleClientJoin(socket, id, () => sendInfo(io.to("host")));
+        connection.handleClientJoin(socket, id, () => sendInfoTo(io.to("host")));
     });
 
     socket.on("disconnect", () => {
         const oPlayer = game.getPlayers().find(e => e.id === id);
 
         if (oPlayer) {
-            connection.handleClientDisconnected(socket, oPlayer.number, () => sendInfo(io.to("host")));
+            connection.handleClientDisconnected(socket, oPlayer.number, () => sendInfoTo(io.to("host")));
         } else {
             socket.leave("host"); // could happen that socket never joined 'host' but shouldn't be a problem
         }
-
-        console.log("User disconnected: " + id);
     });
 
     socket.on("kick", number => {
@@ -92,7 +85,7 @@ io.on("connection", function (socket) {
         }
         const oPlayer = number === 1 ? game.player1 : game.player2;
         console.log("Player " + number + " was kicked");
-        connection.handleClientDisconnected(oPlayer.socket, oPlayer.number, io, () => sendInfo(io.to("host")));
+        connection.handleClientDisconnected(oPlayer.socket, oPlayer.number, io, () => sendInfoTo(io.to("host")));
     });
 
     socket.on("start", () => {

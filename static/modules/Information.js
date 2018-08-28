@@ -45,7 +45,6 @@ export default class Information /*extends Timer */ {
 	static turn(iTime) {
 		this.notify();
 		this.start(iTime);
-		window._moveAllowed = true;
 	}
 
 	// flashes the top area of the player screen

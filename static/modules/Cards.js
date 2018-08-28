@@ -60,7 +60,8 @@ export default class Cards {
 				oSceneInner.classList.add("vanished");
 				window.socket.emit("card", {
 					id: iCard,
-					discard: true
+					discard: true,
+					number: window.player.number
 				});
 				window.setTimeout(() => {
 					this.removeCard(oSceneInner);
@@ -84,7 +85,8 @@ export default class Cards {
 				console.log("Played card", sCardId);
 				window.socket.emit("card", {
 					id: sCardId,
-					discard: false
+					discard: false,
+					number: window.player.number
 				});
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
