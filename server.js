@@ -51,20 +51,26 @@ io.on("connection", function (socket) {
 
     function sendInfoTo(context) {
         context.emit("init", {
-            id: id,
             game: game.toFrontendStructure(),
             players: game.getPlayers(),
             ip: ip + ":" + PORT
         });
     }
 
-    socket.on("hosting", () => {
-        console.log("Host connected: " + id);
+    socket.on("connected", sType => {
+        if (sType === "host") {
+            console.log("Host connected: " + id);
+            socket.join("host");
+        } else {
+            console.log("Client connected: " + id);
+        }
+
+        socket.emit("id", id);
         sendInfoTo(socket);
     });
 
     socket.on("join", () => {
-        connection.handleClientJoin(socket, id, () => sendInfoTo(io.to("host")));
+        connection.handleClientJoin(socket, id, () => sendInfoTo(io.sockets));
     });
 
     socket.on("disconnect", () => {

@@ -38,7 +38,7 @@ function _initEventListeners() {
 // ----- ||| SOCKETS ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-socket.emit("hosting");
+socket.emit("connected", "host");
 
 socket.on('init', o => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =

@@ -66,7 +66,7 @@ module.exports = class GameEngine {
             console.log("Paused");
             this.paused = true;
             this.io.emit("pause", true);
-            if(this.getActivePlayer()) {
+            if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.pause();
             }
         }
@@ -89,7 +89,7 @@ module.exports = class GameEngine {
                 this.player1.timer.stop();
             }
 
-            if(this.player2) {
+            if (this.player2) {
                 this.player2.reset();
                 this.player2.timer.stop();
             }
@@ -109,7 +109,7 @@ module.exports = class GameEngine {
     }
 
     initializePlayer(player) {
-        const callback = function() {
+        const callback = function () {
             player.done = true;
             player.socket.emit("done");
             if (this.getWinner()) {
@@ -251,12 +251,10 @@ module.exports = class GameEngine {
     }
 
     sendPlayerInfo() {
-        this.io.emit("playerUpdate", {
-            players: [
-                new Player(this.player1),
-                new Player(this.player2)
-            ]
-        })
+        this.io.emit("playerUpdate", [
+            new Player(this.player1),
+            new Player(this.player2)
+        ]);
     }
 };
 

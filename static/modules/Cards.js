@@ -134,6 +134,21 @@ export default class Cards {
 		}, 100);
 	}
 
+	static foldAll() {
+		let
+			aCards = [],
+			i = -1;
+
+		for (const scene of document.getElementsByClassName("scene_inner")) {
+			aCards.push(scene);
+		}
+
+		const iInterval = window.setInterval(() => {
+			i > 5 && window.clearInterval(iInterval); // suizide
+			aCards[++i].classList.add("is-flipped");
+		}, 100);
+	}
+
 	static removeCard(oSceneInner) {
 		oSceneInner.closest(".card").parentElement.removeChild(oSceneInner.closest(".card"));
 	}

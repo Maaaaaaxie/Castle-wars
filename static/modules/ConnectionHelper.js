@@ -45,9 +45,11 @@ module.exports = class ConnectionHelper {
             this.game.pause();
         }
 
-        console.log("Player " + oPlayer.number + " left the game");
-        this.io.to("host").emit("toast", "Spieler " + oPlayer.number + " hat das Spiel verlassen");
+        console.log("Player " + number + " left the game");
+        this.io.to("host").emit("toast", "Spieler " + number + " hat das Spiel verlassen");
 
-        fnCallback();
+        if (fnCallback) {
+            fnCallback();
+        }
     }
 };

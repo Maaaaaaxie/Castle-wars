@@ -18,11 +18,16 @@ window._cards = [];
  * - playerUpdate ([ player1, player2 ])
  */
 
-socket.on("init", o => {
-    console.log("Joined game", o);
-	window.player = o.players.find(e => e.id === o.id);
+socket.emit("connected", "client")
 
-	startGame(window.player);
+socket.on("id", id => window._id = id);
+
+socket.on("init", o => {
+	window.player = o.players.find(e => e.id === window._id);
+
+	if (window.player) {
+        startGame(window.player);
+    }
 });
 
 // fired when the game starts
@@ -66,6 +71,14 @@ socket.on("playerUpdate", a => {
 
 		aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
 	}, 500);
+});
+
+socket.on("pause", b => {
+	if (b) {
+		Cards.foldAll();
+	} else {
+		Cards.unfoldAll();
+	}
 });
 
 // fired when the connection is lost
