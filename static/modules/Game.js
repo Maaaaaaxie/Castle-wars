@@ -47,7 +47,7 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
-            this.io.to("host").emit("pause", false);
+            this.io.emit("pause", false);
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.resume();
             }
@@ -58,7 +58,7 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Paused");
             this.paused = true;
-            this.io.to("host").emit("pause", true);
+            this.io.emit("pause", true);
             if(this.getActivePlayer()) {
                 this.getActivePlayer().timer.pause();
             }
@@ -123,7 +123,7 @@ module.exports = class GameEngine {
                 }
                 player.done = true;
                 player.timer.finish();
-                this.sendPlayerInfo([this.io.sockets]);
+                this.sendPlayerInfo();
             }
         });
     }
@@ -147,10 +147,15 @@ module.exports = class GameEngine {
 
             if (player) {
                 player.addResources();
-                this.sendPlayerInfo([player.socket, this.io.to("host")]);
+                this.sendPlayerInfo();
                 player.active = true;
                 player.done = false;
-                player.socket.emit("turn", this.turnLength);
+
+                this.io.emit("turn", {
+                    active: player.number,
+                    duration: this.turnLength
+                });
+
                 player.timer.start();
                 console.log("Player " + player.number + " turn");
             }
@@ -236,12 +241,12 @@ module.exports = class GameEngine {
         this["player" + number] = undefined;
     }
 
-    sendPlayerInfo(aSockets) {
-        aSockets.forEach(socket => {
-            socket.emit("playerUpdate", {
-                player1: new Player(this.player1),
-                player2: new Player(this.player2)
-            });
+    sendPlayerInfo() {
+        this.io.emit("playerUpdate", {
+            players: [
+                new Player(this.player1),
+                new Player(this.player2)
+            ]
         })
     }
 };

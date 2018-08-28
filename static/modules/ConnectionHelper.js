@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const Player = require("./Player.js");
 
 module.exports = class ConnectionHelper {
@@ -8,7 +7,7 @@ module.exports = class ConnectionHelper {
         this.players = [];
     }
 
-    handleClientConnect(socket, id) {
+    handleClientJoin(socket, id, io, fnCallback) {
         let number;
         if (!this.game.player1) {
             number = 1;
@@ -31,10 +30,12 @@ module.exports = class ConnectionHelper {
         this.game.addPlayer(oPlayer);
 
         console.log("Player " + number + " joined the game");
-        this.io.emit("toast", "Spieler " + number + " ist dem Spiel beigetreten");
+        this.io.to("host").emit("toast", "Spieler " + number + " ist dem Spiel beigetreten");
+
+        fnCallback(number);
     }
 
-    handleClientDisconnected(socket, number) {
+    handleClientDisconnected(socket, number, io, fnCallback) {
         this.game.removePlayer(number);
         socket.emit("leave");
 
@@ -42,7 +43,9 @@ module.exports = class ConnectionHelper {
             this.game.pause();
         }
 
-        console.log("Player " + number + " left the game");
-        this.io.emit("toast", "Spieler " + number + " hat das Spiel verlassen");
+        console.log("Player " + oPlayer.number + " left the game");
+        this.io.to("host").emit("toast", "Spieler " + oPlayer.number + " hat das Spiel verlassen");
+
+        fnCallback();
     }
 };

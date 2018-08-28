@@ -44,60 +44,55 @@ const game = new GameEngine(io);
 const ConnectionHelper = require("./static/modules/ConnectionHelper.js");
 const connection = new ConnectionHelper(game);
 
+
 // initialize SocketIO
-io.on("connection", function(socket) {
-    // -------- general ------------------------------------------------------------------------------------------------
+io.on("connection", function (socket) {
     const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
-    // console.log("User connected: " + id);
 
-    socket.on("connect", sType => {
-        if (sType === "client") {
-            console.log("Client connected: " + id);
-            connection.handleClientConnect(socket, id);
-        } else if (sType === "host") {
-            console.log("Host connected: " + id);
-        } else {
-            throw new Error("User type '" + sType + "' unknown.");
-        }
-
-        io.emit("init", {
+    function sendInfo(context) {
+        context.emit("init", {
             id: id,
             game: game.toFrontendStructure(),
             players: game.getPlayers(),
             ip: ip + ":" + PORT
         });
+    }
+
+    socket.on("connect", sType => {
+        console.log("User connected: " + id);
+
+        if (sType === "host") {
+            socket.join("host");
+        }
+
+        sendInfo(socket);
+    });
+
+    socket.on("join", () => {
+        connection.handleClientJoin(socket, id, () => sendInfo(io.to("host")));
     });
 
     socket.on("disconnect", () => {
         const oPlayer = game.getPlayers().find(e => e.id === id);
 
         if (oPlayer) {
-            connection.handleClientDisconnected(socket, id);
+            connection.handleClientDisconnected(socket, oPlayer.number, () => sendInfo(io.to("host")));
         } else {
-            console.log("User disconnected: " + id);
+            socket.leave("host"); // could happen that socket never joined 'host' but shouldn't be a problem
         }
+
+        console.log("User disconnected: " + id);
     });
 
-    // -------- chat ---------------------------------------------------------------------------------------------------
-    socket.on("chatIn", oMessage => {
-        console.log(oMessage.username + ": " + oMessage.text);
-        io.emit("chatOut", oMessage);
-    });
-
-    // -------- game ---------------------------------------------------------------------------------------------------
-    socket.on("clientConnect", username => {
-        connection.handleClientConnect(socket, username);
-    });
-
-    socket.on("clientKick", number => {
-        if(game.started) {
+    socket.on("kick", number => {
+        if (game.started) {
             console.log("Players can't be kicked while a game is runninng");
             io.to("host").emit("toast", "Spieler können während einem Spiel nicht gekickt werden");
             return;
         }
         const oPlayer = number === 1 ? game.player1 : game.player2;
-        connection.handleClientDisconnected(oPlayer.socket, oPlayer.id);
         console.log("Player " + number + " was kicked");
+        connection.handleClientDisconnected(oPlayer.socket, oPlayer.number, io, () => sendInfo(io.to("host")));
     });
 
     socket.on("start", () => {
