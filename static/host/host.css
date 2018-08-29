@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: "MedievalSharp";
+    user-select: none;
 }
 
 #pause {
@@ -25,7 +26,6 @@ html, body {
     padding-top: 2rem;
     font-size: 36pt;
     font-weight: bold;
-    /*user-select: none;*/
     color: #f4bc7d;
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
@@ -137,6 +137,7 @@ canvas {
 #menu .title {
     font-size: 18pt;
     font-weight: bold;
+    /*text-shadow: -3px 0 #4a270e, 0 3px #4a270e, 3px 0 #4a270e, 0 -3px #4a270e;*/
 }
 
 #menu .flex-wrapper {
@@ -191,7 +192,8 @@ canvas {
 
 #menu .content .info {
     font-size: 12pt;
-    font-weight: bold;
+    font-weight: normal;
+    font-family: "Comic Sans MS";
 }
 
 .animation-grow {
