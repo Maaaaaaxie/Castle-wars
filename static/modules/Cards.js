@@ -267,11 +267,22 @@ export default class Cards {
 			aCards = [];
 
 		for (const card of aAllCards) {
+			// cards with the same id (thus same properties) may appear multiple times
 			card.getAttribute("data-id") === nCard && aCards.push(card);
 		}
 
 		aCards.forEach(e => {
-			oCardPromise.then(aCards => that._getPlayable(aCards.find(e => e.id === nCard), oPlayer) && e.classList.remove("disabled"));
+			oCardPromise.then(aCards => {
+				const bPlayable = that._getPlayable(aCards.find(e => {
+					return e.id === nCard;
+				}), oPlayer);
+
+				if (bPlayable) {
+					e.classList.remove("disabled");
+				} else {
+					e.classList.add("disabled");
+				}
+			});
 		});
 	}
 }

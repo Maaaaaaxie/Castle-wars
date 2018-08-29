@@ -6,6 +6,7 @@ const socket = window.socket = io();
 window.player = {};
 window._moveAllowed = false;
 window._cards = [];
+window._started = false;
 
 const oStates = {
 	READY: "ready",
@@ -78,21 +79,18 @@ socket.on("playerUpdate", a => {
 
 	const oPlayer = a.find(e => e.number === window.player.number);
 
-	// TODO: nur karten die erlaubt rerender?
-	window.setTimeout(() => {
-		Resources.update(oPlayer);
-		const
-			aCurrentCards = Cards.getCurrentCards(),
-			aNewCards = oPlayer.cards;
+	Resources.update(oPlayer);
+	const
+		aCurrentCards = Cards.getCurrentCards(),
+		aNewCards = oPlayer.cards;
 
-		if (aCurrentCards.length < 8) {
-			aCurrentCards.forEach(e => aNewCards.splice(aNewCards.indexOf(e), 1));
+	if (aCurrentCards.length < 8) {
+		aCurrentCards.forEach(e => aNewCards.splice(aNewCards.indexOf(e), 1));
 
-			Cards.renderCard({ sCardId: aNewCards[0], oPlayer });
-		}
+		Cards.renderCard({ sCardId: aNewCards[0], oPlayer });
+	}
 
-		aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
-	}, 500);
+	aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
 });
 
 socket.on("pause", o => {
@@ -115,6 +113,11 @@ socket.on("leave", () => {
 });
 
 function startGame(oPlayer) {
+	if (window._started) {
+		return;
+	}
+	window._started = true;
+
 	// hide loading canvas animation of the castle
 	window.setTimeout(() => {
 		// fade out the canvas
