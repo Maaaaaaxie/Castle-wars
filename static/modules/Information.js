@@ -79,7 +79,7 @@ export default class Information /*extends Timer */ {
 	static stop() {
 		const oTimer = document.getElementById("timer");
 		if (!oTimer) {
-			throw new Error("Unable to start timer: timer element not found");
+			throw new Error("Unable to stop timer: timer element not found");
 		}
 
 		if (window.countdown) {
@@ -87,5 +87,15 @@ export default class Information /*extends Timer */ {
 			delete window.countdown;
 			oTimer.innerText = "-";
 		}
+	}
+
+	// TODO
+	static pause() {
+		const oTimer = document.getElementById("timer");
+		if (!oTimer) {
+			throw new Error("Unable to pause timer: timer element not found");
+		}
+
+
 	}
 }

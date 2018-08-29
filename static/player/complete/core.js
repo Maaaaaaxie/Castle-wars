@@ -7,6 +7,13 @@ window.player = {};
 window._moveAllowed = false;
 window._cards = [];
 
+const oStates = {
+	READY: "ready",
+	RUNNING: "running",
+	PAUSED: "paused",
+	BLOCKED: "blocked"
+};
+
 /**
  * socket.on
  * - init ({ id, game{ active, state }, players[] })
@@ -113,7 +120,7 @@ function startGame(oPlayer) {
 			// render the deck
 			oPlayer.cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer, bFlipped: true }));
 		}, 475);
-	}, 250);
+	}, 125);
 }
 
 // loaded, show join button
