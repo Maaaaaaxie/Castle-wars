@@ -68,7 +68,7 @@ io.on("connection", function (socket) {
                 state: game.getState()
             });
 
-            const oPlayer = game.getPlayers().find(e => e.id === id);
+            const oPlayer = connection.players.find(e => e.id === id);
             if (!!oPlayer) {
                 oPlayer.connected = true;
                 sendInfoTo(socket);
@@ -82,7 +82,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on("disconnect", () => {
-        const oPlayer = game.getPlayers().find(e => e.id === id);
+        const oPlayer = connection.players.find(e => e.id === id);
 
         if (oPlayer) {
             connection.handleClientDisconnected(oPlayer, () => sendInfoTo(io.to("host")));
