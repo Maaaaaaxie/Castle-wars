@@ -16,7 +16,7 @@ const oStates = {
 
 const btnJoin = document.getElementById("launchButton");
 btnJoin.addEventListener("click", e => {
-	enterFullscreen(document.documentElement);
+	!localStorage.getItem("dev") && enterFullscreen(document.documentElement);
 	socket.emit("join");
 	btnJoin.disabled = true;
 });
@@ -92,12 +92,13 @@ socket.on("playerUpdate", a => {
 	}, 500);
 });
 
-socket.on("pause", b => {
-	// Timer pause/continue
-	if (b) {
+socket.on("pause", o => {
+	if (o.paused) {
+		Timer.stop(false);
 		Cards.foldAll();
 	} else {
 		Cards.unfoldAll();
+		Timer.start(o.remaining);
 	}
 });
 
