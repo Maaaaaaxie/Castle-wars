@@ -32,11 +32,13 @@ btnJoin.addEventListener("click", e => {
  * - playerUpdate ([ player1, player2 ])
  */
 
-socket.on("id", id => {
-	window._id = id;
+socket.on("init", o => {
+	window._id = o.id;
 
 	// display join button
-	btnJoin.style.display = "block";
+	if (o.state === oStates.BLOCKED) {
+		btnJoin.style.display = "block";
+	}
 });
 
 socket.emit("connected", "client");
@@ -60,7 +62,7 @@ socket.on("turn", o => {
 	if (o.active === window.player.number) {
         console.log("turn");
         Information.turn(o.duration);
-        window._moveAllowed = true;
+        window._moveAllowed = true; // TODO: fix this, implement properly
     }
 });
 
@@ -76,6 +78,7 @@ socket.on("playerUpdate", a => {
 
 	const oPlayer = a.find(e => e.number === window.player.number);
 
+	// TODO: nur karten die erlaubt rerender?
 	window.setTimeout(() => {
 		Resources.update(oPlayer);
 		const
