@@ -124,6 +124,108 @@ canvas {
     transform: scale(1.05);
 }
 
+/* --- menu ----------------------------------------------------------------------------------------------------------*/
+#menu {
+    background: rgba(74, 47, 26, 0.7);
+    width: 100%;
+    max-width: 30rem;
+    border: none !important;
+    border-radius: 0.5rem;
+    color: #f4bc7d;
+}
+
+#menu .title {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+#menu .flex-wrapper {
+    display: flex;
+}
+
+#menu .container {
+    flex: 1;
+}
+
+#menu .content {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+#menu .content .avatar {
+    display: inline-block;
+    padding: 1rem;
+}
+
+#menu .content .avatar img {
+    width: 6rem;
+}
+
+#menu .content .avatar .image {
+    display: none;
+}
+
+#menu .content .avatar .no-image {
+    width: 6rem;
+    height: 6rem;
+    display: grid;
+}
+
+#menu .content .avatar .no-image img {
+    width: 3rem;
+    display: inline-block;
+    margin: auto;
+    animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+#menu .content .info {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.animation-grow {
+    animation: grow 500ms forwards;
+}
+
+@keyframes grow {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.animation-shrink {
+    animation: shrink 500ms forwards;
+}
+
+@keyframes shrink {
+    from {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+}
+
+
+
 /* --- options -------------------------------------------------------------------------------------------------------*/
 
 #options {
@@ -167,7 +269,7 @@ button:active {
     font-weight: bold;
 }
 
-dialog::backdrop, #backdrop {
+#options::backdrop, #backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -313,7 +415,7 @@ dialog::backdrop, #backdrop {
     opacity: 0;
 }
 
-.container {
+#info .container {
     border-top: 2px solid rgba(0, 0, 0, 0.8);
 }
 

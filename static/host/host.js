@@ -1,4 +1,5 @@
 const socket = io();
+
 let aCards;
 const _xhr = new XMLHttpRequest();
 _xhr.open("GET", "/cards");
@@ -15,6 +16,17 @@ const oStates = {
     BLOCKED: "blocked",
     PAUSED: "paused"
 };
+
+function _onLoad() {
+    window.menu.open();
+    _initEventListeners();
+    _initCanvas();
+    _initGame();
+}
+
+window.menu = new Menu();
+window.onload = () => _onLoad();
+window.onresize = () => _initCanvas();
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| EVENT LISTENERS ||| ---------------------------------------------------------------------------------------
@@ -73,25 +85,15 @@ socket.on('init', o => {
             oButton.disabled = !bEnabled;
         };
 
-        if (oPlayer1) {
-            window._oPlayer1 = new Player(oPlayer1);
-            aPlayer[0].innerHTML = "Spieler 1: Verbunden";
-            toggleButton(aButtons[0], true);
-        } else {
-            window._oPlayer1 = undefined;
-            aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
-            toggleButton(aButtons[0], false);
+        if (!!window._oPlayer1 !== !!oPlayer1) {
+            window.menu.togglePlayer(1, !!oPlayer1);
+        }
+        if (!!window._oPlayer2 !== !!oPlayer2) {
+            window.menu.togglePlayer(2, !!oPlayer2);
         }
 
-        if (oPlayer2) {
-            window._oPlayer2 = new Player(oPlayer2);
-            aPlayer[1].innerHTML = "Spieler 2: Verbunden";
-            toggleButton(aButtons[1], true);
-        } else {
-            window._oPlayer2 = undefined;
-            aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
-            toggleButton(aButtons[1], false);
-        }
+        window._oPlayer1 = oPlayer1 ? new Player(oPlayer1) : undefined;
+        window._oPlayer2 = oPlayer2 ? new Player(oPlayer2) : undefined;
 
 
         if (o.game.state === oStates.READY) {
@@ -162,7 +164,7 @@ socket.on('playerUpdate', aPlayers => {
 
 socket.on('start', _showStats);
 
-function _togglePlayer(iNumber, b) {
+function _togglePlayerStats(iNumber, b) {
     const oDeck = document.getElementById("deck-" + iNumber);
     const oStat = document.getElementById("stats-" + iNumber);
     const oInfo = document.getElementById("info-" + iNumber);
@@ -189,8 +191,8 @@ function _showStats() {
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
 
-    _togglePlayer(1, true);
-    _togglePlayer(2, true);
+    _togglePlayerStats(1, true);
+    _togglePlayerStats(2, true);
 }
 
 socket.on('pause', o => {
@@ -219,8 +221,8 @@ socket.on('quit', () => {
 
     document.getElementById("pause").classList.remove("paused");
 
-    _togglePlayer(1, false);
-    _togglePlayer(2, false);
+    _togglePlayerStats(1, false);
+    _togglePlayerStats(2, false);
 });
 
 socket.on('finish', o => {
@@ -408,16 +410,6 @@ function _initCanvas() {
 
     _initShip();
 }
-
-function _onLoad() {
-    _initEventListeners();
-    _initCanvas();
-    _initGame();
-}
-
-window.onload = () => _onLoad();
-
-window.onresize = () => _initCanvas();
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
@@ -647,7 +639,6 @@ function toggleFullscreen() {
 function toggleMusic() {
     window._music.mute();
 }
-
 
 /**
  * Opens or closes the options dialog

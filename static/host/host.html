@@ -9,6 +9,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/host/Canvas.js"></script>
 <script src="/host/Player.js"></script>
+<script src="/host/Menu.js"></script>
 <script src="/host/Sound.js"></script>
 <script src="/host/host.js"></script>
 
@@ -29,6 +30,37 @@
     <img id="toggleOptions" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
     <img id="toggleFullscreen" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
 </div>
+
+<dialog id="menu">
+    <div class="flex-wrapper">
+        <div class="left container">
+            <div id="menu-player-1" class="content">
+                <div class="title">Spieler 1</div>
+                <div class="avatar">
+                    <div class="image"><img src="../images/basic/player1.png"></div>
+                    <div class="no-image"><img src="../images/basic/loading.png"></div>
+                </div>
+                <div class="info">Nicht verbunden</div>
+            </div>
+        </div>
+        <div class="center container">
+            <div class="content">
+                <button id="launchButton">Start</button>
+            </div>
+        </div>
+        <div class="right container">
+            <div id="menu-player-2" class="content">
+                <div class="title">Spieler 2</div>
+                <div class="avatar">
+                    <div class="image"><img src="../images/basic/player2.png"></div>
+                    <div class="no-image"><img src="../images/basic/loading.png"></div>
+                </div>
+                <div class="info">Nicht verbunden</div>
+            </div>
+        </div>
+    </div>
+</dialog>
+
 <dialog id="options">
     <div class="option">
         <div class="description">Spiel</div>
@@ -463,7 +495,7 @@
 </div>
 
 <div class="centerWrapper">
-    <button id="launchButton">Start</button>
+    <!--<button id="launchButton">Start</button>-->
 </div>
 
 <div id="toast"></div>
