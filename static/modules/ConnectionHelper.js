@@ -37,7 +37,7 @@ module.exports = class ConnectionHelper {
         }
     }
 
-    handleClientDisconnected(socket, number, io, fnCallback) {
+    handleClientDisconnected(socket, number, fnCallback) {
         this.game.removePlayer(number);
         socket.emit("leave");
 
