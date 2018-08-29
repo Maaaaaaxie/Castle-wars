@@ -14,6 +14,13 @@ const oStates = {
 	BLOCKED: "blocked"
 };
 
+const btnJoin = document.getElementById("launchButton");
+btnJoin.addEventListener("click", e => {
+	enterFullscreen(document.documentElement);
+	socket.emit("join");
+	btnJoin.disabled = true;
+});
+
 /**
  * socket.on
  * - init ({ id, game{ active, state }, players[] })
@@ -25,9 +32,14 @@ const oStates = {
  * - playerUpdate ([ player1, player2 ])
  */
 
-socket.emit("connected", "client");
+socket.on("id", id => {
+	window._id = id;
 
-socket.on("id", id => window._id = id);
+	// display join button
+	btnJoin.style.display = "block";
+});
+
+socket.emit("connected", "client");
 
 socket.on("init", o => {
 	window.player = o.players.find(e => e.id === window._id);
@@ -81,6 +93,7 @@ socket.on("playerUpdate", a => {
 });
 
 socket.on("pause", b => {
+	// Timer pause/continue
 	if (b) {
 		Cards.foldAll();
 	} else {
@@ -107,6 +120,7 @@ function startGame(oPlayer) {
 		// after the fade out animation has finished, we...
 		window.setTimeout(() => {
 			// window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
+			window.clearInterval(iInterval);
 			document.body.removeChild(document.getElementById("canvas").parentElement); // ... and remove the canvas element from the document
 
 			// then, all the necessecary parts/wrappers are rendered:
@@ -135,6 +149,7 @@ function enterFullscreen(oElement) {
 		oElement.webkitRequestFullscreen();
 	}
 }
+
 window.clearInterval(window.loadingInterval);
 
 const iInterval = window.setInterval(() => {
@@ -142,14 +157,6 @@ const iInterval = window.setInterval(() => {
 	if (window.iHeight >= iMaxHeight) {
 		window.iHeight = iMaxHeight;
 		window.clearInterval(iInterval);
-
-		const oJoinButton = document.getElementById("launchButton");
-		oJoinButton.style.display = "block";
-		oJoinButton.addEventListener("click", e => {
-			// enterFullscreen(document.documentElement); // TODO: uncomment
-			socket.emit("join");
-			oJoinButton.disabled = true;
-		});
 	} else {
 		window.iHeight += 4;
 	}

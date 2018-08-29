@@ -4,12 +4,12 @@ const aStats = [
 		properties: [{
 			id: "propCastle",
 			name: "Burg",
-			image: "http://simpleicon.com/wp-content/uploads/castle.png",
+			image: "/images/materials/castle.png",
 			value: 0
 		}, {
 			id: "propFence",
 			name: "Zaun",
-			image: "https://cdn.icon-icons.com/icons2/583/PNG/512/yard-fence_icon-icons.com_55051.png",
+			image: "/images/materials/fence.png",
 			value: 0
 		}]
 	}, {
@@ -17,12 +17,12 @@ const aStats = [
 		properties: [{
 			id: "propBuilder",
 			name: "Baumeister",
-			image: "https://d30y9cdsu7xlg0.cloudfront.net/png/543-200.png",
+			image: "/images/materials/builder.png",
 			value: 0
 		}, {
 			id: "propStones",
 			name: "Steine",
-			image: "https://png.icons8.com/metro/1600/rock.png",
+			image: "/images/materials/stone.png",
 			value: 0
 		}]
 	}, {
@@ -30,12 +30,12 @@ const aStats = [
 		properties: [{
 			id: "propSoldiers",
 			name: "Soldaten",
-			image: "https://www.ccri.edu/about/images/knight_icon.svg",
+			image: "/images/materials/soldier.png",
 			value: 0
 		}, {
 			id: "propWeapons",
 			name: "Waffen",
-			image: "http://icons.iconarchive.com/icons/icons8/windows-8/256/Military-Sword-icon.png",
+			image: "/images/materials/sword.png",
 			value: 0
 		}]
 	}, {
@@ -43,12 +43,12 @@ const aStats = [
 		properties: [{
 			id: "propMages",
 			name: "Magier",
-			image: "http://downloadicons.net/sites/default/files/witch%27s-hat-icon-75504.png",
+			image: "/images/materials/witch.png",
 			value: 0
 		}, {
 			id: "propCrystals",
 			name: "Kristalle",
-			image: "https://d30y9cdsu7xlg0.cloudfront.net/png/7374-200.png",
+			image: "/images/materials/crystal.png",
 			value: 0
 		}]
 	}
