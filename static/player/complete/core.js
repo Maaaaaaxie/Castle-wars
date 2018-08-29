@@ -120,9 +120,10 @@ function startGame(oPlayer) {
 
 		// after the fade out animation has finished, we...
 		window.setTimeout(() => {
-			// window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
+			// ... clear the drawing interval call...
 			window.clearInterval(iInterval);
-			document.body.removeChild(document.getElementById("canvas").parentElement); // ... and remove the canvas element from the document
+			// ... and remove the canvas element from the document
+			document.body.removeChild(document.getElementById("canvas").parentElement);
 
 			// then, all the necessecary parts/wrappers are rendered:
 			document.body.appendChild(Information.render(window.player.number)); // the information part on the top
