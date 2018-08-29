@@ -76,7 +76,8 @@ export default class Information /*extends Timer */ {
 		}, 1000);
 	}
 
-	static stop() {
+	// stops/pauses the timer
+	static stop(bHideTimeLeft = true) {
 		const oTimer = document.getElementById("timer");
 		if (!oTimer) {
 			throw new Error("Unable to stop timer: timer element not found");
@@ -85,17 +86,9 @@ export default class Information /*extends Timer */ {
 		if (window.countdown) {
 			window.clearInterval(window.countdown);
 			delete window.countdown;
-			oTimer.innerText = "-";
+			if (bHideTimeLeft) {
+				oTimer.innerText = "-";
+			}
 		}
-	}
-
-	// TODO
-	static pause() {
-		const oTimer = document.getElementById("timer");
-		if (!oTimer) {
-			throw new Error("Unable to pause timer: timer element not found");
-		}
-
-
 	}
 }

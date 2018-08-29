@@ -60,7 +60,7 @@ function _initEventListeners() {
 
 socket.emit("connected", "host");
 
-socket.on('init', o => {
+socket.on('info', o => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =
         "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
     document.getElementById("ip").innerText = "http://" + o.ip + "/control";
@@ -145,7 +145,8 @@ socket.on('playerUpdate', aPlayers => {
     const aIgnoredProperties = [
         "id",
         "cards",
-        "castleDef"
+        "castleDef",
+        "connected"
     ];
 
     const fnTranslateToFrontend = function (oFrontend, oBackend) {

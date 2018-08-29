@@ -16,7 +16,7 @@ const oStates = {
 
 const btnJoin = document.getElementById("launchButton");
 btnJoin.addEventListener("click", e => {
-	enterFullscreen(document.documentElement);
+	!localStorage.getItem("dev") && enterFullscreen(document.documentElement);
 	socket.emit("join");
 	btnJoin.disabled = true;
 });
@@ -32,16 +32,18 @@ btnJoin.addEventListener("click", e => {
  * - playerUpdate ([ player1, player2 ])
  */
 
-socket.on("id", id => {
-	window._id = id;
+socket.on("init", o => {
+	window._id = o.id;
 
 	// display join button
-	btnJoin.style.display = "block";
+	if (o.state === oStates.BLOCKED) {
+		btnJoin.style.display = "block";
+	}
 });
 
 socket.emit("connected", "client");
 
-socket.on("init", o => {
+socket.on("info", o => {
 	window.player = o.players.find(e => e.id === window._id);
 
 	if (window.player) {
@@ -60,7 +62,7 @@ socket.on("turn", o => {
 	if (o.active === window.player.number) {
         console.log("turn");
         Information.turn(o.duration);
-        window._moveAllowed = true;
+        window._moveAllowed = true; // TODO: fix this, implement properly
     }
 });
 
@@ -76,6 +78,7 @@ socket.on("playerUpdate", a => {
 
 	const oPlayer = a.find(e => e.number === window.player.number);
 
+	// TODO: nur karten die erlaubt rerender?
 	window.setTimeout(() => {
 		Resources.update(oPlayer);
 		const
@@ -92,12 +95,13 @@ socket.on("playerUpdate", a => {
 	}, 500);
 });
 
-socket.on("pause", b => {
-	// Timer pause/continue
-	if (b) {
+socket.on("pause", o => {
+	if (o.paused) {
+		Timer.stop(false);
 		Cards.foldAll();
 	} else {
 		Cards.unfoldAll();
+		Timer.start(o.remaining);
 	}
 });
 
@@ -119,9 +123,10 @@ function startGame(oPlayer) {
 
 		// after the fade out animation has finished, we...
 		window.setTimeout(() => {
-			// window.clearInterval(window.loadingInterval); // ... clear the drawing interval call...
+			// ... clear the drawing interval call...
 			window.clearInterval(iInterval);
-			document.body.removeChild(document.getElementById("canvas").parentElement); // ... and remove the canvas element from the document
+			// ... and remove the canvas element from the document
+			document.body.removeChild(document.getElementById("canvas").parentElement);
 
 			// then, all the necessecary parts/wrappers are rendered:
 			document.body.appendChild(Information.render(window.player.number)); // the information part on the top
