@@ -37,16 +37,18 @@ module.exports = class ConnectionHelper {
         }
     }
 
-    handleClientDisconnected(socket, number, fnCallback) {
-        this.game.removePlayer(number);
-        socket.emit("leave");
+    handleClientDisconnected(oPlayer, fnCallback) {
+        oPlayer.connected = false;
+
+        this.game.removePlayer(oPlayer.number);
+        oPlayer.socket.emit("leave");
 
         if (this.game.started) {
             this.game.pause();
         }
 
-        console.log("Player " + number + " left the game");
-        this.io.to("host").emit("toast", "Spieler " + number + " hat das Spiel verlassen");
+        console.log("Player " + oPlayer.number + " left the game");
+        this.io.to("host").emit("toast", "Spieler " + oPlayer.number + " hat das Spiel verlassen");
 
         if (fnCallback) {
             fnCallback();

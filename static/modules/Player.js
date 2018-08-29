@@ -15,6 +15,7 @@ module.exports = class Player {
         this.id = oDef.id;
         this.number = oDef.number;
         this.color = oDef.color;
+        this.connected = true;
 
         if (bSocket) {
             this.socket = oDef.socket;

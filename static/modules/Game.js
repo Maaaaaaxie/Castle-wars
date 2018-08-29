@@ -258,7 +258,9 @@ module.exports = class GameEngine {
     }
 
     removePlayer(number) {
-        this["player" + number] = undefined;
+        if (!this.started) {
+            this["player" + number] = undefined;
+        }
     }
 
     sendPlayerInfo() {

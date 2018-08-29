@@ -41,7 +41,7 @@ socket.on("id", id => {
 
 socket.emit("connected", "client");
 
-socket.on("init", o => {
+socket.on("info", o => {
 	window.player = o.players.find(e => e.id === window._id);
 
 	if (window.player) {
