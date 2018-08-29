@@ -193,15 +193,15 @@ function _showStats() {
     _togglePlayer(2, true);
 }
 
-socket.on('pause', paused => {
+socket.on('pause', o => {
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-    if (paused) {
+    if (o.paused) {
         oPauseButton.innerText = "Fortsetzen";
     } else {
         oPauseButton.innerText = "Pause";
     }
 
-    if (paused) {
+    if (o.paused) {
         toast("Spiel pausiert");
         document.getElementById("pause").classList.add("paused");
     } else {

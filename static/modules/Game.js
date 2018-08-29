@@ -54,7 +54,10 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
-            this.io.emit("pause", false);
+            this.io.emit("pause", {
+                paused: false,
+                remaining: this.getActivePlayer().timer.remaining
+            });
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.resume();
             }
@@ -65,7 +68,9 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Paused");
             this.paused = true;
-            this.io.emit("pause", true);
+            this.io.emit("pause", {
+                paused: true
+            });
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.pause();
             }
