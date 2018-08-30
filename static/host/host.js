@@ -39,12 +39,14 @@ function _initEventListeners() {
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame);
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[1].addEventListener("click", pause);
 
-    document.getElementById("volume").addEventListener("oninput", (event) => changeVolume(null, event));
+    document.getElementById("volume").addEventListener("input", event => {
+        changeVolume(null, event);
+    });
 
-    document.getElementById("kick1").addEventListener("click", () => kickPlayer(1));
-    document.getElementById("kick2").addEventListener("click", () => kickPlayer(2));
+    document.getElementById("menu").getElementsByClassName("kick")[0].addEventListener("click", () => kickPlayer(1));
+    document.getElementById("menu").getElementsByClassName("kick")[1].addEventListener("click", () => kickPlayer(2));
 
-    document.getElementById("join").getElementsByTagName("button")[1].addEventListener("click", toggleQR);
+    document.getElementsByName("showQrCode")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("img")[0].addEventListener("click", toggleQR);
 
@@ -71,7 +73,11 @@ socket.on('info', o => {
         const aButtons = document.getElementsByClassName('kick');
         const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-        const oLaunchButton = document.getElementById("launchButton");
+
+        const oCenter = document.getElementById("menu").getElementsByClassName("center")[0];
+        const oCenterLaunch = oCenter.getElementsByClassName("content")[0].getElementsByClassName("launch")[0];
+        const oCenterShow = oCenter.getElementsByClassName("content")[0].getElementsByClassName("show")[0];
+        const oCenterInfo = oCenter.getElementsByClassName("info")[0];
 
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
@@ -95,24 +101,37 @@ socket.on('info', o => {
         window._oPlayer1 = oPlayer1 ? new Player(oPlayer1) : undefined;
         window._oPlayer2 = oPlayer2 ? new Player(oPlayer2) : undefined;
 
-
         if (o.game.state === oStates.READY) {
-            handleReady();
+            if (window._sState !== o.game.state) {
+                setTimeout(() => toggleReady(true), 300);
+            }
         } else if (o.game.state === oStates.BLOCKED) {
-            handleBlocked()
+            if (window._sState && window._sState !== o.game.state) {
+                toggleReady(false);
+            }
         } else if (o.game.state === oStates.RUNNING) {
             handleRunning()
         } else if (o.game.state === oStates.PAUSED) {
             handlePaused()
         }
 
-        function handleReady() {
-            toggleButton(oStartButton, true);
-            oLaunchButton.classList.add("wiggle");
-        }
+        window._sState = o.game.state;
 
-        function handleBlocked() {
-            oLaunchButton.classList.remove("wiggle");
+        toggleReady(true);
+
+        function toggleReady(b) {
+            const oElement1 = b ? oCenterLaunch : oCenterShow;
+            const oElement2 = !b ? oCenterLaunch : oCenterShow;
+            oCenterInfo.style.display = b ? "none" : "block";
+
+            oElement2.classList.remove("animation-grow");
+            oElement2.classList.add("animation-shrink");
+            setTimeout(() => {
+                oElement2.style.display = "none";
+                oElement2.classList.remove("animation-shrink");
+                oElement1.style.display = "block";
+                oElement1.classList.add("animation-grow");
+            });
         }
 
         function handlePaused() {
@@ -187,8 +206,6 @@ function _showStats() {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-    const oLaunchButton = document.getElementById("launchButton");
-    oLaunchButton.classList.remove("wiggle");
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
 
@@ -669,12 +686,20 @@ function toggleOptions() {
  * @param event - Data of value change event of volume slider
  */
 function changeVolume(volume, event) {
-    if (event) {
-        window._music.volume(event.srcElement.value / 100);
-    }
+    volume = volume || event.srcElement.value / 100;
 
     if (volume) {
         window._music.volume(volume);
+    }
+
+    if (volume === 1) {
+        setTimeout(() => {
+            if (window._music.sound.volume < 0.1) {
+                wiiiiigle(document.getElementsByTagName("div"));
+                wiiiiigle(document.getElementsByTagName("button"));
+                wiiiiigle(document.getElementsByTagName("dialog"));
+            }
+        }, 500);
     }
 }
 
@@ -724,5 +749,15 @@ function toggleQR() {
         qr.style.display = "none";
     } else {
         qr.style.display = "block";
+    }
+}
+
+
+// ------- easter egg -------------------------------
+function wiiiiigle(a, i = 0) {
+    if (a[i]) {
+        a[i].classList.add("wiggle");
+        i++;
+        setTimeout(() => wiiiiigle(a,i),5);
     }
 }

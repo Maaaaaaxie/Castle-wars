@@ -8,11 +8,11 @@ class Menu {
     }
 
     open() {
-        this.getDialog().showModal();
+        this.getDialog().style.display = "block";
     }
 
     close() {
-        this.getDialog().close();
+        this.getDialog().style.display = "none";
     }
 
     toggle() {
@@ -25,8 +25,8 @@ class Menu {
 
     togglePlayer(iNumber, b) {
         const oDiv = document.getElementById("menu-player-" + iNumber);
-        const oImage = oDiv.getElementsByClassName("avatar")[0].getElementsByClassName("image")[0];
-        const oNoImage = oDiv.getElementsByClassName("avatar")[0].getElementsByClassName("no-image")[0];
+        const oImage = oDiv.getElementsByClassName("content")[0].getElementsByClassName("image")[0];
+        const oNoImage = oDiv.getElementsByClassName("content")[0].getElementsByClassName("no-image")[0];
         const oInfo = oDiv.getElementsByClassName("info")[0];
 
         const oImg1 = b ? oImage : oNoImage;

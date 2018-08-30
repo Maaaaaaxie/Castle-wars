@@ -30,23 +30,7 @@ html, body {
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
 
-.centerWrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#launchButton {
-    font-size: 24pt;
-    padding: 1.5rem;
-    border-radius: 20%;
-    display: none;
-    opacity: 0;
-}
-
 .wiggle {
-    display: block !important;
     animation: wiggle;
     animation-duration: 650ms;
     animation-iteration-count: infinite;
@@ -128,10 +112,14 @@ canvas {
 #menu {
     background: rgba(74, 47, 26, 0.7);
     width: 100%;
-    max-width: 30rem;
+    max-width: 40rem;
     border: none !important;
     border-radius: 0.5rem;
     color: #f4bc7d;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
 }
 
 #menu .title {
@@ -148,31 +136,33 @@ canvas {
     flex: 1;
 }
 
-#menu .content {
-    padding: 0.5rem;
+#menu .inner {
+    padding: 1rem;
     text-align: center;
 }
 
-#menu .content .avatar {
+#menu .inner .content {
     display: inline-block;
     padding: 1rem;
-}
-
-#menu .content .avatar img {
     width: 6rem;
+    height: 6rem;
 }
 
-#menu .content .avatar .image {
+#menu .inner .content .image {
     display: none;
 }
 
-#menu .content .avatar .no-image {
+#menu .inner .content .image img {
+    width: 6rem;
+}
+
+#menu .inner .content .no-image {
     width: 6rem;
     height: 6rem;
     display: grid;
 }
 
-#menu .content .avatar .no-image img {
+#menu .inner .content .no-image img {
     width: 3rem;
     display: inline-block;
     margin: auto;
@@ -190,10 +180,14 @@ canvas {
     }
 }
 
-#menu .content .info {
-    font-size: 12pt;
+#menu .inner .info {
+    font-size: 10pt;
     font-weight: normal;
     font-family: "Comic Sans MS";
+}
+
+#menu .inner .kick {
+    padding-top: 0.5rem;
 }
 
 .animation-grow {
@@ -226,6 +220,47 @@ canvas {
     }
 }
 
+#menu .center .content {
+    text-align: center;
+}
+
+#menu .center .content .launch {
+    display: none;
+}
+
+#launchButton {
+    font-size: 20pt;
+    border-radius: 0.5rem;
+}
+
+#menu .center .content .show {
+    display: grid;
+    height: 100%;
+}
+
+#menu .center .content .show button {
+    font-size: 14pt;
+    margin: auto;
+}
+
+#qrCode {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#qrCode button {
+    position: absolute;
+    border-radius: 0;
+    right: 0;
+}
+
+#qrCode img {
+    width: 20rem;
+    border: solid 3px #49240a;
+}
 
 
 /* --- options -------------------------------------------------------------------------------------------------------*/
@@ -250,6 +285,7 @@ button {
     font-family: "MedievalSharp";
     cursor: pointer;
     border: 2px solid #49240a;
+    border-radius: 0.2rem;
 }
 
 button:hover {
@@ -353,33 +389,6 @@ button:active {
     border-radius: 50%;
     background: #4CAF50;
     cursor: pointer;
-}
-
-#join {
-    text-align: center;
-}
-
-#join button {
-    font-size: 14pt;
-}
-
-#ip {
-    font-size: 14pt;
-    font-weight: normal;
-    text-align: center;
-}
-
-#qrCode {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#qrCode button {
-    position: absolute;
-    right: 0;
 }
 
 /* --- responsiveness ------------------------------------------------------------------------------------------------*/

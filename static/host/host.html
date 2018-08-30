@@ -31,35 +31,51 @@
     <img id="toggleFullscreen" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
 </div>
 
-<dialog id="menu">
+<div id="menu">
     <div class="flex-wrapper">
         <div class="left container">
-            <div id="menu-player-1" class="content">
+            <div id="menu-player-1" class="inner">
                 <div class="title">Spieler 1</div>
-                <div class="avatar">
+                <div class="content">
                     <div class="image"><img src="../images/basic/player1.png"></div>
                     <div class="no-image"><img src="../images/basic/loading.png"></div>
                 </div>
                 <div class="info">Nicht verbunden</div>
+                <div class="kick"><button>Kicken</button></div>
             </div>
         </div>
         <div class="center container">
-            <div class="content">
-                <button id="launchButton">Start</button>
+            <div class="inner">
+                <div class="title">Menü</div>
+                <div class="content">
+                    <div class="launch">
+                        <button id="launchButton" class="wiggle">Start</button></div>
+                    <div class="show">
+                        <button name="showQrCode">QR Code anzeigen</button>
+                    </div>
+                    <div class="qrCodeWrapper">
+                        <div id="qrCode" class="code">
+                            <button>Schließen</button>
+                            <img>
+                        </div>
+                    </div>
+                </div>
+                <div id="ip" class="info"></div>
             </div>
         </div>
         <div class="right container">
-            <div id="menu-player-2" class="content">
+            <div id="menu-player-2" class="inner">
                 <div class="title">Spieler 2</div>
-                <div class="avatar">
+                <div class="content">
                     <div class="image"><img src="../images/basic/player2.png"></div>
                     <div class="no-image"><img src="../images/basic/loading.png"></div>
                 </div>
                 <div class="info">Nicht verbunden</div>
+                <div class="kick"><button>Kicken</button></div>
             </div>
         </div>
     </div>
-</dialog>
+</div>
 
 <dialog id="options">
     <div class="option">
@@ -73,26 +89,6 @@
     <div class="option">
         <div class="description">Lautstärke</div>
         <input id="volume" type="range" min="1" max="100" value="50" class="slider">
-    </div>
-    <div class="spacer"></div>
-    <div class="option">
-        <div class="description">Spieler</div>
-        <div class="player">Spieler 1: Nicht verbunden</div>
-        <button id="kick1" class="kick disabled">Kicken</button>
-        <div class="player">Spieler 2: Nicht verbunden</div>
-        <button id="kick2" class="kick disabled">Kicken</button>
-    </div>
-    <div class="spacer"></div>
-    <div class="option">
-        <div class="description">Mitspielen</div>
-        <div id="join">
-            <div id="qrCode">
-                <button>Schließen</button>
-                <img>
-            </div>
-            <div id="ip"></div>
-            <button>QR Code anzeigen</button>
-        </div>
     </div>
     <button id="close">Schließen</button>
 </dialog>
