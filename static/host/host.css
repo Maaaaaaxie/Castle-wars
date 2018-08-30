@@ -226,11 +226,15 @@ canvas {
 
 #menu .center .content .launch {
     display: none;
+    height: 6rem;
 }
 
 #launchButton {
     font-size: 20pt;
     border-radius: 0.5rem;
+    height: 3rem;
+    width: 6rem;
+    margin: auto;
 }
 
 #menu .center .content .show {

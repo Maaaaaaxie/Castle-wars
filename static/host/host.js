@@ -117,8 +117,6 @@ socket.on('info', o => {
 
         window._sState = o.game.state;
 
-        toggleReady(true);
-
         function toggleReady(b) {
             const oElement1 = b ? oCenterLaunch : oCenterShow;
             const oElement2 = !b ? oCenterLaunch : oCenterShow;
@@ -129,7 +127,7 @@ socket.on('info', o => {
             setTimeout(() => {
                 oElement2.style.display = "none";
                 oElement2.classList.remove("animation-shrink");
-                oElement1.style.display = "block";
+                oElement1.style.display = "grid";
                 oElement1.classList.add("animation-grow");
             });
         }
