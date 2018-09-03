@@ -71,10 +71,17 @@ io.on("connection", function (socket) {
             const oPlayer = connection.players.find(e => e.id === id);
             if (!!oPlayer) {
                 oPlayer.connected = true;
-                sendInfoTo(socket);
+            }
+
+            if (game.interrupted) {
+                if (game.getPlayers().filter(e => e.connected).length === 2) {
+                    game.resume();
+                }
             }
         }
-        sendInfoTo(socket);
+        setTimeout(() => {
+            sendInfoTo(socket);
+        }, 100);
     });
 
     socket.on("join", () => {

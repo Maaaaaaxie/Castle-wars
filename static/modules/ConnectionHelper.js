@@ -47,6 +47,9 @@ module.exports = class ConnectionHelper {
         oPlayer.socket.emit("leave");
 
         if (this.game.started) {
+            if (!this.game.paused) {
+                this.game.interrupted = true;
+            }
             this.game.pause();
         }
 
