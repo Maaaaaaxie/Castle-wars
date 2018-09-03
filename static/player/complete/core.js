@@ -2,8 +2,6 @@ import Information from "/modules/Information.js";
 import Resources from "/modules/Resources.js";
 import Cards from "/modules/Cards.js";
 
-document.getElementById("uname").focus();
-
 const socket = window.socket = io();
 window.player = {};
 window._moveAllowed = false;
@@ -44,15 +42,7 @@ socket.on("init", o => {
     }
 });
 
-document.getElementById("uname").addEventListener("keypress", uname);
-
-function uname(e) {
-    if (e.keyCode === 13) {
-        const sId = document.getElementById("uname").value;
-        document.getElementById("uname").style.display = "none";
-        socket.emit("connected", {sType: "client", sId: sId});
-    }
-}
+setTimeout(()=> socket.emit("connected", "client"), 200);
 
 socket.on("info", o => {
     window.player = o.players.find(e => e.id === window._id);

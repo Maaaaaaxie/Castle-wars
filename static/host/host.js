@@ -61,7 +61,7 @@ function _initEventListeners() {
 // ----- ||| SOCKETS ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-socket.emit("connected", { sType: "host" });
+setTimeout(() => socket.emit("connected", "host"), 200);
 
 socket.on('info', o => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =
@@ -82,12 +82,6 @@ socket.on('info', o => {
 
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
-
-        if (o.game.state === oStates.RUNNING) {
-            window.menu.close();
-        } else {
-            window.menu.open();
-        }
 
         const toggleButton = (oButton, bEnabled) => {
             if (bEnabled) {
@@ -115,17 +109,19 @@ socket.on('info', o => {
         window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
 
         if (o.game.state === oStates.READY) {
+            window.menu.open();
             if (window._sState !== o.game.state) {
                 setTimeout(() => toggleReady(true), 300);
             }
         } else if (o.game.state === oStates.BLOCKED) {
+            window.menu.open();
             if (window._sState && window._sState !== o.game.state) {
                 toggleReady(false);
             }
         } else if (o.game.state === oStates.RUNNING) {
-            handleRunning()
+            handleRunning();
         } else if (o.game.state === oStates.PAUSED) {
-            handlePaused()
+            handlePaused();
         }
 
         window._sState = o.game.state;
@@ -146,6 +142,8 @@ socket.on('info', o => {
         }
 
         function handlePaused() {
+            window.menu.open();
+            toggleReady(o.players.filter(e => e.connected).length === 2);
             if (oInfo.players.length < 2) {
                 toggleButton(oPauseButton, false);
             }
@@ -155,6 +153,7 @@ socket.on('info', o => {
         }
 
         function handleRunning() {
+            window.menu.close();
             toggleButton(oStartButton, true);
             toggleButton(oPauseButton, true);
             _showStats();

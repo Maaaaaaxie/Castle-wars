@@ -54,9 +54,11 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
+            debugger;
             this.io.emit("pause", {
+                active: this.getActive(),
                 paused: false,
-                remaining: this.getActivePlayer().timer.remaining
+                remaining: Math.round(this.getActivePlayer().timer.remaining / 1000)
             });
             if (this.getActivePlayer()) {
                 this.getActivePlayer().timer.resume();
