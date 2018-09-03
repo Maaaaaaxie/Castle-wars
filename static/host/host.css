@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: "MedievalSharp";
+    user-select: none;
 }
 
 #pause {
@@ -25,28 +26,11 @@ html, body {
     padding-top: 2rem;
     font-size: 36pt;
     font-weight: bold;
-    /*user-select: none;*/
     color: #f4bc7d;
     text-shadow: -3px 0 #733910, 0 3px #733910, 3px 0 #733910, 0 -3px #733910;
 }
 
-.centerWrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#launchButton {
-    font-size: 24pt;
-    padding: 1.5rem;
-    border-radius: 20%;
-    display: none;
-    opacity: 0;
-}
-
 .wiggle {
-    display: block !important;
     animation: wiggle;
     animation-duration: 650ms;
     animation-iteration-count: infinite;
@@ -124,6 +108,173 @@ canvas {
     transform: scale(1.05);
 }
 
+/* --- menu ----------------------------------------------------------------------------------------------------------*/
+#menu {
+    background: rgba(74, 47, 26, 0.7);
+    border: solid 5px  rgba(74, 47, 26, 0.1);
+    border-radius: 0.7rem;
+    width: 100%;
+    max-width: 40rem;
+    color: #f4bc7d;
+
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    height: 14.8rem;
+}
+
+#menu .title {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+#menu .flex-wrapper {
+    display: flex;
+}
+
+#menu .container {
+    flex: 1;
+}
+
+#menu .inner {
+    padding: 1rem;
+    text-align: center;
+}
+
+#menu .inner .content {
+    display: inline-block;
+    padding: 1rem;
+    width: 6rem;
+    height: 6rem;
+}
+
+#menu .inner .content .image {
+    display: none;
+}
+
+#menu .inner .content .image img {
+    width: 6rem;
+}
+
+#menu .inner .content .no-image {
+    width: 6rem;
+    height: 6rem;
+    display: grid;
+}
+
+#menu .inner .content .no-image img {
+    width: 3rem;
+    display: inline-block;
+    margin: auto;
+    animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+#menu .inner .info {
+    font-size: 10pt;
+    font-weight: normal;
+    font-family: "Comic Sans MS";
+}
+
+#menu .inner .kick {
+    padding-top: 0.5rem;
+}
+
+.animation-grow {
+    animation: grow 500ms forwards;
+}
+
+@keyframes grow {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.animation-shrink {
+    animation: shrink 500ms forwards;
+}
+
+@keyframes shrink {
+    from {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    to {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+}
+
+#menu .center {
+    width: 8rem;
+}
+
+#menu .center .content {
+    text-align: center;
+}
+
+#menu .center .info {
+    word-break: break-word;
+}
+
+#menu .center .content .launch {
+    display: none;
+    height: 6rem;
+}
+
+#launchButton {
+    font-size: 20pt;
+    border-radius: 0.5rem;
+    height: 3rem;
+    width: 6rem;
+    margin: auto;
+}
+
+#menu .center .content .show {
+    display: grid;
+    height: 100%;
+}
+
+#menu .center .content .show button {
+    font-size: 14pt;
+    margin: auto;
+}
+
+#qrCode {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#qrCode button {
+    position: absolute;
+    border-radius: 0;
+    right: 0;
+}
+
+#qrCode img {
+    width: 20rem;
+    border: solid 3px #49240a;
+}
+
+
 /* --- options -------------------------------------------------------------------------------------------------------*/
 
 #options {
@@ -146,6 +297,7 @@ button {
     font-family: "MedievalSharp";
     cursor: pointer;
     border: 2px solid #49240a;
+    border-radius: 0.2rem;
 }
 
 button:hover {
@@ -167,7 +319,7 @@ button:active {
     font-weight: bold;
 }
 
-dialog::backdrop, #backdrop {
+#options::backdrop, #backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -251,33 +403,6 @@ dialog::backdrop, #backdrop {
     cursor: pointer;
 }
 
-#join {
-    text-align: center;
-}
-
-#join button {
-    font-size: 14pt;
-}
-
-#ip {
-    font-size: 14pt;
-    font-weight: normal;
-    text-align: center;
-}
-
-#qrCode {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#qrCode button {
-    position: absolute;
-    right: 0;
-}
-
 /* --- responsiveness ------------------------------------------------------------------------------------------------*/
 
 @media (max-width: 1020px), (max-height: 600px) {
@@ -313,7 +438,7 @@ dialog::backdrop, #backdrop {
     opacity: 0;
 }
 
-.container {
+#info .container {
     border-top: 2px solid rgba(0, 0, 0, 0.8);
 }
 

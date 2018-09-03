@@ -1,4 +1,5 @@
 const socket = io();
+
 let aCards;
 const _xhr = new XMLHttpRequest();
 _xhr.open("GET", "/cards");
@@ -16,23 +17,36 @@ const oStates = {
     PAUSED: "paused"
 };
 
+function _onLoad() {
+    window.menu.open();
+    _initEventListeners();
+    _initCanvas();
+    _initGame();
+}
+
+window.menu = new Menu();
+window.onload = () => _onLoad();
+window.onresize = () => _initCanvas();
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| EVENT LISTENERS ||| ---------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
 function _initEventListeners() {
-    document.getElementById("launchButton").addEventListener("click", toggleGame);
+    document.getElementById("launchButton").addEventListener("click", toggleGame.bind(null, true));
     document.getElementById("canvas").addEventListener("click", onCanvasClick);
 
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame);
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[1].addEventListener("click", pause);
 
-    document.getElementById("volume").addEventListener("oninput", (event) => changeVolume(null, event));
+    document.getElementById("volume").addEventListener("input", event => {
+        changeVolume(null, event);
+    });
 
-    document.getElementById("kick1").addEventListener("click", () => kickPlayer(1));
-    document.getElementById("kick2").addEventListener("click", () => kickPlayer(2));
+    document.getElementById("menu").getElementsByClassName("left")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(1));
+    document.getElementById("menu").getElementsByClassName("right")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(2));
 
-    document.getElementById("join").getElementsByTagName("button")[1].addEventListener("click", toggleQR);
+    document.getElementsByName("showQrCode")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("img")[0].addEventListener("click", toggleQR);
 
@@ -53,16 +67,27 @@ socket.on('info', o => {
         "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
     document.getElementById("ip").innerText = "http://" + o.ip + "/control";
 
-    window.started = o.game.state === oStates.RUNNING;
+    window.started = o.game.state === oStates.RUNNING || o.game.state === oStates.PAUSED;
     const handleClientUpdate = function (oInfo) {
         const aPlayer = document.getElementsByClassName('player');
         const aButtons = document.getElementsByClassName('kick');
         const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-        const oLaunchButton = document.getElementById("launchButton");
+
+        const oCenter = document.getElementById("menu").getElementsByClassName("center")[0];
+        const oCenterLaunch = oCenter.getElementsByClassName("content")[0].getElementsByClassName("launch")[0];
+        const oCenterShow = oCenter.getElementsByClassName("content")[0].getElementsByClassName("show")[0];
+        const oCenterInfo = oCenter.getElementsByClassName("info")[0];
 
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
+
+        const oMenu = document.getElementById("menu");
+        if (o.state === oStates.RUNNING) {
+            oMenu.style.display = "none";
+        } else {
+            oMenu.style.display = "block";
+        }
 
         const toggleButton = (oButton, bEnabled) => {
             if (bEnabled) {
@@ -74,43 +99,50 @@ socket.on('info', o => {
         };
 
         if (oPlayer1) {
-            window._oPlayer1 = new Player(oPlayer1);
-            aPlayer[0].innerHTML = "Spieler 1: Verbunden";
-            toggleButton(aButtons[0], true);
-        } else {
-            window._oPlayer1 = undefined;
-            aPlayer[0].innerHTML = "Spieler 1: Nicht verbunden";
-            toggleButton(aButtons[0], false);
+            const bToggle = !!window._oPlayer1 !== oPlayer1.connected;
+            if (bToggle) {
+                window.menu.togglePlayer(1, oPlayer1.connected);
+            }
         }
-
         if (oPlayer2) {
-            window._oPlayer2 = new Player(oPlayer2);
-            aPlayer[1].innerHTML = "Spieler 2: Verbunden";
-            toggleButton(aButtons[1], true);
-        } else {
-            window._oPlayer2 = undefined;
-            aPlayer[1].innerHTML = "Spieler 2: Nicht verbunden";
-            toggleButton(aButtons[1], false);
+            const bToggle = !!window._oPlayer2 !== oPlayer2.connected;
+            if (bToggle) {
+                window.menu.togglePlayer(2, oPlayer2.connected);
+            }
         }
 
+        window._oPlayer1 = oPlayer1 && oPlayer1.connected ? new Player(oPlayer1) : undefined;
+        window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
 
         if (o.game.state === oStates.READY) {
-            handleReady();
+            if (window._sState !== o.game.state) {
+                setTimeout(() => toggleReady(true), 300);
+            }
         } else if (o.game.state === oStates.BLOCKED) {
-            handleBlocked()
+            if (window._sState && window._sState !== o.game.state) {
+                toggleReady(false);
+            }
         } else if (o.game.state === oStates.RUNNING) {
             handleRunning()
         } else if (o.game.state === oStates.PAUSED) {
             handlePaused()
         }
 
-        function handleReady() {
-            toggleButton(oStartButton, true);
-            oLaunchButton.classList.add("wiggle");
-        }
+        window._sState = o.game.state;
 
-        function handleBlocked() {
-            oLaunchButton.classList.remove("wiggle");
+        function toggleReady(b) {
+            const oElement1 = b ? oCenterLaunch : oCenterShow;
+            const oElement2 = !b ? oCenterLaunch : oCenterShow;
+            oCenterInfo.style.display = b ? "none" : "block";
+
+            oElement2.classList.remove("animation-grow");
+            oElement2.classList.add("animation-shrink");
+            setTimeout(() => {
+                oElement2.style.display = "none";
+                oElement2.classList.remove("animation-shrink");
+                oElement1.style.display = "grid";
+                oElement1.classList.add("animation-grow");
+            });
         }
 
         function handlePaused() {
@@ -163,7 +195,7 @@ socket.on('playerUpdate', aPlayers => {
 
 socket.on('start', _showStats);
 
-function _togglePlayer(iNumber, b) {
+function _togglePlayerStats(iNumber, b) {
     const oDeck = document.getElementById("deck-" + iNumber);
     const oStat = document.getElementById("stats-" + iNumber);
     const oInfo = document.getElementById("info-" + iNumber);
@@ -185,13 +217,11 @@ function _showStats() {
     const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     oGameToggleButton.innerText = "Beenden";
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-    const oLaunchButton = document.getElementById("launchButton");
-    oLaunchButton.classList.remove("wiggle");
     oPauseButton.disabled = false;
     oPauseButton.classList.remove("disabled");
 
-    _togglePlayer(1, true);
-    _togglePlayer(2, true);
+    _togglePlayerStats(1, true);
+    _togglePlayerStats(2, true);
 }
 
 socket.on('pause', o => {
@@ -220,8 +250,8 @@ socket.on('quit', () => {
 
     document.getElementById("pause").classList.remove("paused");
 
-    _togglePlayer(1, false);
-    _togglePlayer(2, false);
+    _togglePlayerStats(1, false);
+    _togglePlayerStats(2, false);
 });
 
 socket.on('finish', o => {
@@ -410,16 +440,6 @@ function _initCanvas() {
     _initShip();
 }
 
-function _onLoad() {
-    _initEventListeners();
-    _initCanvas();
-    _initGame();
-}
-
-window.onload = () => _onLoad();
-
-window.onresize = () => _initCanvas();
-
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| PUBLIC ||| ------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -436,11 +456,19 @@ function _initGame() {
     _initializeBirds();
 }
 
-function toggleGame() {
-    window.started = !window.started;
-    if (window.started) {
+function toggleGame(b) {
+    const oMenu = document.getElementById("menu");
+    if (b) {
+        oMenu.classList.add("animation-shrink");
+        setTimeout(() => {
+            oMenu.classList.remove("animation-shrink");
+            oMenu.style.display = "none";
+        }, 1000);
         socket.emit('start');
     } else {
+        oMenu.classList.add("animation-grow");
+        oMenu.style.display = "block";
+        setTimeout(() => oMenu.classList.remove("animation-grow"), 1000);
         socket.emit('quit');
     }
 }
@@ -649,7 +677,6 @@ function toggleMusic() {
     window._music.mute();
 }
 
-
 /**
  * Opens or closes the options dialog
  */
@@ -678,12 +705,20 @@ function toggleOptions() {
  * @param event - Data of value change event of volume slider
  */
 function changeVolume(volume, event) {
-    if (event) {
-        window._music.volume(event.srcElement.value / 100);
-    }
+    volume = volume || event.srcElement.value / 100;
 
     if (volume) {
         window._music.volume(volume);
+    }
+
+    if (volume === 1) {
+        setTimeout(() => {
+            if (window._music.sound.volume < 0.1) {
+                wiiiiigle(document.getElementsByTagName("div"));
+                wiiiiigle(document.getElementsByTagName("button"));
+                wiiiiigle(document.getElementsByTagName("dialog"));
+            }
+        }, 500);
     }
 }
 
@@ -724,7 +759,7 @@ function toast(sText) {
  * @param number - Either '1' or '2'
  */
 function kickPlayer(number) {
-    socket.emit("clientKick", number);
+    socket.emit("kick", number);
 }
 
 function toggleQR() {
@@ -733,5 +768,15 @@ function toggleQR() {
         qr.style.display = "none";
     } else {
         qr.style.display = "block";
+    }
+}
+
+
+// ------- easter egg -------------------------------
+function wiiiiigle(a, i = 0) {
+    if (a[i]) {
+        a[i].classList.add("wiggle");
+        i++;
+        setTimeout(() => wiiiiigle(a,i),5);
     }
 }

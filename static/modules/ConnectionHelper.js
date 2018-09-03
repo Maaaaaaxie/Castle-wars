@@ -25,6 +25,8 @@ module.exports = class ConnectionHelper {
             this.players.push(oPlayer);
         } else if (!this.game.started) {
             oPlayer.number = number;
+        } else {
+            oPlayer.connected = true;
         }
 
         this.game.addPlayer(oPlayer);
@@ -38,6 +40,7 @@ module.exports = class ConnectionHelper {
     }
 
     handleClientDisconnected(oPlayer, fnCallback) {
+        debugger;
         oPlayer.connected = false;
 
         this.game.removePlayer(oPlayer.number);
