@@ -61,7 +61,7 @@ function _initEventListeners() {
 // ----- ||| SOCKETS ||| -----------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-socket.emit("connected", "host");
+socket.emit("connected", { sType: "host" });
 
 socket.on('info', o => {
     document.getElementById("qrCode").getElementsByTagName("img")[0].src =
@@ -83,11 +83,10 @@ socket.on('info', o => {
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
 
-        const oMenu = document.getElementById("menu");
-        if (o.state === oStates.RUNNING) {
-            oMenu.style.display = "none";
+        if (o.game.state === oStates.RUNNING) {
+            window.menu.close();
         } else {
-            oMenu.style.display = "block";
+            window.menu.open();
         }
 
         const toggleButton = (oButton, bEnabled) => {
@@ -229,14 +228,11 @@ socket.on('pause', o => {
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (o.paused) {
         oPauseButton.innerText = "Fortsetzen";
-    } else {
-        oPauseButton.innerText = "Pause";
-    }
-
-    if (o.paused) {
         toast("Spiel pausiert");
         document.getElementById("pause").classList.add("paused");
     } else {
+        window.menu.close();
+        oPauseButton.innerText = "Pause";
         toast("Spiel wird fortgesetzt");
         document.getElementById("pause").classList.remove("paused");
     }

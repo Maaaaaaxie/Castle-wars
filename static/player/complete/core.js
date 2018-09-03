@@ -2,6 +2,8 @@ import Information from "/modules/Information.js";
 import Resources from "/modules/Resources.js";
 import Cards from "/modules/Cards.js";
 
+document.getElementById("uname").focus();
+
 const socket = window.socket = io();
 window.player = {};
 window._moveAllowed = false;
@@ -9,17 +11,17 @@ window._cards = [];
 window._started = false;
 
 const oStates = {
-	READY: "ready",
-	RUNNING: "running",
-	PAUSED: "paused",
-	BLOCKED: "blocked"
+    READY: "ready",
+    RUNNING: "running",
+    PAUSED: "paused",
+    BLOCKED: "blocked"
 };
 
 const btnJoin = document.getElementById("launchButton");
 btnJoin.addEventListener("click", e => {
-	!localStorage.getItem("dev") && enterFullscreen(document.documentElement);
-	socket.emit("join");
-	btnJoin.disabled = true;
+    !localStorage.getItem("dev") && enterFullscreen(document.documentElement);
+    socket.emit("join");
+    btnJoin.disabled = true;
 });
 
 /**
@@ -34,33 +36,41 @@ btnJoin.addEventListener("click", e => {
  */
 
 socket.on("init", o => {
-	window._id = o.id;
+    window._id = o.id;
 
-	// display join button
-	if (o.state === oStates.BLOCKED) {
-		btnJoin.style.display = "block";
-	}
+    // display join button
+    if (o.state === oStates.BLOCKED) {
+        btnJoin.style.display = "block";
+    }
 });
 
-socket.emit("connected", "client");
+document.getElementById("uname").addEventListener("keypress", uname);
+
+function uname(e) {
+    if (e.keyCode === 13) {
+        const sId = document.getElementById("uname").value;
+        document.getElementById("uname").style.display = "none";
+        socket.emit("connected", {sType: "client", sId: sId});
+    }
+}
 
 socket.on("info", o => {
-	window.player = o.players.find(e => e.id === window._id);
+    window.player = o.players.find(e => e.id === window._id);
 
-	if (window.player) {
+    if (window.player) {
         startGame(window.player);
     }
 });
 
 // fired when the game starts
 socket.on("start", () => {
-	console.log("The game has started");
+    console.log("The game has started");
 
-	Cards.unfoldAll();
+    Cards.unfoldAll();
 });
 
 socket.on("turn", o => {
-	if (o.active === window.player.number) {
+    if (o.active === window.player.number) {
         console.log("turn");
         Information.turn(o.duration);
         window._moveAllowed = true; // TODO: fix this, implement properly
@@ -68,106 +78,106 @@ socket.on("turn", o => {
 });
 
 socket.on("done", () => {
-	console.log("Move finished");
+    console.log("Move finished");
 
-	Information.stop();
-	window._moveAllowed = false;
+    Information.stop();
+    window._moveAllowed = false;
 });
 
 socket.on("playerUpdate", a => {
-	console.log("playerUpdate", a);
+    console.log("playerUpdate", a);
 
-	const oPlayer = a.find(e => e.number === window.player.number);
+    const oPlayer = a.find(e => e.number === window.player.number);
 
-	Resources.update(oPlayer);
-	const
-		aCurrentCards = Cards.getCurrentCards(),
-		aNewCards = oPlayer.cards;
+    Resources.update(oPlayer);
+    const
+        aCurrentCards = Cards.getCurrentCards(),
+        aNewCards = oPlayer.cards;
 
-	if (aCurrentCards.length < 8) {
-		aCurrentCards.forEach(e => aNewCards.splice(aNewCards.indexOf(e), 1));
+    if (aCurrentCards.length < 8) {
+        aCurrentCards.forEach(e => aNewCards.splice(aNewCards.indexOf(e), 1));
 
-		Cards.renderCard({ sCardId: aNewCards[0], oPlayer });
-	}
+        Cards.renderCard({sCardId: aNewCards[0], oPlayer});
+    }
 
-	aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
+    aCurrentCards.forEach(e => Cards.updateStatus(e, oPlayer));
 });
 
 socket.on("pause", o => {
-	if (o.paused) {
-		Timer.stop(false);
-		Cards.foldAll();
-	} else {
-		Cards.unfoldAll();
-		Timer.start(o.remaining);
-	}
+    if (o.paused) {
+        Timer.stop(false);
+        Cards.foldAll();
+    } else {
+        Cards.unfoldAll();
+        Timer.start(o.remaining);
+    }
 });
 
 // fired when the connection is lost
 socket.on("leave", () => {
-	console.log("Left the game");
-	// debugger;
-	// document.getElementById("infotext").getElementsByTagName("img")[0].src = "/images/basic/no-wifi.png";
-	// document.getElementById("infotext").getElementsByTagName("span")[0].innerText = "";
-	// document.getElementById("information").classList.remove("joined");
+    console.log("Left the game");
+    // debugger;
+    // document.getElementById("infotext").getElementsByTagName("img")[0].src = "/images/basic/no-wifi.png";
+    // document.getElementById("infotext").getElementsByTagName("span")[0].innerText = "";
+    // document.getElementById("information").classList.remove("joined");
 });
 
 function startGame(oPlayer) {
-	if (window._started) {
-		return;
-	}
-	window._started = true;
+    if (window._started) {
+        return;
+    }
+    window._started = true;
 
-	// hide loading canvas animation of the castle
-	window.setTimeout(() => {
-		// fade out the canvas
-		document.getElementById("canvas").parentElement.classList.add("hidden");
-		document.body.removeChild(document.getElementById("centerWrapper"));
+    // hide loading canvas animation of the castle
+    window.setTimeout(() => {
+        // fade out the canvas
+        document.getElementById("canvas").parentElement.classList.add("hidden");
+        document.body.removeChild(document.getElementById("centerWrapper"));
 
-		// after the fade out animation has finished, we...
-		window.setTimeout(() => {
-			// ... clear the drawing interval call...
-			window.clearInterval(iInterval);
-			// ... and remove the canvas element from the document
-			document.body.removeChild(document.getElementById("canvas").parentElement);
+        // after the fade out animation has finished, we...
+        window.setTimeout(() => {
+            // ... clear the drawing interval call...
+            window.clearInterval(iInterval);
+            // ... and remove the canvas element from the document
+            document.body.removeChild(document.getElementById("canvas").parentElement);
 
-			// then, all the necessecary parts/wrappers are rendered:
-			document.body.appendChild(Information.render(window.player.number)); // the information part on the top
-			document.body.appendChild(Resources.render()); // the resources in the middle
-			document.body.appendChild(Cards.render()); // and the card area on the bottom
+            // then, all the necessecary parts/wrappers are rendered:
+            document.body.appendChild(Information.render(window.player.number)); // the information part on the top
+            document.body.appendChild(Resources.render()); // the resources in the middle
+            document.body.appendChild(Cards.render()); // and the card area on the bottom
 
-			// set the resources
-			Resources.update(oPlayer);
+            // set the resources
+            Resources.update(oPlayer);
 
-			// render the deck
-			oPlayer.cards.forEach(sCardId => Cards.renderCard({ sCardId, oPlayer, bFlipped: true }));
-		}, 475);
-	}, 125);
+            // render the deck
+            oPlayer.cards.forEach(sCardId => Cards.renderCard({sCardId, oPlayer, bFlipped: true}));
+        }, 475);
+    }, 125);
 }
 
 // loaded, show join button
 function enterFullscreen(oElement) {
-	if(oElement.requestFullscreen) {
-		oElement.requestFullscreen();
-	} else if(oElement.mozRequestFullScreen) {
-		oElement.mozRequestFullScreen();
-	} else if(oElement.msRequestFullscreen) {
-		oElement.msRequestFullscreen();
-	} else if(oElement.webkitRequestFullscreen) {
-		oElement.webkitRequestFullscreen();
-	}
+    if (oElement.requestFullscreen) {
+        oElement.requestFullscreen();
+    } else if (oElement.mozRequestFullScreen) {
+        oElement.mozRequestFullScreen();
+    } else if (oElement.msRequestFullscreen) {
+        oElement.msRequestFullscreen();
+    } else if (oElement.webkitRequestFullscreen) {
+        oElement.webkitRequestFullscreen();
+    }
 }
 
 window.clearInterval(window.loadingInterval);
 
 const iInterval = window.setInterval(() => {
-	const iMaxHeight = window.innerHeight - Math.floor(window.innerHeight / 3);
-	if (window.iHeight >= iMaxHeight) {
-		window.iHeight = iMaxHeight;
-		window.clearInterval(iInterval);
-	} else {
-		window.iHeight += 4;
-	}
+    const iMaxHeight = window.innerHeight - Math.floor(window.innerHeight / 3);
+    if (window.iHeight >= iMaxHeight) {
+        window.iHeight = iMaxHeight;
+        window.clearInterval(iInterval);
+    } else {
+        window.iHeight += 4;
+    }
 
-	window.draw();
+    window.draw();
 }, (1000 / 60));

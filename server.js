@@ -46,8 +46,10 @@ const connection = new ConnectionHelper(game);
 
 
 // initialize SocketIO
+let k = 1;
 io.on("connection", function (socket) {
-    const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
+    // const id = crypto.createHash("md5").update(socket.handshake.address).digest("hex");
+    let id = k++;
 
     function sendInfoTo(context) {
         context.emit("info", {
@@ -57,11 +59,12 @@ io.on("connection", function (socket) {
         });
     }
 
-    socket.on("connected", sType => {
-        if (sType === "host") {
+    socket.on("connected", o => {
+        if (o.sType === "host") {
             console.log("Host connected: " + id);
             socket.join("host");
         } else {
+            id = o.sId;
             console.log("Client connected: " + id);
             socket.emit("init", {
                 id,
@@ -79,9 +82,7 @@ io.on("connection", function (socket) {
                 }
             }
         }
-        setTimeout(() => {
-            sendInfoTo(socket);
-        }, 100);
+        sendInfoTo(io.sockets);
     });
 
     socket.on("join", () => {
