@@ -29,6 +29,14 @@
                 <input id="vibration" type="checkbox" name="vibration" checked/>
             </div>
         </section>
+        <section>
+            <div>
+                Vollbild:
+            </div>
+            <div>
+                <input id="fullscreen" type="checkbox" name="fullscreen" checked/>
+            </div>
+        </section>
     </article>
     <footer>
         <button id="settingsClose">Schließen</button>
@@ -51,11 +59,18 @@
 </body>
 </html>
 <script>
-    if (!localStorage.getItem("vibrate")) {
-		localStorage.setItem("vibrate", "true");
+    window._settings = JSON.parse(localStorage.getItem("settings"));
+    if (!(_settings && typeof _settings.vibrate === typeof true && typeof _settings.fullscreen === typeof true)) {
+    	window._settings = {
+    		vibrate: true,
+            fullscreen: true
+        };
+		localStorage.setItem("settings", JSON.stringify(window._settings));
     }
 
-	window.bVibrate = Boolean(JSON.parse(localStorage.getItem("vibrate")));
+	document.getElementById("vibration").checked = window._settings.vibrate;
+	document.getElementById("fullscreen").checked = window._settings.fullscreen;
+
     window.iHeight = 0;
     let iAdder = 4;
 
@@ -126,6 +141,30 @@
 		drawCastle();
     }
 
+	window.enterFullscreen = function(oElement) {
+		if(oElement.requestFullscreen) {
+			oElement.requestFullscreen();
+		} else if(oElement.mozRequestFullScreen) {
+			oElement.mozRequestFullScreen();
+		} else if(oElement.msRequestFullscreen) {
+			oElement.msRequestFullscreen();
+		} else if(oElement.webkitRequestFullscreen) {
+			oElement.webkitRequestFullscreen();
+		}
+	};
+
+	window.exitFullscreen = function() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		}
+    };
+
     window.loadingInterval = window.setInterval(() => {
     	setHeight();
     	draw();
@@ -135,7 +174,18 @@
 	document.getElementById("settingsClose").addEventListener("click", () => document.getElementById("settings").close());
 
     document.getElementById("vibration").addEventListener("change", e => {
-    	window.bVibrate = e.target.checked;
-    	localStorage.setItem("vibrate", window.bVibrate);
+		window._settings.vibrate = e.target.checked;
+		localStorage.setItem("settings", JSON.stringify(window._settings));
+	});
+
+	document.getElementById("fullscreen").addEventListener("change", e => {
+		window._settings.fullscreen = e.target.checked;
+		localStorage.setItem("settings", JSON.stringify(window._settings));
+
+        if (window._settings.fullscreen) {
+			window.enterFullscreen(document.documentElement);
+        } else {
+        	window.exitFullscreen();
+        }
 	});
 </script>
