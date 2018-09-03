@@ -95,11 +95,11 @@ socket.on("playerUpdate", a => {
 
 socket.on("pause", o => {
 	if (o.paused) {
-		Timer.stop(false);
+		Information.stop(false);
 		Cards.foldAll();
 	} else {
 		Cards.unfoldAll();
-		Timer.start(o.remaining);
+		Information.start(o.remaining);
 	}
 });
 

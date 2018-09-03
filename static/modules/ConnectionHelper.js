@@ -40,7 +40,6 @@ module.exports = class ConnectionHelper {
     }
 
     handleClientDisconnected(oPlayer, fnCallback) {
-        debugger;
         oPlayer.connected = false;
 
         this.game.removePlayer(oPlayer.number);
