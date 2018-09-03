@@ -98,8 +98,10 @@ socket.on("pause", o => {
 		Information.stop(false);
 		Cards.foldAll();
 	} else {
-		Cards.unfoldAll();
-		Information.start(o.remaining);
+		startGame(window.player).then(() => {
+			Cards.unfoldAll();
+			window.player && window.player.number === o.active && Information.start(o.remaining);
+		});
 	}
 });
 
@@ -113,36 +115,43 @@ socket.on("leave", () => {
 });
 
 function startGame(oPlayer) {
-    if (window._started) {
-        return;
-    }
-    window._started = true;
+	if (window._p) {
+		return window._p;
+	}
+	return window._p = new Promise(res => { // who gets rejected anyways
+		if (window._started) {
+			res();
+		}
+		window._started = true;
 
-    // hide loading canvas animation of the castle
-    window.setTimeout(() => {
-        // fade out the canvas
-        document.getElementById("canvas").parentElement.classList.add("hidden");
-        document.body.removeChild(document.getElementById("centerWrapper"));
+		// hide loading canvas animation of the castle
+		window.setTimeout(() => {
+			// fade out the canvas
+			document.getElementById("canvas").parentElement.classList.add("hidden");
+			document.body.removeChild(document.getElementById("centerWrapper"));
 
-        // after the fade out animation has finished, we...
-        window.setTimeout(() => {
-            // ... clear the drawing interval call...
-            window.clearInterval(iInterval);
-            // ... and remove the canvas element from the document
-            document.body.removeChild(document.getElementById("canvas").parentElement);
+			// after the fade out animation has finished, we...
+			window.setTimeout(() => {
+				// ... clear the drawing interval call...
+				window.clearInterval(iInterval);
+				// ... and remove the canvas element from the document
+				document.body.removeChild(document.getElementById("canvas").parentElement);
 
-            // then, all the necessecary parts/wrappers are rendered:
-            document.body.appendChild(Information.render(window.player.number)); // the information part on the top
-            document.body.appendChild(Resources.render()); // the resources in the middle
-            document.body.appendChild(Cards.render()); // and the card area on the bottom
+				// then, all the necessecary parts/wrappers are rendered:
+				document.body.appendChild(Information.render(window.player.number)); // the information part on the top
+				document.body.appendChild(Resources.render()); // the resources in the middle
+				document.body.appendChild(Cards.render()); // and the card area on the bottom
 
-            // set the resources
-            Resources.update(oPlayer);
+				// set the resources
+				Resources.update(oPlayer);
 
-            // render the deck
-            oPlayer.cards.forEach(sCardId => Cards.renderCard({sCardId, oPlayer, bFlipped: true}));
-        }, 475);
-    }, 125);
+				// render the deck
+				oPlayer.cards.forEach(sCardId => Cards.renderCard({sCardId, oPlayer, bFlipped: true}));
+
+				res();
+			}, 475);
+		}, 125);
+	});
 }
 
 window.clearInterval(window.loadingInterval);

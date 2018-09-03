@@ -22,20 +22,20 @@
     border-color: inherit;
 }
 #stats_resources section.health {
-    background: #969696;
-    border-color: #343434;
+    background: hsl(0, 0%, 55%);
+    border-color: hsl(0, 0%, 20%);
 }
 #stats_resources section.stone {
-    background: indianred;
-    border-color: #6e3232;
+    border-color: hsl(350, 60%, 30%);
+    background: hsl(350, 60%, 60%);
 }
 #stats_resources section.weapon {
-    background: limegreen;
-    border-color: #186218;
+    background: hsl(120, 61%, 50%);
+    border-color: hsl(120, 61%, 25%);
 }
 #stats_resources section.crystal {
-    background: #a5d9ff;
-    border-color: dodgerblue;
+    background: hsl(200, 60%, 65%);
+    border-color: hsl(200, 60%, 30%);
 }
 
 #stats_resources section article {
