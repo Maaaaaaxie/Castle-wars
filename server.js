@@ -32,7 +32,7 @@ const
     app = express()
         .use(express.static("static"))
         .use(fnRouting)
-        .listen(PORT, () => console.log("Listening on localhost:" + PORT));
+        .listen(PORT, () => console.log("Listening on "+ip+":" + PORT));
 
 const io = require("socket.io")(app);
 

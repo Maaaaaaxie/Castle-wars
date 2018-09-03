@@ -111,21 +111,21 @@ canvas {
 /* --- menu ----------------------------------------------------------------------------------------------------------*/
 #menu {
     background: rgba(74, 47, 26, 0.7);
+    border: solid 5px  rgba(74, 47, 26, 0.1);
+    border-radius: 0.7rem;
     width: 100%;
     max-width: 40rem;
-    border: none !important;
-    border-radius: 0.5rem;
     color: #f4bc7d;
+
+    margin: auto;
     position: absolute;
-    left: 50%;
-    bottom: 50%;
-    transform: translate(-50%, 50%);
+    top: 0; left: 0; bottom: 0; right: 0;
+    height: 14.8rem;
 }
 
 #menu .title {
     font-size: 18pt;
     font-weight: bold;
-    /*text-shadow: -3px 0 #4a270e, 0 3px #4a270e, 3px 0 #4a270e, 0 -3px #4a270e;*/
 }
 
 #menu .flex-wrapper {
@@ -220,8 +220,16 @@ canvas {
     }
 }
 
+#menu .center {
+    width: 8rem;
+}
+
 #menu .center .content {
     text-align: center;
+}
+
+#menu .center .info {
+    word-break: break-word;
 }
 
 #menu .center .content .launch {

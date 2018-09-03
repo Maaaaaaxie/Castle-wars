@@ -28,6 +28,7 @@ class Menu {
         const oImage = oDiv.getElementsByClassName("content")[0].getElementsByClassName("image")[0];
         const oNoImage = oDiv.getElementsByClassName("content")[0].getElementsByClassName("no-image")[0];
         const oInfo = oDiv.getElementsByClassName("info")[0];
+        const oKick = oDiv.getElementsByClassName("kick")[0].getElementsByTagName("button")[0];
 
         const oImg1 = b ? oImage : oNoImage;
         const oImg2 = b ? oNoImage : oImage;
@@ -42,9 +43,13 @@ class Menu {
         }, 500);
 
         oInfo.innerText = b ? "Verbunden" : "Nicht verbunden";
+
+        oKick.disabled = !b;
+        if (b) {
+            oKick.classList.remove("disabled");
+        } else {
+            oKick.classList.add("disabled");
+        }
     }
 
-    kick() {
-
-    }
 }

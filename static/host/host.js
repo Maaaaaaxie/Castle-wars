@@ -33,7 +33,7 @@ window.onresize = () => _initCanvas();
 // ---------------------------------------------------------------------------------------------------------------------
 
 function _initEventListeners() {
-    document.getElementById("launchButton").addEventListener("click", toggleGame);
+    document.getElementById("launchButton").addEventListener("click", toggleGame.bind(null, true));
     document.getElementById("canvas").addEventListener("click", onCanvasClick);
 
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame);
@@ -43,8 +43,8 @@ function _initEventListeners() {
         changeVolume(null, event);
     });
 
-    document.getElementById("menu").getElementsByClassName("kick")[0].addEventListener("click", () => kickPlayer(1));
-    document.getElementById("menu").getElementsByClassName("kick")[1].addEventListener("click", () => kickPlayer(2));
+    document.getElementById("menu").getElementsByClassName("left")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(1));
+    document.getElementById("menu").getElementsByClassName("right")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(2));
 
     document.getElementsByName("showQrCode")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
@@ -67,7 +67,7 @@ socket.on('info', o => {
         "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
     document.getElementById("ip").innerText = "http://" + o.ip + "/control";
 
-    window.started = o.game.state === oStates.RUNNING;
+    window.started = o.game.state === oStates.RUNNING || o.game.state === oStates.PAUSED;
     const handleClientUpdate = function (oInfo) {
         const aPlayer = document.getElementsByClassName('player');
         const aButtons = document.getElementsByClassName('kick');
@@ -82,6 +82,13 @@ socket.on('info', o => {
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
 
+        const oMenu = document.getElementById("menu");
+        if (o.state === oStates.RUNNING) {
+            oMenu.style.display = "none";
+        } else {
+            oMenu.style.display = "block";
+        }
+
         const toggleButton = (oButton, bEnabled) => {
             if (bEnabled) {
                 oButton.classList.remove("disabled");
@@ -91,15 +98,21 @@ socket.on('info', o => {
             oButton.disabled = !bEnabled;
         };
 
-        if (!!window._oPlayer1 !== !!oPlayer1) {
-            window.menu.togglePlayer(1, !!oPlayer1);
+        if (oPlayer1) {
+            const bToggle = !!window._oPlayer1 !== oPlayer1.connected;
+            if (bToggle) {
+                window.menu.togglePlayer(1, oPlayer1.connected);
+            }
         }
-        if (!!window._oPlayer2 !== !!oPlayer2) {
-            window.menu.togglePlayer(2, !!oPlayer2);
+        if (oPlayer2) {
+            const bToggle = !!window._oPlayer2 !== oPlayer2.connected;
+            if (bToggle) {
+                window.menu.togglePlayer(2, oPlayer2.connected);
+            }
         }
 
-        window._oPlayer1 = oPlayer1 ? new Player(oPlayer1) : undefined;
-        window._oPlayer2 = oPlayer2 ? new Player(oPlayer2) : undefined;
+        window._oPlayer1 = oPlayer1 && oPlayer1.connected ? new Player(oPlayer1) : undefined;
+        window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
 
         if (o.game.state === oStates.READY) {
             if (window._sState !== o.game.state) {
@@ -443,11 +456,19 @@ function _initGame() {
     _initializeBirds();
 }
 
-function toggleGame() {
-    window.started = !window.started;
-    if (window.started) {
+function toggleGame(b) {
+    const oMenu = document.getElementById("menu");
+    if (b) {
+        oMenu.classList.add("animation-shrink");
+        setTimeout(() => {
+            oMenu.classList.remove("animation-shrink");
+            oMenu.style.display = "none";
+        }, 1000);
         socket.emit('start');
     } else {
+        oMenu.classList.add("animation-grow");
+        oMenu.style.display = "block";
+        setTimeout(() => oMenu.classList.remove("animation-grow"), 1000);
         socket.emit('quit');
     }
 }
@@ -738,7 +759,7 @@ function toast(sText) {
  * @param number - Either '1' or '2'
  */
 function kickPlayer(number) {
-    socket.emit("clientKick", number);
+    socket.emit("kick", number);
 }
 
 function toggleQR() {
