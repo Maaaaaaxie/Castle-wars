@@ -19,9 +19,9 @@ const oStates = {
 
 const btnJoin = document.getElementById("launchButton");
 btnJoin.addEventListener("click", e => {
-    !localStorage.getItem("dev") && enterFullscreen(document.documentElement);
-    socket.emit("join");
-    btnJoin.disabled = true;
+	window._settings.fullscreen && window.enterFullscreen(document.documentElement);
+	socket.emit("join");
+	btnJoin.disabled = true;
 });
 
 /**
@@ -104,13 +104,13 @@ socket.on("playerUpdate", a => {
 });
 
 socket.on("pause", o => {
-    if (o.paused) {
-        Timer.stop(false);
-        Cards.foldAll();
-    } else {
-        Cards.unfoldAll();
-        Timer.start(o.remaining);
-    }
+	if (o.paused) {
+		Information.stop(false);
+		Cards.foldAll();
+	} else {
+		Cards.unfoldAll();
+		Information.start(o.remaining);
+	}
 });
 
 // fired when the connection is lost
@@ -153,19 +153,6 @@ function startGame(oPlayer) {
             oPlayer.cards.forEach(sCardId => Cards.renderCard({sCardId, oPlayer, bFlipped: true}));
         }, 475);
     }, 125);
-}
-
-// loaded, show join button
-function enterFullscreen(oElement) {
-    if (oElement.requestFullscreen) {
-        oElement.requestFullscreen();
-    } else if (oElement.mozRequestFullScreen) {
-        oElement.mozRequestFullScreen();
-    } else if (oElement.msRequestFullscreen) {
-        oElement.msRequestFullscreen();
-    } else if (oElement.webkitRequestFullscreen) {
-        oElement.webkitRequestFullscreen();
-    }
 }
 
 window.clearInterval(window.loadingInterval);

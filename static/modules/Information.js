@@ -24,10 +24,19 @@ export default class Information /*extends Timer */ {
 		oInfo.innerText = "Spieler " + sPlayerId;
 		oInfoText.appendChild(oInfo);
 
-		const oTimer = document.createElement("article");
+		const oTimerAndSettings = document.createElement("article");
+		oTimerAndSettings.setAttribute("class", "timerSettings");
+		oSection.appendChild(oTimerAndSettings);
+
+		const oTimer = document.createElement("span");
 		oTimer.setAttribute("id", "timer");
 		oTimer.innerText = "-";
-		oSection.appendChild(oTimer);
+		oTimerAndSettings.appendChild(oTimer);
+
+		const btnSettings = document.createElement("button");
+		btnSettings.setAttribute("id", "settingsBtn");
+		btnSettings.addEventListener("click", () => document.getElementById("settings").showModal());
+		oTimerAndSettings.appendChild(btnSettings);
 
 		return oSection;
 	}
@@ -52,7 +61,7 @@ export default class Information /*extends Timer */ {
 		const oInfo = document.getElementById("information");
 
 		oInfo.classList.add("notify");
-		window.bVibrate && window.navigator.vibrate && window.navigator.vibrate(140);
+		window._settings.vibrate && window.navigator.vibrate && window.navigator.vibrate(140);
 		window.setTimeout(() => oInfo.classList.remove("notify"), 1000);
 	}
 
@@ -62,6 +71,8 @@ export default class Information /*extends Timer */ {
 		if (!oTimer) {
 			throw new Error("Unable to start timer: timer element not found");
 		}
+
+		window._moveAllowed = true;
 
 		oTimer.innerText = iTimeLeft.toString();
 		window.countdown = window.setInterval(() => {
@@ -82,6 +93,8 @@ export default class Information /*extends Timer */ {
 		if (!oTimer) {
 			throw new Error("Unable to stop timer: timer element not found");
 		}
+
+		window._moveAllowed = false;
 
 		if (window.countdown) {
 			window.clearInterval(window.countdown);

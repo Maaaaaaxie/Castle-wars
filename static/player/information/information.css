@@ -24,6 +24,11 @@
     user-select: none;
 }
 
+.timerSettings {
+    display: inline-grid;
+    grid-template-columns: 1rem 1.8rem;
+}
+
 .notify {
     animation: 1s lightup 1 ease-out;
 }
