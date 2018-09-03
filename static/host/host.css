@@ -108,6 +108,14 @@ canvas {
     transform: scale(1.05);
 }
 
+#toolbar .tool {
+    display: inline-block;
+}
+
+#toolbar .inactive {
+    display: none;
+}
+
 /* --- menu ----------------------------------------------------------------------------------------------------------*/
 #menu {
     background: rgba(74, 47, 26, 0.7);
@@ -286,6 +294,10 @@ canvas {
     font-size: 18pt;
     font-weight: bold;
     color: #f4bc7d;
+    position: absolute;
+    top: 3rem;
+    right: 1rem;
+    display: none;
 }
 
 button {

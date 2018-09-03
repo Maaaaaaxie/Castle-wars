@@ -50,6 +50,7 @@ function _initEventListeners() {
     document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("img")[0].addEventListener("click", toggleQR);
 
+    document.getElementById("toggleSound").addEventListener("click", toggleSound);
     document.getElementById("toggleMusic").addEventListener("click", toggleMusic);
     document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
     document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
@@ -671,10 +672,32 @@ function toggleFullscreen() {
 }
 
 /**
+ * Toggles the sound
+ */
+window.sound = true;
+function toggleSound() {
+    const oToolbar = document.getElementById("toolbar");
+    const oActive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[0];
+    const oInactive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[1];
+
+    window.sound = !window.sound;
+
+    oActive.style.display = window.sound ? "block" : "none";
+    oInactive.style.display = !window.sound ? "block" : "none";
+}
+
+/**
  * Toggles the music
  */
 function toggleMusic() {
+    const oToolbar = document.getElementById("toolbar");
+    const oActive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
+    const oInactive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
+
     window._music.mute();
+
+    oActive.style.display = window._music.sound.muted ? "block" : "none";
+    oInactive.style.display = !window._music.sound.muted ? "block" : "none";
 }
 
 /**

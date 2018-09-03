@@ -24,11 +24,20 @@
 
 <div id="toolbar" class="breakOn750">
     <div class="title showOn1020">Castle Wars</div>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Speaker_Icon.svg/500px-Speaker_Icon.svg.png"/>
-    <img id="toggleMusic"
-         src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Simple_Music.svg/600px-Simple_Music.svg.png"/>
-    <img id="toggleOptions" src="https://image.flaticon.com/icons/svg/17/17214.svg"/>
-    <img id="toggleFullscreen" src="https://d30y9cdsu7xlg0.cloudfront.net/png/280-200.png"/>
+    <div id="toggleSound" class="tool sound">
+        <img class="active" src="../images/basic/volume.png"/>
+        <img class="inactive" src="../images/basic/mute.png"/>
+    </div>
+    <div id="toggleMusic" class="tool music">
+        <img class="active" src="../images/basic/music.png"/>
+        <img class="inactive" src="../images/basic/no-music.png"/>
+    </div>
+    <div id="toggleOptions" class="tool options">
+        <img src="../images/basic/settings.png"/>
+    </div>
+    <div id="toggleFullscreen" class="tool fullscreen">
+        <img class="active" src="../images/basic/fullscreen.png"/>
+    </div>
 </div>
 
 <div id="menu">
@@ -77,7 +86,7 @@
     </div>
 </div>
 
-<dialog id="options">
+<div id="options">
     <div class="option">
         <div class="description">Spiel</div>
         <div class="game">
@@ -91,7 +100,7 @@
         <input id="volume" type="range" min="1" max="100" value="50" class="slider">
     </div>
     <button id="close">Schließen</button>
-</dialog>
+</div>
 
 <div id="info" class="infoVisibility translateOn750">
     <div id="info-1" class="container">
