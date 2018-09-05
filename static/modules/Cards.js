@@ -54,7 +54,7 @@ export default class Cards {
 
 			oDialog.close();
 
-			if (iCard) {
+			if (iCard || iCard === 0) {
 				console.log("Discarding card", iCard);
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
