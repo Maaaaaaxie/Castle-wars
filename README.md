@@ -4,7 +4,6 @@ Du bist anstrebender König und dein Ziel ist es, die größte Burg des Königsr
 Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zerstören.
 
 ## Anleitung
-
 **Wann gewinnst du?**
 * Deine Burg ist 100 Steine hoch ***oder***
 * Du hast die gegnerische Burg zerstört
@@ -16,21 +15,30 @@ Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zer
 * Beispiel: 5 Baumeister = 5 neue Steine pro Runde
 
 ## Installation
-
-Lade Dir das git-Repository auf deinen PC herunter und öffne die 'start.bat'-Datei im Hauptverzeichnis.
-Es wird sich die Konsole öffnen und "Listening on [*Server-IP*]:[*Port*]" in den Log schreiben. Um die
-Haupt-Spieloberfläche zu öffnen musst Du in Deinem Chrome- oder Firefoxbrowser "localhost" eingeben.
+1. git-Repository herunterladen
+2. `start.bat` Datei im Hauptverzeichnis ausführen
+3. `localhost` im Browser eingeben
+4. QR-Code scannen *oder* IP manuell in Smartphone Browser eingeben
 
 ## Anforderungen
+Um die Verbindung zwischen PC und Smartphone sicherzustellen müssen sich alle Geräte im selben
+(Wifi) Netzwerk befinden.
 
-Browser-Kompatibilität
+Software
+* Node.js 8.11.4 (oder höher)
+
+Hardware
+* 1 PC zur Spielfeld-Anzeige
+* 1 Smartphone je Spieler
+
+Browser
 * Google Chrome 68.0 (oder höher)
 * Mozilla Firefox 62.0 (oder höher)
 
-# Karten
-- Turm erhöhen (+5)
-- Turm erhöhen (+3)
-- Zaun erhöhen (+2)
-- Gegnerturm/Zaun angreifen (-5)
-- Gegnerturm/Zaun angreifen (-3)
-- Gegnerturm/Zaun angreifen (-2)
+## Bugs
+### QR-Code wird nicht angezeigt
+Sollte der QR-Code nicht richtig angezeigt werden, kann man die IP des Servers manuell in der URL-Leiste
+des Browsers eingeben. Die IP des Servers wird in der Konsole, die durch die `start.bat` Datei geöffnet wird, geloggt.
+
+
+
