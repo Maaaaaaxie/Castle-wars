@@ -1,6 +1,6 @@
 {
-  "name": "websocket-test-app",
-  "description": "Cross Device Communication using WebSockets",
+  "name": "castlewars",
+  "description": "Web browser based card game",
   "scripts": {
     "start": "node index.js"
   },
