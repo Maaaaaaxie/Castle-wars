@@ -15,8 +15,9 @@
 #stats_resources section {
     height: calc(3rem - 1px);
     line-height: 2rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.2rem;
     display: inline-block;
+    width: 25%;
 }
 #stats_resources section * {
     border-color: inherit;
@@ -38,24 +39,29 @@
     border-color: hsl(200, 60%, 30%);
 }
 
+#stats_resources section div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
 #stats_resources section article {
     height: 2rem;
     display: inline-block;
 }
 #stats_resources section article:first-child {
-    padding-right: 0.5rem;
+    padding-right: 0.2rem;
     border-right-style: solid;
     border-width: 1px;
 }
 #stats_resources section article:last-child {
-    margin-left: 0.5rem;
+    margin-left: 0.2rem;
 }
 
 #stats_resources section article span {
     line-height: 2rem;
     font-size: 1.6rem;
     float: right;
-    margin-left: 0.5rem;
+    margin-left: 0.1rem;
 }
 #stats_resources section article span:after {
     content: ".";
