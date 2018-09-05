@@ -42,6 +42,7 @@ the terms and conditions of the following licenses.
 * Icons made by https://www.flaticon.com/authors/pixel-perfect from www.flaticon.com
 * Icons made by https://www.flaticon.com/authors/gregor-cresnar from www.flaticon.com
 * Icons made by https://www.flaticon.com/authors/google from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/smashicons from www.flaticon.com
 
 # Music
 
