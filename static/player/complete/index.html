@@ -65,13 +65,13 @@
 </body>
 </html>
 <script>
-    window._settings = JSON.parse(localStorage.getItem("settings"));
+    window._settings = JSON.parse(sessionStorage.getItem("settings"));
     if (!(_settings && typeof _settings.vibrate === typeof true && typeof _settings.fullscreen === typeof true)) {
     	window._settings = {
     		vibrate: true,
             fullscreen: true
         };
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
     }
 
 	document.getElementById("vibration").checked = window._settings.vibrate;
@@ -192,12 +192,12 @@
 
     document.getElementById("vibration").addEventListener("change", e => {
 		window._settings.vibrate = e.target.checked;
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
 	});
 
 	document.getElementById("fullscreen").addEventListener("change", e => {
 		window._settings.fullscreen = e.target.checked;
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
 
         if (window._settings.fullscreen) {
 			window.enterFullscreen(document.documentElement);
