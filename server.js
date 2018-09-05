@@ -61,6 +61,7 @@ io.on("connection", function (socket) {
         if (sType === "host") {
             console.log("Host connected: " + id);
             socket.join("host");
+            sendInfoTo(io.to(socket));
         } else {
             console.log("Client connected: " + id);
             socket.emit("init", {
@@ -71,6 +72,9 @@ io.on("connection", function (socket) {
             const oPlayer = connection.players.find(e => e.id === id);
             if (!!oPlayer) {
                 oPlayer.connected = true;
+                if (game.started) {
+                    sendInfoTo(io.sockets);
+                }
             }
 
             if (game.interrupted) {
@@ -79,7 +83,6 @@ io.on("connection", function (socket) {
                 }
             }
         }
-        sendInfoTo(io.sockets);
     });
 
     socket.on("join", () => {
@@ -90,7 +93,7 @@ io.on("connection", function (socket) {
         const oPlayer = connection.players.find(e => e.id === id);
 
         if (oPlayer) {
-            connection.handleClientDisconnected(oPlayer, () => sendInfoTo(io.to("host")));
+            setTimeout(() => connection.handleClientDisconnected(oPlayer, () => sendInfoTo(io.to("host"))), 200);
         } else {
             socket.leave("host"); // could happen that socket never joined 'host' but shouldn't be a problem
         }

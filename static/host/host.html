@@ -86,22 +86,6 @@
     </div>
 </div>
 
-<div id="options">
-    <div class="option">
-        <div class="description">Spiel</div>
-        <div class="game">
-            <button class="disabled">Start</button>
-            <button class="disabled">Pause</button>
-        </div>
-    </div>
-    <div class="spacer"></div>
-    <div class="option">
-        <div class="description">Lautstärke</div>
-        <input id="volume" type="range" min="1" max="100" value="50" class="slider">
-    </div>
-    <button id="close">Schließen</button>
-</div>
-
 <div id="info" class="infoVisibility translateOn750">
     <div id="info-1" class="container">
         <div class="label">Spieler 1</div>
@@ -499,11 +483,24 @@
     </div>
 </div>
 
-<div class="centerWrapper">
-    <!--<button id="launchButton">Start</button>-->
+<div id="toast"></div>
+
+<div id="options">
+    <div class="option">
+        <div class="description">Spiel</div>
+        <div class="game">
+            <button class="disabled">Start</button>
+            <button class="disabled">Pause</button>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="option">
+        <div class="description">Lautstärke</div>
+        <input id="volume" type="range" min="1" max="100" value="50" class="slider">
+    </div>
+    <button id="close">Schließen</button>
 </div>
 
-<div id="toast"></div>
 
 <canvas id="canvas"></canvas>
 

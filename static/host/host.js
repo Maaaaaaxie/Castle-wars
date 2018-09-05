@@ -700,18 +700,22 @@ function toggleMusic() {
  */
 function toggleOptions() {
     const
-        dialog = document.getElementById('options'),
-        btnClose = document.getElementById('close');
+        btnClose = document.getElementById("close"),
+        dialog = document.getElementById('options');
 
-    if (dialog.open) {
-        dialog.close();
-    } else {
-        dialog.showModal();
-        btnClose.focus();
-        btnClose.addEventListener('click', toggleOptions);
+    dialog.style.display = dialog.style.display === "block" ? "none" : "block";
+
+    btnClose.focus();
+
+    if (!window._bOptionEventListenerSet) {
+        window._bOptionEventListenerSet = true;
+
+        const fnClose = () => dialog.style.display = "none";
+
+        btnClose.addEventListener('click', fnClose);
         document.addEventListener('keydown', function (e) {
             if (e.key === "Escape") {
-                dialog.close();
+                fnClose();
             }
         }, true);
     }
