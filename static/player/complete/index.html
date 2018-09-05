@@ -56,6 +56,7 @@
 <aside id="centerWrapper">
     <button id="launchButton" class="wiggle">Join</button>
 </aside>
+<div id="switchToLandscape"></div>
 </body>
 </html>
 <script>
@@ -67,6 +68,17 @@
         };
 		localStorage.setItem("settings", JSON.stringify(window._settings));
     }
+
+    function checkOrientation() {
+    	if (window.innerHeight > window.innerWidth) {
+    		document.getElementById("switchToLandscape").style.display = "block";
+        } else {
+			document.getElementById("switchToLandscape").style.display = "none";
+		}
+    }
+    checkOrientation();
+
+	window.onresize = checkOrientation;
 
 	document.getElementById("vibration").checked = window._settings.vibrate;
 	document.getElementById("fullscreen").checked = window._settings.fullscreen;
