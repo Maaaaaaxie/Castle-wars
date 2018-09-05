@@ -102,108 +102,121 @@ button {
 }
 
 #settings {
-    background: rgba(74, 47, 26, 0.7);
+    background: rgba(214, 197, 171, 0.95);
     width: 100%;
-    max-width: 25rem;
+    height: 100%;
     border: none;
-    border-radius: 1rem;
     font-size: 18pt;
     font-weight: bold;
-    color: #f4bc7d;
+    color: #733910;
     margin: 0 auto;
-    padding: 1rem;
 }
 #settings * {
     background-color: transparent;
     color: inherit;
     font-size: inherit;
+    line-height: inherit;
 }
-#settings::backdrop {
-    position: fixed;
+
+#settingsContent {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 3rem 1fr 3rem;
+}
+
+#settings header {
+    height: 3rem;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 9fr auto;
+    border-bottom: 0.1px solid #733910;
+}
+
+#settings header button {
+    width: 3rem;
+    height: 3rem;
+    margin: -0.5rem -0.5rem 0 0;
+    border: 0.1rem solid #49240a;
+    background-color: #f4bc7d;
+    color: #733910;
+    line-height: 2rem;
+    font-size: 1.5rem;
+}
+
+#settings main {
+    padding: 1rem;
+    margin: auto;
+    max-width: 100%;
+    width: 15rem;
+}
+
+#settings main .setting {
+    height: 3rem;
+    line-height: 3rem;
+    display: grid;
+    grid-template-columns: auto 4rem;
+    border-bottom: 1px solid #49240a;
+}
+
+#settings main .setting:last-child {
+    border: none;
+}
+
+#settings footer {
+    border-top: 0.1px solid #733910;
+    line-height: 3rem;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+/* CheckBox "Slider" */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 3.6rem;
+    height: 2rem;
+    margin-top: 0.45rem;
+}
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #a2673d  !important;
+    border: 2px solid #733910;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 1rem;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    left: calc(0.25rem - 2px);
+    bottom: calc(0.25rem - 2px);
+    background-color: #f4d4a2;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
 }
 
-#settings footer button {
-    margin-top: 1rem;
-    width: 100%;
-    height: 3rem;
-    font-size: 18pt;
-    border-top: 3px solid #49240a;
-    font-weight: bold;
-}
-#settings footer button {
-    outline: none;
-    background: #733910;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    color: #f4bc7d;
-    font-family: "MedievalSharp";
-    cursor: pointer;
-    border: 2px solid #49240a;
+input:checked + .slider {
+    background-color: #733910 !important;
 }
 
-#settings footer button:hover {
-    background: #f4bc7d;
-    color: #733910;
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
 }
 
-#settings footer button:active {
-    background: #c08a4e;
-    color: #733910;
+input:checked + .slider:before {
+    -webkit-transform: translateX(1.5rem);
+    -ms-transform: translateX(1.5rem);
+    transform: translateX(26px);
 }
-
-#settings article section {
-    display: flex;
-    justify-content: space-between;
-}
-
-#settings input[type="checkbox"] {
-    height: 1.2rem;
-    width: 1.2rem;
-}
-
-/*::backdrop {*/
-/*background-color: rgba(0, 0, 0, 0.5); !* TODO: fade out *!*/
-/*}*/
-
-/*#settings article, #settings footer {*/
-/*padding: 0.75rem;*/
-/*background: transparent;*/
-/*}*/
-
-/*#settings article {*/
-/*display: table;*/
-/*margin: auto;*/
-/*}*/
-/*#settings article section {*/
-/*display: table-row;*/
-/*margin: auto;*/
-/*}*/
-/*#settings article section div {*/
-/*display: table-cell;*/
-/*margin: auto;*/
-/*}*/
-/*#settings article section div:first-child {*/
-/*width: 75%;*/
-/*}*/
-/*#settings footer {*/
-/*text-align: right;*/
-/*border-top: 1px solid rgba(0, 0, 0, 0.75);*/
-/*}*/
-/*#settings footer button {*/
-/*user-select: none;*/
-/*padding: 0 0.5rem;*/
-/*border: none;*/
-/*box-shadow: 0 0 3px rgba(0, 0, 0, 0.75);*/
-/*border-radius: 3px;*/
-/*}*/
-/*#settings footer button:hover {*/
-/*box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);;*/
-/*}*/
-/*#settings footer button:active {*/
-/*box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);;*/
-/*}*/
