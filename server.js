@@ -12,6 +12,8 @@ const GAME = path.join(__dirname, "/static/host/host.html");
 const CONTROL = path.join(__dirname, "/static/player/complete/index.html");
 const CHAT = path.join(__dirname, "/static/chat/login.html");
 const CARDS = path.join(__dirname, "/static/data/cards.json");
+const DATENSCHUTZ = path.join(__dirname, "/static/legal/privacy.html");
+const IMPRESSUM = path.join(__dirname, "/static/legal/impress.html");
 
 // let game = {};
 
@@ -22,6 +24,10 @@ function fnRouting(req, res) {
         res.sendFile(CHAT);
     } else if (req.url === "/cards") {
         res.sendFile(CARDS)
+    } else if (req.url === "/datenschutz") {
+        res.sendFile(DATENSCHUTZ);
+    } else if (req.url === "/impressum") {
+        res.sendFile(IMPRESSUM);
     } else {
         res.sendFile(GAME);
     }
@@ -32,7 +38,7 @@ const
     app = express()
         .use(express.static("static"))
         .use(fnRouting)
-        .listen(PORT, () => console.log("Listening on "+ip+":" + PORT));
+        .listen(PORT, () => console.log("Listening on " + ip + ":" + PORT));
 
 const io = require("socket.io")(app);
 

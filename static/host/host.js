@@ -54,6 +54,9 @@ function _initEventListeners() {
     document.getElementById("toggleMusic").addEventListener("click", toggleMusic);
     document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
     document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
+
+    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum",'_blank'))
+    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz",'_blank'))
 }
 
 
@@ -238,14 +241,6 @@ socket.on('pause', o => {
 });
 
 socket.on('quit', () => {
-    const oGameToggleButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
-    oGameToggleButton.innerText = "Starten";
-    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
-    oPauseButton.disabled = true;
-    oPauseButton.classList.add("disabled");
-
-    document.getElementById("pause").classList.remove("paused");
-
     _togglePlayerStats(1, false);
     _togglePlayerStats(2, false);
 });
@@ -713,11 +708,11 @@ function toggleOptions() {
         const fnClose = () => dialog.style.display = "none";
 
         btnClose.addEventListener('click', fnClose);
-        document.addEventListener('keydown', function (e) {
-            if (e.key === "Escape") {
+        document.addEventListener('mousedown', e => {
+            if (e.target.closest("#options") === null && e.target.closest("#toggleOptions") === null) {
                 fnClose();
             }
-        }, true);
+        })
     }
 }
 

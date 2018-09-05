@@ -6,6 +6,29 @@ html, body {
     user-select: none;
 }
 
+
+button {
+    outline: none;
+    background: #733910;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    color: #f4bc7d;
+    font-family: "MedievalSharp";
+    cursor: pointer;
+    border: 2px solid #49240a;
+    border-radius: 0.2rem;
+}
+
+button:hover {
+    background: #f4bc7d;
+    color: #733910;
+}
+
+button:active {
+    background: #c08a4e;
+    color: #733910;
+}
+
 #pause {
     background: transparent;
     height: 100%;
@@ -287,61 +310,32 @@ canvas {
 
 #options {
     background: rgba(74, 47, 26, 0.7);
-    width: 100%;
-    max-width: 25rem;
-    border: none;
-    border-radius: 5%;
+    border: solid 5px  rgba(74, 47, 26, 0.1);
+    border-radius: 0.7rem;
+    width: 22rem;
+
     font-size: 18pt;
     font-weight: bold;
     color: #f4bc7d;
+
     position: absolute;
-    top: 3rem;
+    top: 4rem;
     right: 1rem;
+    padding: 0.8rem;
     display: none;
 }
 
-button {
-    outline: none;
-    background: #733910;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    color: #f4bc7d;
-    font-family: "MedievalSharp";
-    cursor: pointer;
-    border: 2px solid #49240a;
-    border-radius: 0.2rem;
-}
-
-button:hover {
-    background: #f4bc7d;
-    color: #733910;
-}
-
-button:active {
-    background: #c08a4e;
-    color: #733910;
-}
-
 #options #close {
-    margin-top: 1rem;
-    width: 100%;
-    height: 3rem;
+    border-radius: 0.7rem;
+    position: absolute;
+    top: 0;
+    right: 0;
     font-size: 18pt;
-    border-top: 3px solid #49240a;
     font-weight: bold;
 }
 
-#options::backdrop, #backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
 .option {
-    width: 100%;
+    text-align: center;
 }
 
 .option .description {
@@ -366,15 +360,11 @@ button:active {
     cursor: pointer;
 }
 
-.option .game {
-    text-align: center;
-}
-
-.option .game button {
+.option button {
     border-radius: 5%;
     font-size: 14pt;
     height: 2rem;
-    width: 40%;
+    width: 35%;
     cursor: pointer;
     display: inline-block;
 }
@@ -387,7 +377,7 @@ button:active {
 
 .slider {
     -webkit-appearance: none;
-    width: 100%;
+    width: 80%;
     height: 15px;
     border-radius: 5px;
     background: #f4bc7d;
