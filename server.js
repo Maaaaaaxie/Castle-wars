@@ -5,7 +5,7 @@ const crypto = require("crypto");
 const ip = require("my-local-ip")();
 
 // Configuration
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
 const INDEX = path.join(__dirname, "index.html");
 const GAME = path.join(__dirname, "/static/host/host.html");
