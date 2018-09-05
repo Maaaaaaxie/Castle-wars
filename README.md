@@ -1,12 +1,12 @@
 # Castle Wars
-Castle Wars ist ein Multiplayer mit dem Smartphone steuerbares Kartenspiel.
+Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
 Du bist anstrebender König und dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
 Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zerstören.
 
 ## Anleitung
 
 **Wann gewinnst du?**
-* Deine Burg ist 100 Steine hoch
+* Deine Burg ist 100 Steine hoch ***oder***
 * Du hast die gegnerische Burg zerstört
 
 **Wie gewinnst du?**
