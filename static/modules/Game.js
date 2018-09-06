@@ -54,7 +54,6 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
-            debugger;
             this.io.emit("pause", {
                 active: this.getActive(),
                 paused: false,
@@ -130,12 +129,16 @@ module.exports = class GameEngine {
 
         player.timer = new Timer(callback.bind(this), this.turnLength * 1000);
 
+        this.initializeCardListener(player);
+    }
+
+    initializeCardListener(player) {
         player.socket.on("card", o => {
             if (player.active) {
                 this.io.to("host").emit("cardAnimation", {
-                   discard: o.discard,
-                   id: o.id,
-                   number: player.number
+                    discard: o.discard,
+                    id: o.id,
+                    number: player.number
                 });
 
                 if (!o.discard) {

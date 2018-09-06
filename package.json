@@ -7,6 +7,6 @@
     "express": "^4.16.2",
     "my-local-ip": "^1.0.0",
     "qr-image": "^3.2.0",
-    "socketio": "^1.0.0"
+    "socketio": "^2.1.1"
   }
 }

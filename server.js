@@ -84,7 +84,9 @@ io.on("connection", function (socket) {
             const oPlayer = connection.players.find(e => e.id === id);
             if (!!oPlayer) {
                 oPlayer.connected = true;
+                oPlayer.socket = socket;
                 if (game.started) {
+                    game.initializeCardListener(oPlayer);
                     sendInfoTo(io.sockets);
                 }
             }

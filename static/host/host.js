@@ -52,8 +52,8 @@ function _initEventListeners() {
     document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
     document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
 
-    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum",'_blank'))
-    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz",'_blank'))
+    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum", '_blank'))
+    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz", '_blank'))
 }
 
 
@@ -89,18 +89,8 @@ socket.on('info', o => {
             oButton.disabled = !bEnabled;
         };
 
-        if (oPlayer1) {
-            const bToggle = !!window._oPlayer1 !== oPlayer1.connected;
-            if (bToggle) {
-                window.menu.togglePlayer(1, oPlayer1.connected);
-            }
-        }
-        if (oPlayer2) {
-            const bToggle = !!window._oPlayer2 !== oPlayer2.connected;
-            if (bToggle) {
-                window.menu.togglePlayer(2, oPlayer2.connected);
-            }
-        }
+        window.menu.togglePlayer(1, oPlayer1 && oPlayer1.connected);
+        window.menu.togglePlayer(2, oPlayer2 && oPlayer2.connected);
 
         window._oPlayer1 = oPlayer1 && oPlayer1.connected ? new Player(oPlayer1) : undefined;
         window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
@@ -669,6 +659,7 @@ function toggleFullscreen() {
  * Toggles the sound
  */
 window.sound = true;
+
 function toggleSound() {
     const oToolbar = document.getElementById("toolbar");
     const oActive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[0];
@@ -796,6 +787,6 @@ function wiiiiigle(a, i = 0) {
     if (a[i]) {
         a[i].classList.add("wiggle");
         i++;
-        setTimeout(() => wiiiiigle(a,i),5);
+        setTimeout(() => wiiiiigle(a, i), 5);
     }
 }
