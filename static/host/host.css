@@ -151,7 +151,7 @@ canvas {
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    height: 14.8rem;
+    height: 13rem;
 }
 
 #menu .title {
@@ -215,10 +215,6 @@ canvas {
     font-size: 10pt;
     font-weight: normal;
     font-family: "Comic Sans MS";
-}
-
-#menu .inner .kick {
-    padding-top: 0.5rem;
 }
 
 .animation-grow {
@@ -345,15 +341,6 @@ canvas {
     width: 70%;
     display: inline-block;
     margin-bottom: 1rem;
-}
-
-.option .kick {
-    border-radius: 5%;
-    font-size: 14pt;
-    height: 2rem;
-    margin: 0 auto;
-    width: 25%;
-    cursor: pointer;
 }
 
 .option button {

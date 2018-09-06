@@ -36,15 +36,12 @@ function _initEventListeners() {
     document.getElementById("launchButton").addEventListener("click", toggleGame.bind(null, true));
     document.getElementById("canvas").addEventListener("click", onCanvasClick);
 
-    document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame);
+    document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame.bind(null, false));
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[1].addEventListener("click", pause);
 
     document.getElementById("volume").addEventListener("input", event => {
         changeVolume(null, event);
     });
-
-    document.getElementById("menu").getElementsByClassName("left")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(1));
-    document.getElementById("menu").getElementsByClassName("right")[0].getElementsByClassName("kick")[0].getElementsByTagName("button")[0].addEventListener("click", () => kickPlayer(2));
 
     document.getElementsByName("showQrCode")[0].addEventListener("click", toggleQR);
     document.getElementById("qrCode").getElementsByTagName("button")[0].addEventListener("click", toggleQR);
@@ -74,8 +71,7 @@ socket.on('info', o => {
     window.started = o.game.state === oStates.RUNNING || o.game.state === oStates.PAUSED;
     const handleClientUpdate = function (oInfo) {
         const aPlayer = document.getElementsByClassName('player');
-        const aButtons = document.getElementsByClassName('kick');
-        const oStartButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+        const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
 
         const oCenter = document.getElementById("menu").getElementsByClassName("center")[0];
@@ -111,6 +107,7 @@ socket.on('info', o => {
         window._oPlayer1 = oPlayer1 && oPlayer1.connected ? new Player(oPlayer1) : undefined;
         window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
 
+        document.getElementById("pause").classList.remove("paused");
         if (o.game.state === oStates.READY) {
             window.menu.open();
             if (window._sState !== o.game.state) {
@@ -152,12 +149,13 @@ socket.on('info', o => {
             }
             document.getElementById("pause").classList.add("paused");
             oPauseButton.innerText = "Fortsetzen";
+            toggleButton(oQuitButton, true);
             _showStats();
         }
 
         function handleRunning() {
             window.menu.close();
-            toggleButton(oStartButton, true);
+            toggleButton(oQuitButton, true);
             toggleButton(oPauseButton, true);
             _showStats();
             oPauseButton.innerText = "Pause";
@@ -449,7 +447,11 @@ function _initGame() {
 
 function toggleGame(b) {
     const oMenu = document.getElementById("menu");
+    const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
+    const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (b) {
+        oQuitButton.classList.remove("disabled");
+        oQuitButton.disabled = false;
         oMenu.classList.add("animation-shrink");
         setTimeout(() => {
             oMenu.classList.remove("animation-shrink");
@@ -457,6 +459,13 @@ function toggleGame(b) {
         }, 1000);
         socket.emit('start');
     } else {
+        oQuitButton.classList.add("disabled");
+        oQuitButton.disabled = true;
+        oPauseButton.classList.add("disabled");
+        oPauseButton.disabled = true;
+        oPauseButton.innerText = "Pause";
+
+        document.getElementById("pause").classList.remove("paused");
         oMenu.classList.add("animation-grow");
         oMenu.style.display = "block";
         setTimeout(() => oMenu.classList.remove("animation-grow"), 1000);
@@ -769,14 +778,6 @@ function toast(sText) {
             window._toasting = false;
         }
     }
-}
-
-/**
- * Kicks a player
- * @param number - Either '1' or '2'
- */
-function kickPlayer(number) {
-    socket.emit("kick", number);
 }
 
 function toggleQR() {

@@ -92,11 +92,13 @@ module.exports = class GameEngine {
             this.io.emit("quit");
 
             if (this.player1) {
+                this.player1.active = undefined;
                 this.player1.reset();
                 this.player1.timer.stop();
             }
 
             if (this.player2) {
+                this.player1.active = undefined;
                 this.player2.reset();
                 this.player2.timer.stop();
             }

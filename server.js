@@ -105,17 +105,6 @@ io.on("connection", function (socket) {
         }
     });
 
-    socket.on("kick", number => {
-        if (game.started) {
-            console.log("Players can't be kicked while a game is runninng");
-            io.to("host").emit("toast", "Spieler können während einem Spiel nicht gekickt werden");
-            return;
-        }
-        const oPlayer = number === 1 ? game.player1 : game.player2;
-        console.log("Player " + number + " was kicked");
-        connection.handleClientDisconnected(oPlayer, () => sendInfoTo(io.to("host")));
-    });
-
     socket.on("start", () => {
         game.start();
     });
