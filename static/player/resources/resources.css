@@ -5,7 +5,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    border-bottom: 1px solid #b7b7b7;
+    border-bottom: 1px solid #49240a;
     line-height: 2rem;
 }
 #stats_resources * {
@@ -27,15 +27,15 @@
     border-color: hsl(0, 0%, 20%);
 }
 #stats_resources section.stone {
+    background: hsl(350, 75%, 60%);
     border-color: hsl(350, 60%, 30%);
-    background: hsl(350, 60%, 60%);
 }
 #stats_resources section.weapon {
-    background: hsl(120, 61%, 50%);
+    background: hsl(120, 55%, 50%);
     border-color: hsl(120, 61%, 25%);
 }
 #stats_resources section.crystal {
-    background: hsl(200, 60%, 65%);
+    background: hsl(200, 70%, 65%);
     border-color: hsl(200, 60%, 30%);
 }
 

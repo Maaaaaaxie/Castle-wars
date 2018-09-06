@@ -54,7 +54,7 @@ export default class Cards {
 
 			oDialog.close();
 
-			if (iCard) {
+			if (iCard || iCard === 0) {
 				console.log("Discarding card", iCard);
 				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
@@ -173,15 +173,28 @@ export default class Cards {
 
 				oSceneInner.appendChild(this._createFront(oCard));
 
-				const oBack = document.createElement("div");
-				oBack.setAttribute("class", "card_face back");
-				oSceneInner.appendChild(oBack);
+				oSceneInner.appendChild(this._createBack());
 
 				document.getElementById("cards_inner").appendChild(oArticle);
 			} else {
 				throw new Error("Could not find card with id " + sCardId + ". Rendering not possible");
 			}
 		});
+	}
+
+	static _createBack() {
+		const oBack = document.createElement("div");
+		oBack.setAttribute("class", "card_face back");
+
+		for (let i = 0; i < 4; i++) {
+			const oElement = document.createElement("img");
+			oElement.src = "/images/basic/card-border.png";
+			oElement.setAttribute("class", "card_border_" + i);
+
+			oBack.appendChild(oElement);
+		}
+
+		return oBack;
 	}
 
 	static _getPlayable(oCard, oPlayer) {

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Complete Mock: Player view</title>
     <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=MedievalSharp">
     <link rel="stylesheet" type="text/css" href="/player/reset.css">
     <link rel="stylesheet" type="text/css" href="/player/complete/complete.css">
     <link rel="stylesheet" type="text/css" href="/player/information/information.css">
@@ -50,9 +51,7 @@
 </dialog>
 <dialog id="dismissCard">
     <article>
-        <p>
-            Diese Karte ablegen?
-        </p>
+        <p>Diese Karte ablegen?</p>
     </article>
     <footer>
         <button id="dismissYes">Ja</button>
@@ -66,13 +65,13 @@
 </body>
 </html>
 <script>
-    window._settings = JSON.parse(localStorage.getItem("settings"));
+    window._settings = JSON.parse(sessionStorage.getItem("settings"));
     if (!(_settings && typeof _settings.vibrate === typeof true && typeof _settings.fullscreen === typeof true)) {
     	window._settings = {
     		vibrate: true,
             fullscreen: true
         };
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
     }
 
 	document.getElementById("vibration").checked = window._settings.vibrate;
@@ -193,12 +192,12 @@
 
     document.getElementById("vibration").addEventListener("change", e => {
 		window._settings.vibrate = e.target.checked;
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
 	});
 
 	document.getElementById("fullscreen").addEventListener("change", e => {
 		window._settings.fullscreen = e.target.checked;
-		localStorage.setItem("settings", JSON.stringify(window._settings));
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
 
         if (window._settings.fullscreen) {
 			window.enterFullscreen(document.documentElement);
