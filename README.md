@@ -17,7 +17,7 @@ Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zer
 ## Installation
 1. git-Repository herunterladen
 2. `start.bat` Datei im Hauptverzeichnis ausführen
-3. `localhost` im Browser eingeben
+3. `localhost` im Browser öffnen (*passiert automatisch*)
 4. QR-Code scannen *oder* IP (z.B. 192.168.1.1/control) manuell in Smartphone Browser eingeben
 
 ## Anforderungen
@@ -38,7 +38,8 @@ Browser
 ## Bugs
 ### QR-Code wird nicht angezeigt
 Sollte der QR-Code nicht richtig angezeigt werden, kann man die IP des Servers manuell in der URL-Leiste
-des Browsers eingeben. Die IP des Servers wird in der Konsole, die durch die `start.bat` Datei geöffnet wird, geloggt.
+des Browsers eingeben. Die IP des Servers wird entweder unter dem Button 'QR-Code anzeigen' angezeigt oder 
+in der Konsole, die durch die `start.bat` Datei geöffnet wird, geloggt.
 
 
 

@@ -1,9 +1,6 @@
 {
   "name": "castlewars",
   "description": "Web browser based card game",
-  "scripts": {
-    "start": "node server.js"
-  },
   "main": "server.js",
   "license": "ISC",
   "dependencies": {
