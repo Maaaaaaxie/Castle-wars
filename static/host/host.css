@@ -259,10 +259,6 @@ canvas {
     text-align: center;
 }
 
-#menu .center .info {
-    word-break: break-word;
-}
-
 #menu .center .content .launch {
     display: none;
     height: 6rem;

@@ -67,7 +67,7 @@ io.on("connection", function (socket) {
         if (sType === "host") {
             console.log("Host connected: " + id);
             socket.join("host");
-            sendInfoTo(io.to(socket));
+            sendInfoTo(socket);
         } else {
             console.log("Client connected: " + id);
             socket.emit("init", {
