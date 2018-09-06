@@ -58,7 +58,11 @@ http://scripts.sil.org/OFL
 
 ## Music
 
-* ...
+**Celtic Impuls**
+
+Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
 
 ## Sounds
 

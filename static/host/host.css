@@ -32,6 +32,10 @@ button:active {
     color: #733910;
 }
 
+#audio {
+    display: none;
+}
+
 #pause {
     background: transparent;
     height: 100%;

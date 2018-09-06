@@ -437,9 +437,6 @@ function _initCanvas() {
  * Initializes music, gameInterval, clouds and birds
  */
 function _initGame() {
-    window._music = new Sound("/sounds/music.mp3", 0.5, true);
-    window._music.play();
-    window._music.mute();
     window.__gameInterval = setInterval(() => Canvas._drawCanvas(this));
     _initializeClouds();
     _initializeBirds();
@@ -690,13 +687,19 @@ function toggleSound() {
  */
 function toggleMusic() {
     const oToolbar = document.getElementById("toolbar");
-    const oActive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
-    const oInactive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
+    const oPlay = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
+    const oMute = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
+    const music = document.getElementById("music");
 
-    window._music.mute();
+    if (!window.bMusicPlaying) {
+        window.bMusicPlaying = true;
+        music.play();
+    } else {
+        music.muted = !music.muted;
+    }
 
-    oActive.style.display = window._music.sound.muted ? "block" : "none";
-    oInactive.style.display = !window._music.sound.muted ? "block" : "none";
+    oPlay.style.display = !music.muted ? "block" : "none";
+    oMute.style.display = music.muted ? "block" : "none";
 }
 
 /**
