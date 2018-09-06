@@ -70,7 +70,7 @@ export default class Cards {
 			}
 		});
 
-		// TODO: clean up lol
+		// TODO: clean up
 		oSection.onclick = e => {
 			if (!bMoveAllowed || !window._moveAllowed) {
 				return;
@@ -106,8 +106,7 @@ export default class Cards {
 				oSceneInner = e.target.closest(".scene_inner"),
 				oCard = e.target.closest(".card");
 
-			// TODO: are only disabled cards dismissable?
-			if (oSceneInner && !oSceneInner.classList.contains("vanished") && oCard.classList.contains("disabled")) {
+			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
 				const iCard = Array.from(oCard.parentElement.children).indexOf(oCard);
 
 				document.getElementById("dismissCard").setAttribute("data-id", iCard.toString());
@@ -197,15 +196,6 @@ export default class Cards {
 		return oBack;
 	}
 
-	static _getPlayable(oCard, oPlayer) {
-		const sCostKey = this.getCostProperty(oCard);
-		if (!sCostKey) {
-			throw new Error("Unable to find cost property for card " + oCard.id);
-		}
-
-		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) > 0;
-	}
-
 	static _createFront(oCard) {
 		const oFront = document.createElement("div");
 		oFront.setAttribute("class", "card_face front");
@@ -252,6 +242,16 @@ export default class Cards {
 
 		return oFront;
 	}
+
+	static _getPlayable(oCard, oPlayer) {
+		const sCostKey = this.getCostProperty(oCard);
+		if (!sCostKey) {
+			throw new Error("Unable to find cost property for card " + oCard.id);
+		}
+
+		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) > 0;
+	}
+
 
 	static getResourceCount(oCard) {
 		return oCard.costs[this.getCostProperty(oCard)];
