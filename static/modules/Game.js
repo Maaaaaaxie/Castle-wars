@@ -193,13 +193,13 @@ module.exports = class GameEngine {
      */
     getWinner() {
         if (this.player1 && this.player2) {
-            if (this.player1.castle === 0) {
+            if (this.player1.castle <= 0) {
                 return this.player2;
-            } else if (this.player1.castle === 100) {
+            } else if (this.player1.castle >= 100) {
                 return this.player1;
-            } else if (this.player2.castle === 0) {
+            } else if (this.player2.castle <= 0) {
                 return this.player1;
-            } else if (this.player2.castle === 100) {
+            } else if (this.player2.castle >= 100) {
                 return this.player2;
             }
         }

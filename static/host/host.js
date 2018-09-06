@@ -516,13 +516,6 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
  * @param iNumber
  */
 function animateCard(iNumber, sPath, bDiscard) {
-    if (window._placingCard) {
-        return;
-    }
-
-    window._placingCard = true;
-    const oCard = document.getElementById("card-" + iNumber);
-
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
         const e = document.styleSheets[i];
@@ -531,40 +524,67 @@ function animateCard(iNumber, sPath, bDiscard) {
             break;
         }
     }
-    const iIndex = styleSheet.cssRules.length;
-    const sUrl = "../images/card/" + sPath;
-    const sSide = iNumber === 1 ? "left" : "right";
-    const sSidePercentage = iNumber === 1 ? "50%" : "-50%";
 
-    const sRule1 =
-        "@keyframes cardAnimation {" +
-        "to {" +
-        sSide + ": 50%;" +
-        "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
-        "bottom: 70%;" +
-        "width: 12rem;" +
-        "height: 14rem;" +
-        "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
-        "}" +
-        "}";
-
-    const sRule2 =
-        ".cardAnimation {" +
-        "animation-name: cardAnimation;" +
-        "animation-duration: 1s;" +
-        "animation-fill-mode: forwards" +
-        "}";
-
-    styleSheet.insertRule(sRule1, iIndex);
-    styleSheet.insertRule(sRule2, iIndex + 1);
-
-    oCard.classList.add("cardAnimation");
-    setTimeout(() => {
+    if (window._oCardAnimation) {
+        const oCard = window._oCardAnimation.card;
+        const iIndex = window._oCardAnimation.index;
+        window._oCardAnimation = undefined;
         oCard.classList.remove("cardAnimation");
         styleSheet.deleteRule(iIndex);
         styleSheet.deleteRule(iIndex);
-        window._placingCard = false;
-    }, 3000);
+        animate();
+    } else {
+        animate();
+    }
+
+    function animate() {
+        window._placingCard = true;
+        const oCard = document.getElementById("card-" + iNumber);
+
+        const iIndex = styleSheet.cssRules.length;
+        const sUrl = "../images/card/" + sPath;
+        const sSide = iNumber === 1 ? "left" : "right";
+        const sSidePercentage = iNumber === 1 ? "50%" : "-50%";
+
+        const sRule1 =
+            "@keyframes cardAnimation {" +
+            "to {" +
+            sSide + ": 50%;" +
+            "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
+            "bottom: 70%;" +
+            "width: 12rem;" +
+            "height: 14rem;" +
+            "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
+            "}" +
+            "}";
+
+        const sRule2 =
+            ".cardAnimation {" +
+            "animation-name: cardAnimation;" +
+            "animation-duration: 1000ms;" +
+            "animation-fill-mode: forwards" +
+            "}";
+
+        styleSheet.insertRule(sRule1, iIndex);
+        styleSheet.insertRule(sRule2, iIndex + 1);
+
+        oCard.classList.add("cardAnimation");
+
+        window._oCardAnimation = {
+            placing: true,
+            card: oCard,
+            index: iIndex
+        };
+
+        setTimeout(() => {
+            if (window._oCardAnimation && window._oCardAnimation.card === oCard) {
+                window._oCardAnimation = undefined;
+                oCard.classList.remove("cardAnimation");
+                styleSheet.deleteRule(iIndex);
+                styleSheet.deleteRule(iIndex);
+            }
+        }, 3000);
+    }
 }
 
 /**
