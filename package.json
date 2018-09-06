@@ -2,12 +2,11 @@
   "name": "castlewars",
   "description": "Web browser based card game",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
-  "main": "index.js",
+  "main": "server.js",
   "license": "ISC",
   "dependencies": {
-    "crypto": "^1.0.1",
     "express": "^4.16.2",
     "my-local-ip": "^1.0.0",
     "socketio": "^1.0.0"

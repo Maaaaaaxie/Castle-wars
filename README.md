@@ -18,7 +18,7 @@ Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zer
 1. git-Repository herunterladen
 2. `start.bat` Datei im Hauptverzeichnis ausführen
 3. `localhost` im Browser eingeben
-4. QR-Code scannen *oder* IP manuell in Smartphone Browser eingeben
+4. QR-Code scannen *oder* IP (z.B. 192.168.1.1/control) manuell in Smartphone Browser eingeben
 
 ## Anforderungen
 Um die Verbindung zwischen PC und Smartphone sicherzustellen müssen sich alle Geräte im selben
