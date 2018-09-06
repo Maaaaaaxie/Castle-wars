@@ -64,9 +64,7 @@ function _initEventListeners() {
 setTimeout(() => socket.emit("connected", "host"), 200);
 
 socket.on('info', o => {
-    document.getElementById("qrCode").getElementsByTagName("img")[0].src =
-        "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
-    document.getElementById("ip").innerText = "http://" + o.ip + "/control";
+    document.getElementById("ip").innerText = o.link;
 
     window.started = o.game.state === oStates.RUNNING || o.game.state === oStates.PAUSED;
     const handleClientUpdate = function (oInfo) {
