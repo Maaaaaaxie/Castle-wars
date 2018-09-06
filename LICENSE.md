@@ -31,7 +31,7 @@ of the source code for these subcomponents is subject to
 the terms and conditions of the following licenses. 
 
 
-# Images
+## Images
 
 * Icons made by https://www.flaticon.com/authors/freepik from www.flaticon.com
 * Icons made by https://www.flaticon.com/authors/prosymbols from www.flaticon.com 
@@ -44,10 +44,22 @@ the terms and conditions of the following licenses.
 * Icons made by https://www.flaticon.com/authors/google from www.flaticon.com
 * Icons made by https://www.flaticon.com/authors/smashicons from www.flaticon.com
 
-# Music
+## Fonts
+
+**MedievalSharp**
+
+Copyright (c) 2011, wmk69 (wmk69@o2.pl),
+with Reserved Font Name MedievalSharp.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+## Music
 
 * ...
 
-# Sounds
+## Sounds
 
 * ...
