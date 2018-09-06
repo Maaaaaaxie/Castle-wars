@@ -105,20 +105,22 @@ socket.on("pause", o => {
 	}
 });
 
+socket.on("quit", () => {
+	Cards.foldAll();
+	Information.stop();
+});
+
 // fired when the connection is lost
 socket.on("leave", () => {
     console.log("Left the game");
-    // debugger;
-    // document.getElementById("infotext").getElementsByTagName("img")[0].src = "/images/basic/no-wifi.png";
-    // document.getElementById("infotext").getElementsByTagName("span")[0].innerText = "";
-    // document.getElementById("information").classList.remove("joined");
+    window.location.reload();
 });
 
 function startGame(oPlayer) {
 	if (window._p) {
 		return window._p;
 	}
-	return window._p = new Promise(res => { // who gets rejected anyways
+	return window._p = new Promise(res => {
 		if (window._started) {
 			res();
 		}

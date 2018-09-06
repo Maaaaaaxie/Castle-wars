@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 80;
 
 const INDEX = path.join(__dirname, "index.html");
 const GAME = path.join(__dirname, "/static/host/host.html");
-const CONTROL = path.join(__dirname, "/static/player/complete/index.html");
+const CONTROL = path.join(__dirname, "/static/player/index.html");
 const CHAT = path.join(__dirname, "/static/chat/login.html");
 const CARDS = path.join(__dirname, "/static/data/cards.json");
 const DATENSCHUTZ = path.join(__dirname, "/static/legal/privacy.html");
