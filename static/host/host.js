@@ -555,6 +555,9 @@ function animateCard(iNumber, sPath, bDiscard) {
     function animate() {
         window._placingCard = true;
         const oCard = document.getElementById("card-" + iNumber);
+        if (oCard.sound) {
+            new Sound("/audio/sounds/" + oCard.sound, 0.5).play();
+        }
 
         const iIndex = styleSheet.cssRules.length;
         const sUrl = "../images/card/" + sPath;
@@ -565,7 +568,7 @@ function animateCard(iNumber, sPath, bDiscard) {
             "@keyframes cardAnimation {" +
             "to {" +
             sSide + ": 50%;" +
-            "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
+            "background: #f4bc7d url(" + sUrl + ") center/80% no-repeat;" +
             "bottom: 70%;" +
             "width: 12rem;" +
             "height: 14rem;" +

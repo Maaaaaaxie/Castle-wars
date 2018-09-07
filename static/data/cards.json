@@ -3,6 +3,7 @@
     "id": "001",
     "name": "Knecht",
     "category": "Attack",
+    "sound": "sword.mp3",
     "image": "servant.png",
     "self": {
       "builders": 0,
@@ -81,6 +82,7 @@
     "id": "003",
     "name": "Ritter",
     "category": "Attack",
+    "sound": "sword.mp3",
     "image": "knight.png",
     "self": {
       "builders": 0,
@@ -198,6 +200,7 @@
     "id": "006",
     "name": "Infiltrator",
     "category": "Attack",
+    "sound": "sword.mp3",
     "image": "infiltrator.png",
     "self": {
       "builders": 0,
@@ -237,6 +240,7 @@
     "id": "007",
     "name": "Assasine",
     "category": "Attack",
+    "sound": "sword.mp3",
     "image": "assasin.png",
     "self": {
       "builders": 0,
@@ -276,6 +280,7 @@
     "id": "008",
     "name": "Raubritter",
     "category": "Attack",
+    "sound": "sword.mp3",
     "image": "robber.png",
     "custom": "Je 5 Rohstoffe klauen",
     "self": {
