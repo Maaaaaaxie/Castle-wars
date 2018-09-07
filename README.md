@@ -49,9 +49,11 @@ im "Join"-Screen hängen bleibst solltest du neuladen
 * Wenn ein Spieler keine Aktionen mehr ausführen kann
 oder der Rundentimer total verkürzt ist, sollte das Spiel neustarten werden
 
+### Millionen Vögel...
+Lässt du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
+spawnen und den Browser stark verlangsamen. In diesem Fall musst Du einfach die Seite neuladen.
 
 ***
-
 
 **Autoren**<br/>
 Daniel Schmitz<br/>
