@@ -70,7 +70,7 @@ export default class Cards {
 			}
 		});
 
-		// TODO: clean up lol
+		// TODO: clean up
 		oSection.onclick = e => {
 			if (!bMoveAllowed || !window._moveAllowed) {
 				return;
@@ -106,8 +106,7 @@ export default class Cards {
 				oSceneInner = e.target.closest(".scene_inner"),
 				oCard = e.target.closest(".card");
 
-			// TODO: are only disabled cards dismissable?
-			if (oSceneInner && !oSceneInner.classList.contains("vanished") && oCard.classList.contains("disabled")) {
+			if (oSceneInner && !oSceneInner.classList.contains("vanished")) {
 				const iCard = Array.from(oCard.parentElement.children).indexOf(oCard);
 
 				document.getElementById("dismissCard").setAttribute("data-id", iCard.toString());
@@ -197,15 +196,6 @@ export default class Cards {
 		return oBack;
 	}
 
-	static _getPlayable(oCard, oPlayer) {
-		const sCostKey = this.getCostProperty(oCard);
-		if (!sCostKey) {
-			throw new Error("Unable to find cost property for card " + oCard.id);
-		}
-
-		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) > 0;
-	}
-
 	static _createFront(oCard) {
 		const oFront = document.createElement("div");
 		oFront.setAttribute("class", "card_face front");
@@ -233,25 +223,43 @@ export default class Cards {
 		const oFooter = document.createElement("footer");
 		let aProperties = [];
 		/** @property {Number} oCard.enemy */
-		for (const p in oCard.enemy) { // TODO: for of?
+		for (const p in oCard.enemy) {
 			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(oTexts[p] + " " + oCard.enemy[p]);
 		}
 		for (const p in oCard.self) { // todo: other style, todo: plus on positive values
 			oCard.self.hasOwnProperty(p) && oCard.self[p] !== 0 && aProperties.push(oTexts[p] + " +" + oCard.self[p]);
 		}
-		if (aProperties.length > 0) {
+		if (oCard.custom) {
+			const oText = document.createElement("div");
+			oCard.custom.split(" ").forEach(e => {
+				const oElement = document.createElement("div");
+				oElement.innerText = e;
+				oText.appendChild(oElement);
+			});
+			// oText.innerText = oCard.custom;
+			oFooter.appendChild(oText);
+		} else if (aProperties.length > 0) {
 			aProperties.forEach(e => {
 				const oText = document.createElement("div");
-				// oText.innerText = oTexts[e] + " " + oCard.enemy[e];
 				oText.innerText = e;
 				oFooter.appendChild(oText);
 			});
 		}
-		// TODO: for self
+
 		oFront.appendChild(oFooter);
 
 		return oFront;
 	}
+
+	static _getPlayable(oCard, oPlayer) {
+		const sCostKey = this.getCostProperty(oCard);
+		if (!sCostKey) {
+			throw new Error("Unable to find cost property for card " + oCard.id);
+		}
+
+		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) >= 0;
+	}
+
 
 	static getResourceCount(oCard) {
 		return oCard.costs[this.getCostProperty(oCard)];

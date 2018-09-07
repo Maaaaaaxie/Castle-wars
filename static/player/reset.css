@@ -129,6 +129,9 @@ button {
     background-repeat: no-repeat;
     background-color: transparent;
 }
+#settingsBtn {
+    background-image: url("/images/basic/settings2.png") !important;
+}
 
 #settings {
     background: rgba(214, 197, 171, 0.95);
