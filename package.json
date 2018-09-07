@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "my-local-ip": "^1.0.0",
+    "npm": "^6.4.1",
     "qr-image": "^3.2.0",
-    "socketio": "^2.1.1"
+    "socket.io": "^2.1.1"
   }
 }
