@@ -47,6 +47,7 @@
 #stats_resources section article {
     height: 2rem;
     display: inline-block;
+    background-color: transparent;
 }
 #stats_resources section article:first-child {
     padding-right: 0.2rem;
@@ -62,6 +63,8 @@
     font-size: 1.6rem;
     float: right;
     margin-left: 0.1rem;
+    background-color: transparent;
+    border-radius: 10px;
 }
 #stats_resources section article span:after {
     content: ".";
@@ -75,4 +78,5 @@
     height: 1.75rem;
     width: 1.75rem;
     display: inline-block;
+    background-color: transparent;
 }

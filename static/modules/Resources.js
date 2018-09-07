@@ -15,7 +15,7 @@ const aStats = [
 	}, {
 		class: "stone",
 		properties: [{
-			id: "propBuilder",
+			id: "propBuilders",
 			name: "Baumeister",
 			image: "/images/materials/builder.png",
 			value: 0
@@ -91,13 +91,24 @@ export default class Resources {
 	}
 
 	static update(oPlayer) {
-		document.getElementById("propCastle").innerText = oPlayer.castle.toString();
-		document.getElementById("propFence").innerText = oPlayer.fence.toString();
-		document.getElementById("propSoldiers").innerText = oPlayer.soldiers.toString();
-		document.getElementById("propWeapons").innerText = oPlayer.weapons.toString();
-		document.getElementById("propBuilder").innerText = oPlayer.builders.toString();
-		document.getElementById("propStones").innerText = oPlayer.stones.toString();
-		document.getElementById("propMages").innerText = oPlayer.mages.toString();
-		document.getElementById("propCrystals").innerText = oPlayer.crystals.toString();
+		[
+			"Castle",
+			"Fence",
+			"Soldiers",
+			"Weapons",
+			"Builders",
+			"Stones",
+			"Mages",
+			"Crystals"
+		].forEach(e => {
+			const oElement = document.getElementById(`prop${e}`);
+			const sNewValue = oPlayer[e.toLowerCase()].toString();
+			if (oElement.innerText !== sNewValue) {
+				oElement.innerText = sNewValue;
+
+				oElement.classList.add("notify");
+				window.setTimeout(() => oElement.classList.remove("notify"), 1000);
+			}
+		});
 	}
 }
