@@ -25,7 +25,8 @@ Martin Rempel
 
 ## Installation
 1. git-Repository herunterladen
-2. `start.bat` Datei im Hauptverzeichnis ausführen
+2. `install.bat` im Hauptverzeichnis zur Installation ausführen 
+2. `start.bat` zum Starten des Spiels ausführen
 3. `localhost` im Browser öffnen (*passiert automatisch*)
 4. QR-Code scannen *oder* IP (z.B. 192.168.1.1/control) manuell in Smartphone Browser eingeben
 
