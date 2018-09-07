@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Castle Wars</title>
+    <link rel="stylesheet" type="text/css" href="/host/host.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/images/basic/sword.png" sizes="any">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/host/Canvas.js"></script>
+    <script src="/host/Player.js"></script>
+    <script src="/host/Menu.js"></script>
+    <script src="/host/host.js"></script>
 </head>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/host/Canvas.js"></script>
-<script src="/host/Player.js"></script>
-<script src="/host/Menu.js"></script>
-<script src="/host/Sound.js"></script>
-<script src="/host/host.js"></script>
-
-<link rel="stylesheet" type="text/css" href="/host/host.css">
-<link rel="shortcut icon" type="image/x-icon" href="/images/basic/sword.png" sizes="any">
-
 <body>
+
+<audio id="music" src="/audio/music/CelticImpulse.mp3" autostart="true" loop="true" hidden="true" height="0" width="0"></audio>
 
 <div id="pause"></div>
 
@@ -29,8 +28,8 @@
         <img class="inactive" src="../images/basic/mute.png"/>
     </div>
     <div id="toggleMusic" class="tool music">
-        <img class="active" src="../images/basic/music.png"/>
-        <img class="inactive" src="../images/basic/no-music.png"/>
+        <img class="inactive" src="../images/basic/music.png"/>
+        <img class="active" src="../images/basic/no-music.png"/>
     </div>
     <div id="toggleOptions" class="tool options">
         <img src="../images/basic/settings.png"/>
@@ -64,7 +63,7 @@
                     <div class="qrCodeWrapper">
                         <div id="qrCode" class="code">
                             <button>Schließen</button>
-                            <img>
+                            <img src="/qr">
                         </div>
                     </div>
                 </div>

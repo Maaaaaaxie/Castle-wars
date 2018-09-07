@@ -54,7 +54,6 @@ module.exports = class GameEngine {
         if (this.started) {
             console.log("Resumed");
             this.paused = false;
-            debugger;
             this.io.emit("pause", {
                 active: this.getActive(),
                 paused: false,
@@ -130,12 +129,16 @@ module.exports = class GameEngine {
 
         player.timer = new Timer(callback.bind(this), this.turnLength * 1000);
 
+        this.initializeCardListener(player);
+    }
+
+    initializeCardListener(player) {
         player.socket.on("card", o => {
             if (player.active) {
                 this.io.to("host").emit("cardAnimation", {
-                   discard: o.discard,
-                   id: o.id,
-                   number: player.number
+                    discard: o.discard,
+                    id: o.id,
+                    number: player.number
                 });
 
                 if (!o.discard) {
@@ -190,13 +193,13 @@ module.exports = class GameEngine {
      */
     getWinner() {
         if (this.player1 && this.player2) {
-            if (this.player1.castle === 0) {
+            if (this.player1.castle <= 0) {
                 return this.player2;
-            } else if (this.player1.castle === 100) {
+            } else if (this.player1.castle >= 100) {
                 return this.player1;
-            } else if (this.player2.castle === 0) {
+            } else if (this.player2.castle <= 0) {
                 return this.player1;
-            } else if (this.player2.castle === 100) {
+            } else if (this.player2.castle >= 100) {
                 return this.player2;
             }
         }

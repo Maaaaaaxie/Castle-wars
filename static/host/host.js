@@ -52,8 +52,8 @@ function _initEventListeners() {
     document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
     document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
 
-    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum",'_blank'))
-    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz",'_blank'))
+    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum", '_blank'))
+    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz", '_blank'))
 }
 
 
@@ -64,9 +64,7 @@ function _initEventListeners() {
 setTimeout(() => socket.emit("connected", "host"), 200);
 
 socket.on('info', o => {
-    document.getElementById("qrCode").getElementsByTagName("img")[0].src =
-        "http://chart.apis.google.com/chart?chs=500x500&cht=qr&chld=L&chl=http://" + o.ip + "/control";
-    document.getElementById("ip").innerText = "http://" + o.ip + "/control";
+    document.getElementById("ip").innerText = o.link;
 
     window.started = o.game.state === oStates.RUNNING || o.game.state === oStates.PAUSED;
     const handleClientUpdate = function (oInfo) {
@@ -91,18 +89,8 @@ socket.on('info', o => {
             oButton.disabled = !bEnabled;
         };
 
-        if (oPlayer1) {
-            const bToggle = !!window._oPlayer1 !== oPlayer1.connected;
-            if (bToggle) {
-                window.menu.togglePlayer(1, oPlayer1.connected);
-            }
-        }
-        if (oPlayer2) {
-            const bToggle = !!window._oPlayer2 !== oPlayer2.connected;
-            if (bToggle) {
-                window.menu.togglePlayer(2, oPlayer2.connected);
-            }
-        }
+        window.menu.togglePlayer(1, oPlayer1 && oPlayer1.connected);
+        window.menu.togglePlayer(2, oPlayer2 && oPlayer2.connected);
 
         window._oPlayer1 = oPlayer1 && oPlayer1.connected ? new Player(oPlayer1) : undefined;
         window._oPlayer2 = oPlayer2 && oPlayer2.connected ? new Player(oPlayer2) : undefined;
@@ -437,9 +425,6 @@ function _initCanvas() {
  * Initializes music, gameInterval, clouds and birds
  */
 function _initGame() {
-    window._music = new Sound("/sounds/music.mp3", 0.5, true);
-    window._music.play();
-    window._music.mute();
     window.__gameInterval = setInterval(() => Canvas._drawCanvas(this));
     _initializeClouds();
     _initializeBirds();
@@ -531,13 +516,6 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
  * @param iNumber
  */
 function animateCard(iNumber, sPath, bDiscard) {
-    if (window._placingCard) {
-        return;
-    }
-
-    window._placingCard = true;
-    const oCard = document.getElementById("card-" + iNumber);
-
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
         const e = document.styleSheets[i];
@@ -546,40 +524,67 @@ function animateCard(iNumber, sPath, bDiscard) {
             break;
         }
     }
-    const iIndex = styleSheet.cssRules.length;
-    const sUrl = "../images/card/" + sPath;
-    const sSide = iNumber === 1 ? "left" : "right";
-    const sSidePercentage = iNumber === 1 ? "50%" : "-50%";
 
-    const sRule1 =
-        "@keyframes cardAnimation {" +
-        "to {" +
-        sSide + ": 50%;" +
-        "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
-        "bottom: 70%;" +
-        "width: 12rem;" +
-        "height: 14rem;" +
-        "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
-        "}" +
-        "}";
-
-    const sRule2 =
-        ".cardAnimation {" +
-        "animation-name: cardAnimation;" +
-        "animation-duration: 1s;" +
-        "animation-fill-mode: forwards" +
-        "}";
-
-    styleSheet.insertRule(sRule1, iIndex);
-    styleSheet.insertRule(sRule2, iIndex + 1);
-
-    oCard.classList.add("cardAnimation");
-    setTimeout(() => {
+    if (window._oCardAnimation) {
+        const oCard = window._oCardAnimation.card;
+        const iIndex = window._oCardAnimation.index;
+        window._oCardAnimation = undefined;
         oCard.classList.remove("cardAnimation");
         styleSheet.deleteRule(iIndex);
         styleSheet.deleteRule(iIndex);
-        window._placingCard = false;
-    }, 3000);
+        animate();
+    } else {
+        animate();
+    }
+
+    function animate() {
+        window._placingCard = true;
+        const oCard = document.getElementById("card-" + iNumber);
+
+        const iIndex = styleSheet.cssRules.length;
+        const sUrl = "../images/card/" + sPath;
+        const sSide = iNumber === 1 ? "left" : "right";
+        const sSidePercentage = iNumber === 1 ? "50%" : "-50%";
+
+        const sRule1 =
+            "@keyframes cardAnimation {" +
+            "to {" +
+            sSide + ": 50%;" +
+            "background: #f4bc7d url(" + sUrl + ") center/contain no-repeat;" +
+            "bottom: 70%;" +
+            "width: 12rem;" +
+            "height: 14rem;" +
+            "transform: rotateY(180deg) translate(" + sSidePercentage + ", 50%);" +
+            "}" +
+            "}";
+
+        const sRule2 =
+            ".cardAnimation {" +
+            "animation-name: cardAnimation;" +
+            "animation-duration: 1000ms;" +
+            "animation-fill-mode: forwards" +
+            "}";
+
+        styleSheet.insertRule(sRule1, iIndex);
+        styleSheet.insertRule(sRule2, iIndex + 1);
+
+        oCard.classList.add("cardAnimation");
+
+        window._oCardAnimation = {
+            placing: true,
+            card: oCard,
+            index: iIndex
+        };
+
+        setTimeout(() => {
+            if (window._oCardAnimation && window._oCardAnimation.card === oCard) {
+                window._oCardAnimation = undefined;
+                oCard.classList.remove("cardAnimation");
+                styleSheet.deleteRule(iIndex);
+                styleSheet.deleteRule(iIndex);
+            }
+        }, 3000);
+    }
 }
 
 /**
@@ -674,6 +679,7 @@ function toggleFullscreen() {
  * Toggles the sound
  */
 window.sound = true;
+
 function toggleSound() {
     const oToolbar = document.getElementById("toolbar");
     const oActive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[0];
@@ -690,13 +696,19 @@ function toggleSound() {
  */
 function toggleMusic() {
     const oToolbar = document.getElementById("toolbar");
-    const oActive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
-    const oInactive = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
+    const oPlay = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
+    const oMute = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
+    const music = document.getElementById("music");
 
-    window._music.mute();
+    if (!window.bMusicPlaying) {
+        window.bMusicPlaying = true;
+        music.play();
+    } else {
+        music.muted = !music.muted;
+    }
 
-    oActive.style.display = window._music.sound.muted ? "block" : "none";
-    oInactive.style.display = !window._music.sound.muted ? "block" : "none";
+    oPlay.style.display = !music.muted ? "block" : "none";
+    oMute.style.display = music.muted ? "block" : "none";
 }
 
 /**
@@ -795,6 +807,6 @@ function wiiiiigle(a, i = 0) {
     if (a[i]) {
         a[i].classList.add("wiggle");
         i++;
-        setTimeout(() => wiiiiigle(a,i),5);
+        setTimeout(() => wiiiiigle(a, i), 5);
     }
 }

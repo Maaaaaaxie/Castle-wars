@@ -2,6 +2,15 @@
 Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
 Du bist anstrebender König und dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
 Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zerstören.
+***
+*Autoren*<br/>
+Daniel Schmitz<br/>
+Martin Rempel
+
+*Erstelldatum* - 28.06.018
+
+*Version* - 0.9
+
 
 ## Anleitung
 **Wann gewinnst du?**
@@ -36,10 +45,8 @@ Browser
 * Mozilla Firefox 62.0 (oder höher)
 
 ## Bugs
-### QR-Code wird nicht angezeigt
-Sollte der QR-Code nicht richtig angezeigt werden, kann man die IP des Servers manuell in der URL-Leiste
-des Browsers eingeben. Die IP des Servers wird entweder unter dem Button 'QR-Code anzeigen' angezeigt oder 
-in der Konsole, die durch die `start.bat` Datei geöffnet wird, geloggt.
 
-
-
+### Verbindungsprobleme
+Solltest Du während dem Spiel die Verbindung verlieren, könnten unvorhersehbare Fehler auftreten.
+Im Normalfall wird das Spiel jedoch automatisch fortgesetzt. Wenn ein Spieler keine Aktionen mehr ausführen kann
+oder der Rundentimer total verkürzt ist, solltest Du das Spiel neustarten

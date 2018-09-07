@@ -3,9 +3,12 @@ const express = require("express");
 const path = require("path");
 const crypto = require("crypto");
 const ip = require("my-local-ip")();
+const qr = require("qr-image");
 
 // Configuration
 const PORT = process.env.PORT || 80;
+const sLink = "http://" + ip + "/control";
+const code = qr.imageSync(sLink, { type: 'png', size: 20 });
 
 const INDEX = path.join(__dirname, "index.html");
 const GAME = path.join(__dirname, "/static/host/host.html");
@@ -28,6 +31,9 @@ function fnRouting(req, res) {
         res.sendFile(DATENSCHUTZ);
     } else if (req.url === "/impressum") {
         res.sendFile(IMPRESSUM);
+    } else if (req.url === "/qr") {
+        res.setHeader('Content-type', 'image/png');  //sent qr image to client side
+        res.send(code);
     } else {
         res.sendFile(GAME);
     }
@@ -59,7 +65,7 @@ io.on("connection", function (socket) {
         context.emit("info", {
             game: game.toFrontendStructure(),
             players: game.getPlayers(),
-            ip: ip + ":" + PORT
+            link: sLink
         });
     }
 
@@ -78,7 +84,9 @@ io.on("connection", function (socket) {
             const oPlayer = connection.players.find(e => e.id === id);
             if (!!oPlayer) {
                 oPlayer.connected = true;
+                oPlayer.socket = socket;
                 if (game.started) {
+                    game.initializeCardListener(oPlayer);
                     sendInfoTo(io.sockets);
                 }
             }
