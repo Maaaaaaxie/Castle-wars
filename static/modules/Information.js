@@ -56,6 +56,9 @@ export default class Information {
 		window._moveAllowed = true;
 
 		oTimer.innerText = iTimeLeft.toString();
+		if (window.countdown) {
+			window.clearInterval(window.countdown);
+		}
 		window.countdown = window.setInterval(() => {
 			if (iTimeLeft > 0) {
 				iTimeLeft--;
