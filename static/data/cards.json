@@ -124,7 +124,7 @@
     "name": "Rammbock",
     "category": "Attack",
     "sound": "impact.mp3",
-    "image": "",
+    "image": "wood.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -405,7 +405,7 @@
     "name": "Burggraben",
     "category": "Defense",
     "sound": "brick.mp3",
-    "image": "castle-mount.png",
+    "image": "castle-mout.png",
     "self": {
       "builders": 0,
       "stones": 0,
@@ -764,6 +764,7 @@
     "id": "023",
     "name": "Moench",
     "category": "Magic",
+    "sounds": "magic_twinkle.mp3",
     "image": "monk.png",
     "self": {
       "builders": 0,
@@ -882,7 +883,7 @@
     "name": "Maurer",
     "category": "Defense",
     "sound": "brick.mp3",
-    "image": "builder.school.png",
+    "image": "builder-school.png",
     "self": {
       "builders": 1,
       "stones": 0,
