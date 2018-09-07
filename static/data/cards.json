@@ -43,6 +43,7 @@
     "id": "002",
     "name": "Bogenschützen",
     "category": "Attack",
+    "sound": "arrow_bow_release.mp3",
     "image": "target.png",
     "self": {
       "builders": 0,
@@ -122,6 +123,7 @@
     "id": "004",
     "name": "Rammbock",
     "category": "Attack",
+    "sound": "impact.mp3",
     "image": "",
     "self": {
       "builders": 0,
@@ -161,6 +163,7 @@
     "id": "005",
     "name": "Katapult",
     "category": "Attack",
+    "sound": "catapult.mp3",
     "image": "catapult.png",
     "self": {
       "builders": 0,
@@ -321,6 +324,7 @@
     "id": "010",
     "name": "Wehrgang",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "military-hallway.png",
     "self": {
       "builders": 0,
@@ -360,6 +364,7 @@
     "id": "011",
     "name": "Nachtwache",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "night-watch.png",
     "self": {
       "builders": 0,
@@ -399,6 +404,7 @@
     "id": "012",
     "name": "Burggraben",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "castle-mount.png",
     "self": {
       "builders": 0,
@@ -438,6 +444,7 @@
     "id": "013",
     "name": "Festung",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "fortress.png",
     "self": {
       "builders": 0,
@@ -477,6 +484,7 @@
     "id": "014",
     "name": "Bergfried",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "castle-tower.png",
     "self": {
       "builders": 0,
@@ -516,6 +524,7 @@
     "id": "015",
     "name": "Stolperfalle",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "trap.png",
     "self": {
       "builders": 0,
@@ -555,6 +564,7 @@
     "id": "016",
     "name": "Barrikade",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "barricade.png",
     "self": {
       "builders": 0,
@@ -594,6 +604,7 @@
     "id": "017",
     "name": "Burgwall",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "castle-mound.png",
     "self": {
       "builders": 0,
@@ -633,6 +644,7 @@
     "id": "020",
     "name": "Beschwörung",
     "category": "Magic",
+    "sound": "magic_twinkle.mp3",
     "image": "summoning.png",
     "self": {
       "builders": 0,
@@ -672,6 +684,7 @@
     "id": "021",
     "name": "Beschwörung",
     "category": "Magic",
+    "sound": "magic_twinkle.mp3",
     "image": "summoning.png",
     "self": {
       "builders": 0,
@@ -711,6 +724,7 @@
     "id": "022",
     "name": "Beschwörung",
     "category": "Magic",
+    "sound": "magic_twinkle.mp3",
     "image": "summoning.png",
     "self": {
       "builders": 0,
@@ -867,6 +881,7 @@
     "id": "031",
     "name": "Maurer",
     "category": "Defense",
+    "sound": "brick.mp3",
     "image": "builder.school.png",
     "self": {
       "builders": 1,

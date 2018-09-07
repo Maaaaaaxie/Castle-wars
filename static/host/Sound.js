@@ -1,9 +1,10 @@
 class Sound {
-    constructor(src, volume, bRemove = true, bLoop = false) {
+    constructor(src, volume_offset = 0, bRemove = true, bLoop = false) {
         this.audio = document.createElement("audio");
         this.audio.loop = bLoop;
         this.audio.src = src;
-        this.audio.volume = volume || 0.5;
+        this.volume_offset = volume_offset;
+        this.audio.volume = window.volume_sounds + volume_offset;
         this.audio.muted = window.muted;
 
         if (!window.sounds) {
@@ -31,7 +32,7 @@ class Sound {
     }
 
     set volume(volume) {
-        this.audio.volume = volume;
+        this.audio.volume = volume + this.volume_offset;
     }
 
     get volume() {

@@ -24,12 +24,13 @@ function _onLoad() {
     _initGame();
 }
 
+window.volume_sounds = 0.5;
 window.menu = new Menu();
 window.onload = () => _onLoad();
 window.onresize = () => _initCanvas();
 
 function basicSound() {
-    new Sound("/audio/sounds/arrow.mp3", 0.1).play();
+    new Sound("/audio/sounds/arrow.mp3").play();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -43,8 +44,11 @@ function _initEventListeners() {
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[0].addEventListener("click", toggleGame.bind(null, false));
     document.getElementById("options").getElementsByClassName("game")[0].getElementsByTagName("button")[1].addEventListener("click", pause);
 
-    document.getElementById("volume").addEventListener("input", event => {
-        changeVolume(null, event);
+    document.getElementById("volume_music").addEventListener("input", event => {
+        changeVolume("music", null, event);
+    });
+    document.getElementById("volume_sounds").addEventListener("input", event => {
+        changeVolume("sounds", null, event);
     });
 
     document.getElementsByName("showQrCode")[0].addEventListener("click", toggleQR);
@@ -442,12 +446,14 @@ function _initGame() {
 
 function toggleGame(b) {
     basicSound();
+    new Sound("/audio/sounds/medieval_city.wav", -0.2, false, true).play();
     const oMenu = document.getElementById("menu");
     const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (b) {
-        const oStartSound = new Sound("/audio/sounds/arrow.mp3", false, true);
-        oStartSound.play();
+        basicSound();
+        setTimeout(() => new Sound().play("/audio/sounds/card.mp3"), 300);
+
 
         oQuitButton.classList.remove("disabled");
         oQuitButton.disabled = false;
@@ -456,7 +462,7 @@ function toggleGame(b) {
             oMenu.classList.remove("animation-shrink");
             oMenu.style.display = "none";
         }, 1000);
-        socket.emit('start');
+        // socket.emit('start');
     } else {
         oQuitButton.classList.add("disabled");
         oQuitButton.disabled = true;
@@ -556,7 +562,7 @@ function animateCard(iNumber, sPath, bDiscard) {
         window._placingCard = true;
         const oCard = document.getElementById("card-" + iNumber);
         if (oCard.sound) {
-            new Sound("/audio/sounds/" + oCard.sound, 0.5).play();
+            new Sound("/audio/sounds/" + oCard.sound).play();
         }
 
         const iIndex = styleSheet.cssRules.length;
@@ -769,22 +775,26 @@ function toggleOptions() {
  * @param volume - Value from 0 to 1
  * @param event - Data of value change event of volume slider
  */
-function changeVolume(volume, event) {
-    const music = document.getElementById("music");
+function changeVolume(type, volume, event) {
     volume = volume || event.srcElement.value / 100;
+    volume = volume < 0.03 ? 0 : volume;
 
-    if (volume) {
+    if (type === "music") {
+        const music = document.getElementById("music");
         music.volume = volume;
-    }
 
-    if (volume === 1) {
-        setTimeout(() => {
-            if (music.volume < 0.1) {
-                wiiiiigle(document.getElementsByTagName("div"));
-                wiiiiigle(document.getElementsByTagName("button"));
-                wiiiiigle(document.getElementsByTagName("dialog"));
-            }
-        }, 500);
+        if (volume === 1) {
+            setTimeout(() => {
+                if (music.volume < 0.1) {
+                    wiiiiigle(document.getElementsByTagName("div"));
+                    wiiiiigle(document.getElementsByTagName("button"));
+                    wiiiiigle(document.getElementsByTagName("dialog"));
+                }
+            }, 500);
+        }
+    } else {
+        window.volume_sounds = volume;
+        window.sounds.forEach(e => e.volume = volume);
     }
 }
 
