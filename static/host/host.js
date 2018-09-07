@@ -251,7 +251,7 @@ socket.on('finish', o => {
 
 socket.on('cardAnimation', o => {
     const card = aCards.find(e => e.id === o.id);
-    animateCard(o.number, card.image, o.discard);
+    animateCard(o.number, card.image, o.discard, card.sound);
 });
 
 socket.on('toast', msg => toast(msg));
@@ -445,16 +445,12 @@ function _initGame() {
 }
 
 function toggleGame(b) {
-    basicSound();
-    new Sound("/audio/sounds/medieval_city.wav", -0.2, false, true).play();
     const oMenu = document.getElementById("menu");
     const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (b) {
         basicSound();
         setTimeout(() => new Sound().play("/audio/sounds/card.mp3"), 300);
-
-
         oQuitButton.classList.remove("disabled");
         oQuitButton.disabled = false;
         oMenu.classList.add("animation-shrink");
@@ -462,7 +458,7 @@ function toggleGame(b) {
             oMenu.classList.remove("animation-shrink");
             oMenu.style.display = "none";
         }, 1000);
-        // socket.emit('start');
+        socket.emit('start');
     } else {
         oQuitButton.classList.add("disabled");
         oQuitButton.disabled = true;
@@ -536,7 +532,7 @@ function spawnCloud(iSize = 4, x = Math.round(Math.random() * 900 - 200)) {
  * Animates the card deck
  * @param iNumber
  */
-function animateCard(iNumber, sPath, bDiscard) {
+function animateCard(iNumber, sPath, bDiscard, sSound) {
     let styleSheet;
     for (let i = 0; i < document.styleSheets.length; i++) {
         const e = document.styleSheets[i];
@@ -561,8 +557,8 @@ function animateCard(iNumber, sPath, bDiscard) {
     function animate() {
         window._placingCard = true;
         const oCard = document.getElementById("card-" + iNumber);
-        if (oCard.sound) {
-            new Sound("/audio/sounds/" + oCard.sound).play();
+        if (sSound) {
+            new Sound("/audio/sounds/" + sSound).play();
         }
 
         const iIndex = styleSheet.cssRules.length;

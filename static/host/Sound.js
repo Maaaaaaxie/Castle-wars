@@ -32,7 +32,8 @@ class Sound {
     }
 
     set volume(volume) {
-        this.audio.volume = volume + this.volume_offset;
+        const vol = volume + this.volume_offset;
+        this.audio.volume = vol >= 0 ? vol : 0;
     }
 
     get volume() {
