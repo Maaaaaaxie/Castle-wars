@@ -223,21 +223,29 @@ export default class Cards {
 		const oFooter = document.createElement("footer");
 		let aProperties = [];
 		/** @property {Number} oCard.enemy */
-		for (const p in oCard.enemy) { // TODO: for of?
+		for (const p in oCard.enemy) {
 			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(oTexts[p] + " " + oCard.enemy[p]);
 		}
 		for (const p in oCard.self) { // todo: other style, todo: plus on positive values
 			oCard.self.hasOwnProperty(p) && oCard.self[p] !== 0 && aProperties.push(oTexts[p] + " +" + oCard.self[p]);
 		}
-		if (aProperties.length > 0) {
+		if (oCard.custom) {
+			const oText = document.createElement("div");
+			oCard.custom.split(" ").forEach(e => {
+				const oElement = document.createElement("div");
+				oElement.innerText = e;
+				oText.appendChild(oElement);
+			});
+			// oText.innerText = oCard.custom;
+			oFooter.appendChild(oText);
+		} else if (aProperties.length > 0) {
 			aProperties.forEach(e => {
 				const oText = document.createElement("div");
-				// oText.innerText = oTexts[e] + " " + oCard.enemy[e];
 				oText.innerText = e;
 				oFooter.appendChild(oText);
 			});
 		}
-		// TODO: for self
+
 		oFront.appendChild(oFooter);
 
 		return oFront;

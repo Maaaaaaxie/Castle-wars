@@ -63,7 +63,7 @@ socket.on("turn", o => {
     if (o.active === window.player.number) {
         console.log("turn");
         Information.turn(o.duration);
-        window._moveAllowed = true; // TODO: fix this, implement properly
+        window._moveAllowed = true;
     }
 });
 
@@ -94,11 +94,13 @@ socket.on("playerUpdate", a => {
 });
 
 socket.on("pause", o => {
+	console.log("Oh no I was paused", o);
 	if (o.paused) {
 		Information.stop(false);
 		Cards.foldAll();
 	} else {
 		startGame(window.player).then(() => {
+			window._moveAllowed = true;
 			Cards.unfoldAll();
 			window.player && window.player.number === o.active && Information.start(o.remaining);
 		});

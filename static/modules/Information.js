@@ -1,17 +1,8 @@
 /**
  * @define class Information
  */
-export default class Information /*extends Timer */ {
+export default class Information {
 	static render(sPlayerId) {
-		/* oSection:
-			<section id="information">
-				<article id="infotext">
-					<span>Du bist dran!</span>
-				</article>
-				<article id="timer">30</article>
-			</section>
-		*/
-
 		const oSection = document.createElement("section");
 		oSection.setAttribute("id", "information");
 
@@ -40,16 +31,6 @@ export default class Information /*extends Timer */ {
 
 		return oSection;
 	}
-
-	// TODO: deprecated
-	// static setTurn(bCurrentPlayer = true) {
-	// 	const oActivePlayer = document.getElementById("currentPlayer");
-	// 	if (bCurrentPlayer) {
-	// 		oActivePlayer.innerText = "Du bist dran!";
-	// 	} else {
-	// 		oActivePlayer.innerText = "Dein Gegner ist dran!";
-	// 	}
-	// }
 
 	static turn(iTime) {
 		this.notify();
@@ -82,7 +63,6 @@ export default class Information /*extends Timer */ {
 			} else {
 				console.log("Timer finished");
 				window.clearInterval(window.countdown);
-				delete window.countdown;
 			}
 		}, 1000);
 	}
@@ -98,7 +78,6 @@ export default class Information /*extends Timer */ {
 
 		if (window.countdown) {
 			window.clearInterval(window.countdown);
-			delete window.countdown;
 			if (bHideTimeLeft) {
 				oTimer.innerText = "-";
 			}
