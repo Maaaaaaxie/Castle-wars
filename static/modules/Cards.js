@@ -257,7 +257,7 @@ export default class Cards {
 			throw new Error("Unable to find cost property for card " + oCard.id);
 		}
 
-		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) > 0;
+		return oPlayer[sCostKey] - (oCard.costs[sCostKey] * -1) >= 0;
 	}
 
 
