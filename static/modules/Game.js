@@ -97,7 +97,7 @@ module.exports = class GameEngine {
             }
 
             if (this.player2) {
-                this.player1.active = undefined;
+                this.player2.active = undefined;
                 this.player2.reset();
                 this.player2.timer.stop();
             }
