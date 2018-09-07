@@ -5,15 +5,24 @@ class Canvas {
     }
 
     static _drawSky() {
+        const iFloor = window.innerHeight - Math.round(window.innerHeight / 5);
+        window._iFloor = iFloor;
         const ctx = this._getCtx();
         ctx.fillStyle = "#85d6d7";
-        ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+        ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+        ctx.beginPath();
+        ctx.fillStyle = "#bcf3f3";
+        ctx.ellipse(window.innerWidth / 2, window._iFloor, window.innerWidth/1.4, 250, 0, Math.PI, 2 * Math.PI);
+        ctx.filter = "blur(105px)";
+        ctx.fill();
+        ctx.filter = "none";
     }
 
     static _drawSea() {
         const ctx = this._getCtx();
         ctx.fillStyle = "#5293c5";
-        ctx.fillRect(0,window.innerHeight/1.7,window.innerWidth,window.innerHeight);
+        ctx.fillRect(0, window.innerHeight / 1.7, window.innerWidth, window.innerHeight);
     }
 
     static _drawHills() {
@@ -28,19 +37,19 @@ class Canvas {
         ctx.beginPath();
         ctx.fillStyle = sLight;
         ctx.moveTo(-200, y);
-        ctx.bezierCurveTo(0,window.innerHeight/4,x/3,window.innerHeight/2,x/1.4,y);
+        ctx.bezierCurveTo(0, window.innerHeight / 4, x / 3, window.innerHeight / 2, x / 1.4, y);
         ctx.fill();
 
         ctx.beginPath();
         ctx.fillStyle = sMid;
-        ctx.moveTo(x/1.8, y);
-        ctx.bezierCurveTo(x/1.3,window.innerHeight/3,x+200,window.innerHeight/1.8,x+400,y);
+        ctx.moveTo(x / 1.8, y);
+        ctx.bezierCurveTo(x / 1.3, window.innerHeight / 3, x + 200, window.innerHeight / 1.8, x + 400, y);
         ctx.fill();
 
         ctx.beginPath();
         ctx.fillStyle = sDark;
-        ctx.moveTo(0,y);
-        ctx.bezierCurveTo(x/4,window.innerHeight/2,x/2.5,window.innerHeight/2.2,x/1.2,y);
+        ctx.moveTo(0, y);
+        ctx.bezierCurveTo(x / 4, window.innerHeight / 2, x / 2.5, window.innerHeight / 2.2, x / 1.2, y);
         ctx.fill();
     }
 
@@ -50,37 +59,35 @@ class Canvas {
         const y = o.y;
 
         ctx.fillStyle = "#734d2d";
-        ctx.fillRect(x,y,40,4);
-        ctx.fillRect(x+1,y+4,38,1);
-        ctx.fillRect(x+2,y+5,36,1);
-        ctx.fillRect(x+3,y+6,34,1);
-        ctx.fillRect(x+4,y+7,32,1);
-        ctx.fillRect(x+5,y+8,30,1);
+        ctx.fillRect(x, y, 40, 4);
+        ctx.fillRect(x + 1, y + 4, 38, 1);
+        ctx.fillRect(x + 2, y + 5, 36, 1);
+        ctx.fillRect(x + 3, y + 6, 34, 1);
+        ctx.fillRect(x + 4, y + 7, 32, 1);
+        ctx.fillRect(x + 5, y + 8, 30, 1);
 
-        ctx.fillRect(x+19,y-26,2,26);
+        ctx.fillRect(x + 19, y - 26, 2, 26);
 
         ctx.beginPath();
         ctx.fillStyle = "#FFF";
-        ctx.moveTo(x+2,y-20);
-        ctx.bezierCurveTo(x+2,y-20,x+33,y-20,x+33,y-20);
-        ctx.bezierCurveTo(x+36,y-20,x+40,y-2,x+33,y-4);
+        ctx.moveTo(x + 2, y - 20);
+        ctx.bezierCurveTo(x + 2, y - 20, x + 33, y - 20, x + 33, y - 20);
+        ctx.bezierCurveTo(x + 36, y - 20, x + 40, y - 2, x + 33, y - 4);
         ctx.fill();
     }
 
     static _drawGrass() {
         const ctx = this._getCtx();
+        const iFloor = window._iFloor;
 
-        const iFloor = window.innerHeight - Math.round(window.innerHeight / 5);
         const iHeight = window.innerHeight - iFloor;
 
         // grass
         ctx.fillStyle = "#4ed749";
-        ctx.fillRect(0,iFloor,window.innerWidth,iHeight);
+        ctx.fillRect(0, iFloor, window.innerWidth, iHeight);
 
         ctx.fillStyle = "#40af3b";
-        ctx.fillRect(0,iFloor,window.innerWidth,2);
-
-        window._iFloor = iFloor;
+        ctx.fillRect(0, iFloor, window.innerWidth, 2);
     }
 
     static _drawCastle(x, y, oCastleDef) {
@@ -88,8 +95,8 @@ class Canvas {
         const iHeight = oCastleDef.height;
         const sColor = oCastleDef.color || "#b29759";
 
-        const fnDarkenColor = function(sColor, iAmt) {
-            const num = parseInt(sColor.replace("#",""),16);
+        const fnDarkenColor = function (sColor, iAmt) {
+            const num = parseInt(sColor.replace("#", ""), 16);
             const r = (num >> 16) + iAmt;
             const b = ((num >> 8) & 0x00FF) + iAmt;
             const g = (num & 0x0000FF) + iAmt;
@@ -99,33 +106,33 @@ class Canvas {
 
         // base
         ctx.fillStyle = sColor;
-        ctx.fillRect(x-50,y-iHeight,100,iHeight+45);
-        ctx.fillRect(x-40,y-10-iHeight,16,10);
-        ctx.fillRect(x-9,y-10-iHeight,16,10);
-        ctx.fillRect(x+22,y-10-iHeight,16,10);
+        ctx.fillRect(x - 50, y - iHeight, 100, iHeight + 45);
+        ctx.fillRect(x - 40, y - 10 - iHeight, 16, 10);
+        ctx.fillRect(x - 9, y - 10 - iHeight, 16, 10);
+        ctx.fillRect(x + 22, y - 10 - iHeight, 16, 10);
 
         ctx.fillStyle = "#63472e";
-        const sDoorHeight = iHeight < 70 ? iHeight-10 : 60;
+        const sDoorHeight = iHeight < 70 ? iHeight - 10 : 60;
 
-        ctx.fillRect(x-20,y-sDoorHeight,40,sDoorHeight);
+        ctx.fillRect(x - 20, y - sDoorHeight, 40, sDoorHeight);
 
         // --- towers -----------
         ctx.fillStyle = "#" + fnDarkenColor(sColor, -35);
 
         // tower left
-        ctx.fillRect(x-62,y-25-iHeight,24,iHeight+70);
-        ctx.fillRect(x-66,y-32-iHeight,8,15);
-        ctx.fillRect(x-54,y-32-iHeight,8,15);
-        ctx.fillRect(x-42,y-32-iHeight,8,15);
+        ctx.fillRect(x - 62, y - 25 - iHeight, 24, iHeight + 70);
+        ctx.fillRect(x - 66, y - 32 - iHeight, 8, 15);
+        ctx.fillRect(x - 54, y - 32 - iHeight, 8, 15);
+        ctx.fillRect(x - 42, y - 32 - iHeight, 8, 15);
 
         // tower right
-        ctx.fillRect(x+38,y-25-iHeight,24,iHeight+70);
-        ctx.fillRect(x+34,y-32-iHeight,8,15);
-        ctx.fillRect(x+46,y-32-iHeight,8,15);
-        ctx.fillRect(x+58,y-32-iHeight,8,15);
+        ctx.fillRect(x + 38, y - 25 - iHeight, 24, iHeight + 70);
+        ctx.fillRect(x + 34, y - 32 - iHeight, 8, 15);
+        ctx.fillRect(x + 46, y - 32 - iHeight, 8, 15);
+        ctx.fillRect(x + 58, y - 32 - iHeight, 8, 15);
 
-        oCastleDef.top = y-32-iHeight;
-        oCastleDef.left = x-66;
+        oCastleDef.top = y - 32 - iHeight;
+        oCastleDef.left = x - 66;
     }
 
     static _drawFence(x, y, oCastleDef) {
@@ -133,8 +140,8 @@ class Canvas {
         const iHeight = oCastleDef.fence.height;
         const sColor = oCastleDef.color || "#b29759";
 
-        const fnDarkenColor = function(sColor, iAmt) {
-            const num = parseInt(sColor.replace("#",""),16);
+        const fnDarkenColor = function (sColor, iAmt) {
+            const num = parseInt(sColor.replace("#", ""), 16);
             const r = (num >> 16) + iAmt;
             const b = ((num >> 8) & 0x00FF) + iAmt;
             const g = (num & 0x0000FF) + iAmt;
@@ -143,13 +150,13 @@ class Canvas {
         };
 
         ctx.fillStyle = sColor;
-        ctx.fillRect(x-5,y-iHeight,10,iHeight+45);
+        ctx.fillRect(x - 5, y - iHeight, 10, iHeight + 45);
 
-        ctx.fillStyle = "#"+fnDarkenColor(sColor,-30);
-        ctx.fillRect(x-5,y-iHeight, 10,10);
+        ctx.fillStyle = "#" + fnDarkenColor(sColor, -30);
+        ctx.fillRect(x - 5, y - iHeight, 10, 10);
 
-        oCastleDef.fence.top = y-iHeight;
-        oCastleDef.fence.left = x-5;
+        oCastleDef.fence.top = y - iHeight;
+        oCastleDef.fence.left = x - 5;
     }
 
     static _drawCloud(x, y, size, color) {
@@ -158,10 +165,10 @@ class Canvas {
         ctx.beginPath();
         ctx.moveTo(x, y);
 
-        ctx.bezierCurveTo(x-(10*size),y,x-(10*size),y-(10*size),x,y-(8*size));
-        ctx.bezierCurveTo(x+(2*size),y-(15*size),x+(8*size),y-(14*size),x+(10*size),y-(8*size));
-        ctx.bezierCurveTo(x+(20*size),y-(10*size),x+(20*size),y,x+(10*size),y);
-        ctx.bezierCurveTo(x,y,x,y,x,y);
+        ctx.bezierCurveTo(x - (10 * size), y, x - (10 * size), y - (10 * size), x, y - (8 * size));
+        ctx.bezierCurveTo(x + (2 * size), y - (15 * size), x + (8 * size), y - (14 * size), x + (10 * size), y - (8 * size));
+        ctx.bezierCurveTo(x + (20 * size), y - (10 * size), x + (20 * size), y, x + (10 * size), y);
+        ctx.bezierCurveTo(x, y, x, y, x, y);
 
         ctx.fillStyle = color;
         ctx.fill();
@@ -172,18 +179,18 @@ class Canvas {
         ctx.fillStyle = "#464954";
 
         // body
-        ctx.fillRect(x,y,10,6);
-        ctx.fillRect(x-4,y,4,4);
-        ctx.fillRect(x-8,y,4,2);
+        ctx.fillRect(x, y, 10, 6);
+        ctx.fillRect(x - 4, y, 4, 4);
+        ctx.fillRect(x - 8, y, 4, 2);
 
         // head
-        ctx.fillRect(x+6,y-4,6,4);
+        ctx.fillRect(x + 6, y - 4, 6, 4);
         ctx.fillStyle = "#FFF";
-        ctx.fillRect(x+9,y-2,2,2);
+        ctx.fillRect(x + 9, y - 2, 2, 2);
         ctx.fillStyle = "#000";
-        ctx.fillRect(x+10,y-1,1,1);
+        ctx.fillRect(x + 10, y - 1, 1, 1);
         ctx.fillStyle = "#cb8d1e";
-        ctx.fillRect(x+10,y,4, 3);
+        ctx.fillRect(x + 10, y, 4, 3);
     }
 
     static _drawBird(x, y, id) {
@@ -194,12 +201,12 @@ class Canvas {
                 left1 = _oPlayer1.castleDef.left,
                 left3 = _oPlayer1.castleDef.fence.left;
 
-            if (y >= top1 && x >= left1-5 && x <= left1 + 132) {
+            if (y >= top1 && x >= left1 - 5 && x <= left1 + 132) {
                 _spawnDeadBird(id);
                 _deleteBird(id);
             }
 
-            if (y >= top3 && x >= left3-8 && x <= left3 + 10) {
+            if (y >= top3 && x >= left3 - 8 && x <= left3 + 10) {
                 _spawnDeadBird(id);
                 _deleteBird(id);
             }
@@ -212,12 +219,12 @@ class Canvas {
                 left2 = _oPlayer2.castleDef.left,
                 left4 = _oPlayer2.castleDef.fence.left;
 
-            if (y >= top2 && x >= left2-5 && x <= left2 + 132) {
+            if (y >= top2 && x >= left2 - 5 && x <= left2 + 132) {
                 _spawnDeadBird(id);
                 _deleteBird(id);
             }
 
-            if (y >= top4 && x >= left4-8 && x <= left4 + 10) {
+            if (y >= top4 && x >= left4 - 8 && x <= left4 + 10) {
                 _spawnDeadBird(id);
                 _deleteBird(id);
             }
@@ -227,18 +234,18 @@ class Canvas {
         ctx.fillStyle = "#464954";
 
         // body
-        ctx.fillRect(x,y,10,6);
-        ctx.fillRect(x-4,y,4,4);
-        ctx.fillRect(x-8,y,4,2);
+        ctx.fillRect(x, y, 10, 6);
+        ctx.fillRect(x - 4, y, 4, 4);
+        ctx.fillRect(x - 8, y, 4, 2);
 
         // head
-        ctx.fillRect(x+6,y-4,6,4);
+        ctx.fillRect(x + 6, y - 4, 6, 4);
         ctx.fillStyle = "#FFF";
-        ctx.fillRect(x+9,y-2,2,2);
+        ctx.fillRect(x + 9, y - 2, 2, 2);
         ctx.fillStyle = "#000";
-        ctx.fillRect(x+10,y-1,1,1);
+        ctx.fillRect(x + 10, y - 1, 1, 1);
         ctx.fillStyle = "#cb8d1e";
-        ctx.fillRect(x+10,y,4, 3);
+        ctx.fillRect(x + 10, y, 4, 3);
     }
 
     static _drawActiveClouds() {

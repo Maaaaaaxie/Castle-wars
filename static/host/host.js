@@ -28,6 +28,10 @@ window.menu = new Menu();
 window.onload = () => _onLoad();
 window.onresize = () => _initCanvas();
 
+function basicSound() {
+    new Sound("/audio/sounds/arrow.mp3", 0.1).play();
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // ----- ||| EVENT LISTENERS ||| ---------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
@@ -52,8 +56,14 @@ function _initEventListeners() {
     document.getElementById("toggleOptions").addEventListener("click", toggleOptions);
     document.getElementById("toggleFullscreen").addEventListener("click", toggleFullscreen);
 
-    document.getElementById("impressum").addEventListener("click", () => window.open(location.href + "impressum", '_blank'))
-    document.getElementById("datenschutz").addEventListener("click", () => window.open(location.href + "datenschutz", '_blank'))
+    document.getElementById("impressum").addEventListener("click", () => {
+        basicSound();
+        window.open(location.href + "impressum", '_blank');
+    });
+    document.getElementById("datenschutz").addEventListener("click", () => {
+        basicSound();
+        window.open(location.href + "datenschutz", '_blank');
+    });
 }
 
 
@@ -131,7 +141,7 @@ socket.on('info', o => {
 
         function handlePaused() {
             window.menu.open();
-            toggleReady(o.players.filter(e => e.connected).length === 2);
+            toggleReady(false);
             if (oInfo.players.length < 2) {
                 toggleButton(oPauseButton, false);
             }
@@ -431,10 +441,14 @@ function _initGame() {
 }
 
 function toggleGame(b) {
+    basicSound();
     const oMenu = document.getElementById("menu");
     const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
     const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
     if (b) {
+        const oStartSound = new Sound("/audio/sounds/arrow.mp3", false, true);
+        oStartSound.play();
+
         oQuitButton.classList.remove("disabled");
         oQuitButton.disabled = false;
         oMenu.classList.add("animation-shrink");
@@ -459,6 +473,7 @@ function toggleGame(b) {
 }
 
 function pause() {
+    basicSound();
     socket.emit('pause');
 }
 
@@ -647,6 +662,7 @@ function spawnBird(x, y) {
  * Enables or disables the fullscreen mode
  */
 function toggleFullscreen() {
+    basicSound();
     const element = document.documentElement;
     if (element.requestFullscreen) {
         if (document.isFullScreen) {
@@ -678,23 +694,26 @@ function toggleFullscreen() {
 /**
  * Toggles the sound
  */
-window.sound = true;
+window.muted = false;
 
 function toggleSound() {
+    basicSound();
     const oToolbar = document.getElementById("toolbar");
     const oActive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[0];
     const oInactive = oToolbar.getElementsByClassName("sound")[0].getElementsByTagName("img")[1];
 
-    window.sound = !window.sound;
+    window.muted = !window.muted;
+    window.sounds.forEach(e => e.muted = window.muted);
 
-    oActive.style.display = window.sound ? "block" : "none";
-    oInactive.style.display = !window.sound ? "block" : "none";
+    oActive.style.display = !window.muted ? "block" : "none";
+    oInactive.style.display = window.muted ? "block" : "none";
 }
 
 /**
  * Toggles the music
  */
 function toggleMusic() {
+    basicSound();
     const oToolbar = document.getElementById("toolbar");
     const oPlay = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[0];
     const oMute = oToolbar.getElementsByClassName("music")[0].getElementsByTagName("img")[1];
@@ -702,6 +721,7 @@ function toggleMusic() {
 
     if (!window.bMusicPlaying) {
         window.bMusicPlaying = true;
+        music.volume = 0.5;
         music.play();
     } else {
         music.muted = !music.muted;
@@ -715,6 +735,7 @@ function toggleMusic() {
  * Opens or closes the options dialog
  */
 function toggleOptions() {
+    basicSound();
     const
         btnClose = document.getElementById("close"),
         dialog = document.getElementById('options');
@@ -728,7 +749,10 @@ function toggleOptions() {
 
         const fnClose = () => dialog.style.display = "none";
 
-        btnClose.addEventListener('click', fnClose);
+        btnClose.addEventListener('click', () => {
+            basicSound();
+            fnClose();
+        });
         document.addEventListener('mousedown', e => {
             if (e.target.closest("#options") === null && e.target.closest("#toggleOptions") === null) {
                 fnClose();
@@ -743,15 +767,16 @@ function toggleOptions() {
  * @param event - Data of value change event of volume slider
  */
 function changeVolume(volume, event) {
+    const music = document.getElementById("music");
     volume = volume || event.srcElement.value / 100;
 
     if (volume) {
-        window._music.volume(volume);
+        music.volume = volume;
     }
 
     if (volume === 1) {
         setTimeout(() => {
-            if (window._music.sound.volume < 0.1) {
+            if (music.volume < 0.1) {
                 wiiiiigle(document.getElementsByTagName("div"));
                 wiiiiigle(document.getElementsByTagName("button"));
                 wiiiiigle(document.getElementsByTagName("dialog"));
@@ -793,6 +818,7 @@ function toast(sText) {
 }
 
 function toggleQR() {
+    basicSound();
     const qr = document.getElementById("qrCode");
     if (qr.style.display === "block") {
         qr.style.display = "none";
