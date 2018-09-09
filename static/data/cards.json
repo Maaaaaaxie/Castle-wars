@@ -764,7 +764,7 @@
     "id": "023",
     "name": "Moench",
     "category": "Magic",
-    "sounds": "magic_twinkle.mp3",
+    "sound": "brick.mp3",
     "image": "monk.png",
     "self": {
       "builders": 0,
@@ -804,6 +804,7 @@
     "id": "024",
     "name": "Dunkler Magier",
     "category": "Magic",
+    "sound": "horror_laugh.mp3",
     "image": "dark-mage.png",
     "self": {
       "builders": 0,
@@ -843,6 +844,7 @@
     "id": "025",
     "name": "Drachenfeuer",
     "category": "Magic",
+    "sound": "magic_destruction.mp3",
     "image": "dragon.png",
     "self": {
       "builders": 0,
@@ -922,6 +924,7 @@
     "id": "032",
     "name": "Rekrut",
     "category": "Attack",
+    "sound": "fight.mp3",
     "image": "recruitment.png",
     "self": {
       "builders": 0,
@@ -961,6 +964,7 @@
     "id": "033",
     "name": "Lehrling",
     "category": "Magic",
+    "sound": "magic_wush.mp3",
     "image": "apprentice.png",
     "self": {
       "builders": 0,
@@ -1000,6 +1004,7 @@
     "id": "034",
     "name": "Seelenfalle",
     "category": "Magic",
+    "sound": "magic_twinkle.mp3",
     "image": "soul-trap.png",
     "custom": "Alle +1 Gegner alle -1",
     "self": {
