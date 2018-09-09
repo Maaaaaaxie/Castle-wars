@@ -1,6 +1,6 @@
 # Castle Wars
 Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
-Du bist anstrebender König und dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
+Du bist anstrebender König und Dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
 Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zerstören.
 
 ## Anleitung
@@ -11,8 +11,15 @@ Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zer
 **Wie gewinnst du?**
 * Benutze deine Karten um deine Burg zu erhöhen oder die Gegnerische zu schwächen
 * Deine Karten kosten Rohstoffe: Steine, Waffen und Kristalle
-* Baumeister, Soldaten und Magier liefern dir jede Runde die entsprechenden Rohstoffe
+* Baumeister, Soldaten und Magier liefern Dir jede Runde die entsprechenden Rohstoffe
 * Beispiel: 5 Baumeister = 5 neue Steine pro Runde
+
+**Wie wird gespielt?**
+* Das Spiel ist rundenbasiert 
+* Jede Runde darfst Du eine Karte, sofern Du sie Dir leisten kannst, spielen
+* Kannst Du Dir keine einzige Karte auf deiner Hand leisten oder möchtest eine Karte loswerden kannst Du sie
+mit längerem drücken abwerfen
+<br/>*Damit ist Dein Zug jedoch verbraucht*
 
 ## Installation
 1. git-Repository herunterladen
@@ -41,16 +48,16 @@ Browser
 ### Verbindungsprobleme
 Solltest Du während dem Spiel die Verbindung verlieren, Neuladen oder versehentlich die Seite schließen,
 könnten unvorhersehbare Fehler auftreten.
-Im Normalfall wird das Spiel jedoch automatisch fortgesetzt, sobald du dich wieder auf der Seite befindest.
+Im Normalfall wird das Spiel jedoch automatisch fortgesetzt, sobald Du dich wieder auf der Seite befindest.
 
-* Wenn du während dem laufenden Spiel (nach einem Verbindungsabbruch) 
-im "Join"-Screen hängen bleibst solltest du neuladen 
+* Wenn Du während dem laufenden Spiel (nach einem Verbindungsabbruch) 
+im "Join"-Screen hängen bleibst solltest Du neuladen 
 
 * Wenn ein Spieler keine Aktionen mehr ausführen kann
 oder der Rundentimer total verkürzt ist, sollte das Spiel neustarten werden
 
 ### Millionen Vögel...
-Lässt du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
+Lässt Du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
 spawnen und den Browser stark verlangsamen. In diesem Fall musst Du einfach die Seite neuladen.
 
 ***
