@@ -7,6 +7,7 @@ module.exports = class Timer {
     }
 
     start() {
+        this.remaining = this.delay;
         this.resume();
     }
 

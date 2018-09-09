@@ -154,37 +154,41 @@ module.exports = class GameEngine {
     }
 
     nextRound() {
-        setTimeout(() => {
-            if (!this.player1 || !this.player2) {
-                console.error("The player object is undefined! A Player might has been disconnected");
-                this.pause();
-                return;
-            }
+        if (!this.iNextRound) {
+            this.iNextRound = setTimeout(() => {
+                if (!this.player1 || !this.player1.connected || !this.player2 || !this.player2.connected) {
+                    console.error("The player object is undefined! A Player might has been disconnected");
+                    this.pause();
+                    this.iNextRound = undefined;
+                    return;
+                }
 
-            let player;
-            if (this.player1.active) {
-                player = this.player2;
-                this.player1.active = false;
-            } else {
-                player = this.player1;
-                this.player2.active = false;
-            }
+                let player;
+                if (this.player1.active) {
+                    player = this.player2;
+                    this.player1.active = false;
+                } else {
+                    player = this.player1;
+                    this.player2.active = false;
+                }
 
-            if (player) {
-                player.addResources();
-                this.sendPlayerInfo();
-                player.active = true;
-                player.done = false;
+                if (player) {
+                    player.addResources();
+                    this.sendPlayerInfo();
+                    player.active = true;
+                    player.done = false;
 
-                this.io.emit("turn", {
-                    active: player.number,
-                    duration: this.turnLength
-                });
+                    this.io.emit("turn", {
+                        active: player.number,
+                        duration: this.turnLength
+                    });
 
-                player.timer.start();
-                console.log("Player " + player.number + " turn");
-            }
-        }, 800);
+                    player.timer.start();
+                    console.log("Player " + player.number + " turn");
+                }
+                this.iNextRound = undefined;
+            }, 800);
+        }
     }
 
     /**
@@ -211,7 +215,6 @@ module.exports = class GameEngine {
             number: winner.number,
             message: "Spieler " + sNumber + " hat das Spiel gewonnen"
         });
-        this.quit();
     }
 
     activateCard(id, player) {

@@ -23,6 +23,26 @@ class Menu {
         }
     }
 
+    toggleReady(b) {
+        const oCenter = document.getElementById("menu").getElementsByClassName("center")[0];
+        const oCenterLaunch = oCenter.getElementsByClassName("content")[0].getElementsByClassName("launch")[0];
+        const oCenterShow = oCenter.getElementsByClassName("content")[0].getElementsByClassName("show")[0];
+        const oCenterInfo = oCenter.getElementsByClassName("info")[0];
+
+        const oElement1 = b ? oCenterLaunch : oCenterShow;
+        const oElement2 = !b ? oCenterLaunch : oCenterShow;
+        oCenterInfo.style.display = b ? "none" : "block";
+
+        oElement2.classList.remove("animation-grow");
+        oElement2.classList.add("animation-shrink");
+        setTimeout(() => {
+            oElement2.style.display = "none";
+            oElement2.classList.remove("animation-shrink");
+            oElement1.style.display = "grid";
+            oElement1.classList.add("animation-grow");
+        });
+    }
+
     togglePlayer(iNumber, b) {
         const oDiv = document.getElementById("menu-player-" + iNumber);
         const oImage = oDiv.getElementsByClassName("content")[0].getElementsByClassName("image")[0];

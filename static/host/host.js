@@ -86,11 +86,6 @@ socket.on('info', o => {
         const oQuitButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[0];
         const oPauseButton = document.getElementsByClassName("game")[0].getElementsByTagName("button")[1];
 
-        const oCenter = document.getElementById("menu").getElementsByClassName("center")[0];
-        const oCenterLaunch = oCenter.getElementsByClassName("content")[0].getElementsByClassName("launch")[0];
-        const oCenterShow = oCenter.getElementsByClassName("content")[0].getElementsByClassName("show")[0];
-        const oCenterInfo = oCenter.getElementsByClassName("info")[0];
-
         const oPlayer1 = oInfo.players.find(e => e.number === 1);
         const oPlayer2 = oInfo.players.find(e => e.number === 2);
 
@@ -113,12 +108,12 @@ socket.on('info', o => {
         if (o.game.state === oStates.READY) {
             window.menu.open();
             if (window._sState !== o.game.state) {
-                setTimeout(() => toggleReady(true), 300);
+                setTimeout(() => window.menu.toggleReady(true), 300);
             }
         } else if (o.game.state === oStates.BLOCKED) {
             window.menu.open();
             if (window._sState && window._sState !== o.game.state) {
-                toggleReady(false);
+                window.menu.toggleReady(false);
             }
         } else if (o.game.state === oStates.RUNNING) {
             handleRunning();
@@ -128,24 +123,9 @@ socket.on('info', o => {
 
         window._sState = o.game.state;
 
-        function toggleReady(b) {
-            const oElement1 = b ? oCenterLaunch : oCenterShow;
-            const oElement2 = !b ? oCenterLaunch : oCenterShow;
-            oCenterInfo.style.display = b ? "none" : "block";
-
-            oElement2.classList.remove("animation-grow");
-            oElement2.classList.add("animation-shrink");
-            setTimeout(() => {
-                oElement2.style.display = "none";
-                oElement2.classList.remove("animation-shrink");
-                oElement1.style.display = "grid";
-                oElement1.classList.add("animation-grow");
-            });
-        }
-
         function handlePaused() {
             window.menu.open();
-            toggleReady(false);
+            window.menu.toggleReady(false);
             if (oInfo.players.length < 2) {
                 toggleButton(oPauseButton, false);
             }
@@ -246,7 +226,15 @@ socket.on('quit', () => {
 });
 
 socket.on('finish', o => {
-    toast(o.message);
+    setTimeout(() => {
+        const oWinScreen = document.getElementById("winscreen");
+        oWinScreen.innerText = o.message;
+        oWinScreen.style.display = "block";
+        setTimeout(() => {
+            oWinScreen.style.display = "none";
+            toggleGame(false);
+        }, 5000);
+    }, 1500);
 });
 
 socket.on('cardAnimation', o => {
@@ -469,6 +457,11 @@ function toggleGame(b) {
         document.getElementById("pause").classList.remove("paused");
         oMenu.classList.add("animation-grow");
         oMenu.style.display = "block";
+        if (window._oPlayer1 && window._oPlayer2) {
+            window.menu.toggleReady(true);
+        } else {
+            window.menu.toggleReady(false);
+        }
         setTimeout(() => oMenu.classList.remove("animation-grow"), 1000);
         socket.emit('quit');
     }

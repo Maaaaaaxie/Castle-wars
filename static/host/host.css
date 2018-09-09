@@ -146,6 +146,24 @@ canvas {
     display: none;
 }
 
+#winscreen {
+    background: rgba(74, 47, 26, 0.7);
+    border: solid 5px  rgba(74, 47, 26, 0.1);
+    border-radius: 0.7rem;
+    width: 100%;
+    max-width: 25rem;
+    color: #f4bc7d;
+    display: none;
+    z-index: 100;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    font-size: 18pt;
+    text-align: center;
+    height: 2rem;
+    padding: 2rem;
+}
+
 /* --- menu ----------------------------------------------------------------------------------------------------------*/
 #menu {
     background: rgba(74, 47, 26, 0.7);
