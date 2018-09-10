@@ -78,10 +78,6 @@ module.exports = class GameEngine {
         }
     }
 
-    restart() {
-        //TODO
-    };
-
     quit() {
         if (this.started) {
             this.started = false;
