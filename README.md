@@ -1,4 +1,4 @@
-#Castle Wars
+# Castle Wars
 
 Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
 Du bist anstrebender König und Dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
