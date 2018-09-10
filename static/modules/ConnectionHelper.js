@@ -41,9 +41,11 @@ module.exports = class ConnectionHelper {
 
     handleClientDisconnected(oPlayer, fnCallback) {
         oPlayer.connected = false;
+        oPlayer.bCardListenerSet = false;
+
+        oPlayer.socket.emit("leave");
 
         this.game.removePlayer(oPlayer.number);
-        oPlayer.socket.emit("leave");
 
         if (this.game.started) {
             if (!this.game.paused) {
@@ -52,11 +54,19 @@ module.exports = class ConnectionHelper {
             this.game.pause();
         }
 
-        console.log("Player " + oPlayer.number + " left the game");
-        this.io.to("host").emit("toast", "Spieler " + oPlayer.number + " hat das Spiel verlassen");
+        if (oPlayer.number) {
+            console.log("Player " + oPlayer.number + " left the game");
+            this.io.to("host").emit("toast", "Spieler " + oPlayer.number + " hat das Spiel verlassen");
+        } else {
+            console.log("Client " + oPlayer.id + " left the game");
+        }
 
         if (fnCallback) {
             fnCallback();
+        }
+
+        if (!this.game.started) {
+            oPlayer.number = undefined;
         }
     }
 };

@@ -238,8 +238,10 @@ socket.on('finish', o => {
 });
 
 socket.on('cardAnimation', o => {
-    const card = aCards.find(e => e.id === o.id);
-    animateCard(o.number, card.image, o.discard, card.sound);
+    if (!o.discard) {
+        const card = aCards.find(e => e.id === o.id);
+        animateCard(o.number, card.image, o.discard, card.sound);
+    }
 });
 
 socket.on('toast', msg => toast(msg));

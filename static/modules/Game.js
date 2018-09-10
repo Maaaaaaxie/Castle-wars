@@ -31,7 +31,7 @@ module.exports = class GameEngine {
             return this.states.PAUSED;
         } else if (this.started) {
             return this.states.RUNNING;
-        } else if (this.player1 && this.player2) {
+        } else if (this.player1 && this.player1.connected && this.player2 && this.player2.connected) {
             return this.states.READY;
         } else {
             return this.states.BLOCKED;
@@ -133,24 +133,27 @@ module.exports = class GameEngine {
     }
 
     initializeCardListener(player) {
-        player.socket.on("card", o => {
-            if (player.active) {
-                this.io.to("host").emit("cardAnimation", {
-                    discard: o.discard,
-                    id: o.id,
-                    number: player.number
-                });
+        if (!player.bCardListenerSet) {
+            player.bCardListenerSet = true;
+            player.socket.on("card", o => {
+                if (player.active) {
+                    this.io.emit("cardAnimation", {
+                        discard: o.discard,
+                        id: o.id,
+                        number: player.number
+                    });
 
-                if (!o.discard) {
-                    this.activateCard(o.id, player);
-                } else {
-                    player.switchCard(o.id);
+                    if (!o.discard) {
+                        this.activateCard(o.id, player);
+                    } else {
+                        player.switchCard(o.id);
+                    }
+                    player.done = true;
+                    this.sendPlayerInfo();
+                    player.timer.finish();
                 }
-                player.done = true;
-                player.timer.finish();
-                this.sendPlayerInfo();
-            }
-        });
+            });
+        }
     }
 
     nextRound() {
@@ -186,6 +189,7 @@ module.exports = class GameEngine {
                     player.timer.start();
                     console.log("Player " + player.number + " turn");
                 }
+                clearTimeout(this.iNextRound);
                 this.iNextRound = undefined;
             }, 800);
         }
