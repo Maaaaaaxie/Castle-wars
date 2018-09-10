@@ -11,7 +11,6 @@ const oImages = {
 	mages: "../images/materials/witch.png",
 	crystals: "../images/materials/crystal.png"
 };
-let bMoveAllowed = true;
 
 const oTexts = {
 	"castle": "Burg",
@@ -55,8 +54,6 @@ export default class Cards {
 			oDialog.close();
 
 			if (iCard || iCard === 0) {
-				console.log("Discarding card", iCard);
-				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
 				window.socket.emit("card", {
 					id: iCard,
@@ -65,14 +62,12 @@ export default class Cards {
 				});
 				window.setTimeout(() => {
 					this.removeCard(oSceneInner);
-					bMoveAllowed = true;
 				}, 500);
 			}
 		});
 
-		// TODO: clean up
 		oSection.onclick = e => {
-			if (!bMoveAllowed || !window._moveAllowed) {
+			if (!window._moveAllowed) {
 				return;
 			}
 
@@ -82,23 +77,20 @@ export default class Cards {
 
 			if (oSceneInner && !oSceneInner.classList.contains("vanished") && !oCard.classList.contains("disabled")) {
 				const sCardId = oCard.getAttribute("data-id");
-				console.log("Played card", sCardId);
 				window.socket.emit("card", {
 					id: sCardId,
 					discard: false,
 					number: window.player.number
 				});
-				bMoveAllowed = false;
 				oSceneInner.classList.add("vanished");
 				window.setTimeout(() => {
 					this.removeCard(oSceneInner);
-					bMoveAllowed = true;
 				}, 500);
 			}
 		};
 
 		oSection.oncontextmenu = e => {
-			if (!bMoveAllowed || !window._moveAllowed) {
+			if (!window._moveAllowed) {
 				return false;
 			}
 
@@ -111,7 +103,6 @@ export default class Cards {
 
 				document.getElementById("dismissCard").setAttribute("data-id", iCard.toString());
 				document.getElementById("dismissCard").showModal();
-				// TODO: on time out, remove dialog if no choice has been made by user
 			}
 
 			return false;
@@ -226,7 +217,7 @@ export default class Cards {
 		for (const p in oCard.enemy) {
 			oCard.enemy.hasOwnProperty(p) && oCard.enemy[p] !== 0 && aProperties.push(oTexts[p] + " " + oCard.enemy[p]);
 		}
-		for (const p in oCard.self) { // todo: other style, todo: plus on positive values
+		for (const p in oCard.self) {
 			oCard.self.hasOwnProperty(p) && oCard.self[p] !== 0 && aProperties.push(oTexts[p] + " +" + oCard.self[p]);
 		}
 		if (oCard.custom) {

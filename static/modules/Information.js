@@ -64,7 +64,6 @@ export default class Information {
 				iTimeLeft--;
 				oTimer.innerText = iTimeLeft.toString();
 			} else {
-				console.log("Timer finished");
 				window.clearInterval(window.countdown);
 			}
 		}, 1000);
