@@ -1,6 +1,4 @@
-![image](./static/images/readme/title.png)
-
-<br/>
+#Castle Wars
 
 Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
 Du bist anstrebender König und Dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
@@ -60,9 +58,6 @@ Im Normalfall wird das Spiel jedoch automatisch fortgesetzt, sobald Du dich wied
 
 * Wenn Du während dem laufenden Spiel (nach einem Verbindungsabbruch) 
 im "Join"-Screen hängen bleibst solltest Du neuladen 
-
-* Wenn ein Spieler keine Aktionen mehr ausführen kann
-oder der Rundentimer total verkürzt ist, sollte das Spiel neustarten werden
 
 ### Millionen Vögel...
 Lässt Du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
