@@ -60,6 +60,47 @@ Wenn Du jedoch im "Join"-Screen hängen bleibst solltest Du einfach noch einmal 
 Lässt Du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
 spawnen und den Browser stark verlangsamen. In diesem Fall musst Du einfach die Seite neuladen.
 
+## Third party content
+
+### Images
+
+* Icons made by https://www.flaticon.com/authors/freepik from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/prosymbols from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/nikita-golubev from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/vectors-market from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/roundicons from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/becris from www.flaticon.com 
+* Icons made by https://www.flaticon.com/authors/pixel-perfect from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/gregor-cresnar from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/google from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/smashicons from www.flaticon.com
+* Icons made by https://www.flaticon.com/authors/srip from www.flaticon.com
+
+### Fonts
+
+**MedievalSharp**
+
+Copyright (c) 2011, wmk69 (wmk69@o2.pl),
+with Reserved Font Name MedievalSharp.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+### Music
+
+**Celtic Impuls**
+
+Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+### Sounds
+
+Sound effects obtained from https://www.zapsplat.com
+Sound effects obtained from https://www.BlastwaveFx.com 
+
 ***
 
 **Autoren**<br/>
