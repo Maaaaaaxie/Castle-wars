@@ -21,7 +21,7 @@ Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zer
 * Das Spiel ist rundenbasiert 
 * Jede Runde darfst Du eine Karte, sofern Du sie Dir leisten kannst, spielen
 * Kannst Du Dir keine einzige Karte auf deiner Hand leisten oder möchtest eine Karte loswerden kannst Du sie
-mit längerem drücken abwerfen
+mit längerem Drücken abwerfen
 <br/>*Damit ist Dein Zug jedoch verbraucht*
 
 ## Installation
@@ -53,11 +53,8 @@ Browser
 
 ### Verbindungsprobleme
 Solltest Du während dem Spiel die Verbindung verlieren, Neuladen oder versehentlich die Seite schließen,
-könnten unvorhersehbare Fehler auftreten.
-Im Normalfall wird das Spiel jedoch automatisch fortgesetzt, sobald Du dich wieder auf der Seite befindest.
-
-* Wenn Du während dem laufenden Spiel (nach einem Verbindungsabbruch) 
-im "Join"-Screen hängen bleibst solltest Du neuladen 
+ wird das Spiel im Normalfall automatisch fortgesetzt, sobald Du dich wieder auf der Seite befindest.
+Wenn Du jedoch im "Join"-Screen hängen bleibst solltest Du einfach noch einmal neuladen. 
 
 ### Millionen Vögel...
 Lässt Du den Browser im Hintergrund offen, kommt es schonmal vor, dass in der Zwischenzeit einige Vögel 
