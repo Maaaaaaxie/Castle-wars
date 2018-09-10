@@ -1,7 +1,12 @@
-# Castle Wars
+![image](./static/images/readme/title.png)
+
+<br/>
+
 Castle Wars ist ein Multiplayer und mit dem Smartphone steuerbares Kartenspiel.
 Du bist anstrebender König und Dein Ziel ist es, die größte Burg des Königsreichs zu besitzen.
 Ein ebenso wirkungsvoller Plan ist, die Burg deines Konkurrenten komplett zu zerstören.
+
+![image](./static/images/readme/main.png)
 
 ## Anleitung
 **Wann gewinnst du?**
@@ -27,6 +32,8 @@ mit längerem drücken abwerfen
 2. `start.bat` zum Starten des Spiels ausführen
 3. `localhost` im Browser öffnen (*passiert automatisch*)
 4. QR-Code scannen *oder* IP (z.B. 192.168.1.1/control) manuell in Smartphone Browser eingeben
+
+![image](./static/images/readme/login.png)
 
 ## Anforderungen
 Um die Verbindung zwischen PC und Smartphone sicherzustellen müssen sich alle Geräte im selben
