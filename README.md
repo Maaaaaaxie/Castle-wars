@@ -37,7 +37,8 @@ Software
 
 Hardware
 * 1 PC zur Spielfeld-Anzeige
-* 1 Smartphone je Spieler
+* 1 Smartphone je Spieler<br/>
+*bevorzugt Android, bei iOS Geräten können Probleme auftreten*
 
 Browser
 * Google Chrome 68.0 (oder höher)
