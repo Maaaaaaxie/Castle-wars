@@ -78,4 +78,15 @@ Martin Rempel
 28.06.018
 
 **Version**<br/>
-0.9
+1.0
+
+****
+
+**Aufgabenverteilung**
+
+Martin Rempel
+* Smartphone Steuerung
+
+Daniel Schmitz
+* Canvas / Host-Anzeige
+* Backend / Game-Logik
