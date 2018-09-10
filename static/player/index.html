@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Castle Wars: Control</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/images/basic/sword.png" sizes="any">
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" type="text/css" href="/player/reset.css">
     <link rel="stylesheet" type="text/css" href="/player/information.css">
     <link rel="stylesheet" type="text/css" href="/player/resources.css">
     <link rel="stylesheet" type="text/css" href="/player/cards.css">
     <script type="module" src="/player/core.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="/images/basic/sword.png" sizes="any">
 </head>
 <body>
 <main>
@@ -64,6 +64,10 @@
 </body>
 </html>
 <script>
+	/* --- settings --------------------------------------------------------------------------------------------------*/
+	document.getElementById("settingsButton").addEventListener("click", () => document.getElementById("settings").showModal());
+	document.getElementById("settingsClose").addEventListener("click", () => document.getElementById("settings").close());
+
     window._settings = JSON.parse(sessionStorage.getItem("settings"));
     if (!(_settings && typeof _settings.vibrate === typeof true && typeof _settings.fullscreen === typeof true)) {
     	window._settings = {
@@ -76,86 +80,21 @@
 	document.getElementById("vibration").checked = window._settings.vibrate;
 	document.getElementById("fullscreen").checked = window._settings.fullscreen;
 
-    function checkOrientation() {
-    	if (window.innerHeight > window.innerWidth) {
-    		document.getElementById("switchToLandscape").style.display = "block";
-        } else {
-			document.getElementById("switchToLandscape").style.display = "none";
+	document.getElementById("vibration").addEventListener("change", e => {
+		window._settings.vibrate = e.target.checked;
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
+	});
+
+	document.getElementById("fullscreen").addEventListener("change", e => {
+		window._settings.fullscreen = e.target.checked;
+		sessionStorage.setItem("settings", JSON.stringify(window._settings));
+
+		if (window._settings.fullscreen) {
+			window.enterFullscreen(document.documentElement);
+		} else {
+			window.exitFullscreen();
 		}
-    }
-    checkOrientation();
-
-	window.onresize = checkOrientation;
-
-    window.iHeight = 0;
-    let iAdder = 4;
-
-	function getCtx() {
-		return document.getElementById("canvas").getContext("2d");
-	}
-
-	function drawSky() {
-		const ctx = getCtx();
-		ctx.canvas.width = window.innerWidth;
-		ctx.canvas.height = window.innerHeight;
-
-		ctx.fillStyle = "#85d6d7";
-		ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-	}
-
-	function drawGrass() {
-		const ctx = getCtx();
-
-		const iFloor = window.innerHeight - Math.round(window.innerHeight / 5);
-		const iHeight = window.innerHeight - iFloor;
-
-		// grass
-		ctx.fillStyle = "#4ed749";
-		ctx.fillRect(0, iFloor, window.innerWidth, iHeight);
-
-		ctx.fillStyle = "#40af3b";
-		ctx.fillRect(0, iFloor, window.innerWidth, 2);
-	}
-
-	function drawCastle() {
-		const
-            ctx = getCtx(),
-            x = window.innerWidth / 2;
-
-		let y = window.innerHeight - Math.round(window.innerHeight / 5) - window.iHeight;
-
-		ctx.fillStyle = "rgba(156, 128, 78, 0.8)";
-
-		// base
-		ctx.fillRect(x - 50, y, 100, window.iHeight);
-		ctx.fillRect(x - 50, y - 10, 20, 10); // left
-		ctx.fillRect(x + 30, y - 10, 20, 10); // right
-        ctx.fillRect(x - 10, y - 10, 20, 10);
-
-		ctx.fillStyle = "rgba(156, 128, 78, 1)";
-
-		// towers
-        y -= 20;
-        let height = window.iHeight + 20;
-        ctx.fillRect(x - 80, y, 30, height);
-
-        ctx.fillRect(x + 50, y, 30, height);
-    }
-
-    function setHeight() {
-		if (window.iHeight > window.innerHeight - Math.floor(window.innerHeight / 3)) {
-			iAdder *= -1;
-        } else if (window.iHeight < 0) {
-			iAdder *= -1;
-        }
-        window.iHeight += iAdder;
-    }
-
-    function draw() {
-		drawSky();
-		drawGrass();
-		drawCastle();
-    }
+	});
 
 	window.enterFullscreen = function(oElement) {
 		if(oElement.requestFullscreen) {
@@ -179,29 +118,92 @@
 		} else if (document.msExitFullscreen) {
 			document.msExitFullscreen();
 		}
-    };
+	};
+
+	/* --- orientation -----------------------------------------------------------------------------------------------*/
+    function checkOrientation() {
+    	if (window.innerHeight > window.innerWidth) {
+    		document.getElementById("switchToLandscape").style.display = "block";
+        } else {
+			document.getElementById("switchToLandscape").style.display = "none";
+		}
+    }
+    checkOrientation();
+	window.onresize = checkOrientation;
+
+	/* --- loading animation -----------------------------------------------------------------------------------------*/
+    window.iHeight = 0;
+    let iGrowFactor = 4;
+
+	function getCtx() {
+		return document.getElementById("canvas").getContext("2d");
+	}
+
+	function drawSky() {
+		const ctx = getCtx();
+		ctx.canvas.width = window.innerWidth;
+		ctx.canvas.height = window.innerHeight;
+
+		ctx.fillStyle = "#85d6d7";
+		ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+	}
+
+	function drawGrass() {
+		const
+            ctx = getCtx(),
+            iFloor = window.innerHeight - Math.round(window.innerHeight / 5),
+            iHeight = window.innerHeight - iFloor;
+
+		// grass
+		ctx.fillStyle = "#4ed749";
+		ctx.fillRect(0, iFloor, window.innerWidth, iHeight);
+
+		// line
+		ctx.fillStyle = "#40af3b";
+		ctx.fillRect(0, iFloor, window.innerWidth, 2);
+	}
+
+	function drawCastle() {
+		const
+            ctx = getCtx(),
+            x = window.innerWidth / 2;
+
+		let y = window.innerHeight - Math.round(window.innerHeight / 5) - window.iHeight;
+
+		ctx.fillStyle = "rgba(156, 128, 78, 0.8)";
+
+		// base
+		ctx.fillRect(x - 50, y, 100, window.iHeight);
+		ctx.fillRect(x - 50, y - 10, 20, 10); // left
+		ctx.fillRect(x + 30, y - 10, 20, 10); // right
+        ctx.fillRect(x - 10, y - 10, 20, 10); // middle
+
+		ctx.fillStyle = "rgba(156, 128, 78, 1)";
+
+		// towers
+        y -= 20;
+        let height = window.iHeight + 20;
+        ctx.fillRect(x - 80, y, 30, height);
+        ctx.fillRect(x + 50, y, 30, height);
+    }
+
+    function setHeight() {
+		if (window.iHeight > window.innerHeight - Math.floor(window.innerHeight / 3)) {
+			iGrowFactor *= -1;
+        } else if (window.iHeight < 0) {
+			iGrowFactor *= -1;
+        }
+        window.iHeight += iGrowFactor;
+    }
+
+    function draw() {
+		drawSky();
+		drawGrass();
+		drawCastle();
+    }
 
     window.loadingInterval = window.setInterval(() => {
     	setHeight();
     	draw();
     }, (1000 / 60));
-
-	document.getElementById("settingsButton").addEventListener("click", () => document.getElementById("settings").showModal());
-	document.getElementById("settingsClose").addEventListener("click", () => document.getElementById("settings").close());
-
-    document.getElementById("vibration").addEventListener("change", e => {
-		window._settings.vibrate = e.target.checked;
-		sessionStorage.setItem("settings", JSON.stringify(window._settings));
-	});
-
-	document.getElementById("fullscreen").addEventListener("change", e => {
-		window._settings.fullscreen = e.target.checked;
-		sessionStorage.setItem("settings", JSON.stringify(window._settings));
-
-        if (window._settings.fullscreen) {
-			window.enterFullscreen(document.documentElement);
-        } else {
-        	window.exitFullscreen();
-        }
-	});
 </script>
